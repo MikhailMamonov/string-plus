@@ -155,7 +155,7 @@ bunda:
 | № | Uzunlik | Tavsif |
 | --- | --- | --- |
 | 1 | h | Argument qisqa int yoki belgisiz qisqa int sifatida talqin qilinadi (faqat butun sonli spetsifikatorlar uchun qo’llaniladi: i, d, o, u, x va X). |
-| 2 | l | Argument butun sonli spetsifikatorlar (i, d, o, u, x va X) uchun uzun int yoki belgisiz uzun int sifatida va c va s spetsifikatorlari uchun keng belgi yoki keng belgilar satri sifatida talqin etiladi. |
+| 2 | l | Argument butun sonli spetsifikatorlar (i, d, o, u, x va X) uchun uzun int yoki belgisiz uzun int sifatida talqin etiladi. |
 | 3 | L | Argument uzun double sifatida talqin qilinadi (faqat e, E, f, g va G suzuvchi nuqtali spetsifikatorlar uchun qo’llaniladi). |
 
 ### Satrlarni qayta ishlashning maxsus funksiyalari (C# tilidagi String sinfidan ilhomlangan)

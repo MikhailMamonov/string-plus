@@ -20,6 +20,16 @@ The russian version of the task can be found in the repository.
     3.4. [Part 4](#part-4-bonus-implementation-of-the-sscanf-function)  
     3.5. [Part 5](#part-5-bonus-implementation-of-special-string-processing-functions)  
 
+## Instructions
+
+How to learn at “School 21”:
+
+- Here, you’ll find a unique learning experience with a lot of freedom. You’re given a task and left to find your own way to solve it, using whatever resources work best for you — whether that’s the Internet or AI tools like GigaChat. Just be mindful of information quality: verify, think critically, analyze, and compare.
+- Peer-to-peer (P2P) learning is the exchange of knowledge and experience with peers, where everyone acts as both mentor and student. This approach allows you to gain a deeper understanding of the material by learning from one another.
+- Feel free to ask for help: around you are peers who are also navigating this path for the first time. Share your own experience and ideas with others.  Join Rocket.Chat to stay updated with the latest community announcements. 
+- Your learning is meaningless if you just copy someone else’s solutions. When receiving help from others, always make sure you fully understand the “why”, “how”, and “purpose” behind the solution. Don’t be afraid to make mistakes. 
+- Does the task seem impossible? Take a break, get some fresh air and clear your mind — this has helped many people. Maybe after that, the solution will come to you naturally.
+- The learning process is just as important as the result. It’s not just about completing the task — it’s about understanding HOW to solve it. 
 
 ## Preamble
 
@@ -161,7 +171,7 @@ where:
 | No. |	Length | Description |
 | --- | --- | --- |
 | 1 | h | The argument is interpreted as a short int or unsigned short int (only applies to integer specifiers: i, d, o, u, x and X). |
-| 2 | l | The argument is interpreted as a long int or unsigned long int for integer specifiers (i, d, o, u, x and X), and as a wide character or wide character string for specifiers c and s. |
+| 2 | l | The argument is interpreted as a long int or unsigned long int for integer specifiers (i, d, o, u, x and X). |
 | 3 | L | The argument is interpreted as a long double (only applies to floating point specifiers — e, E, f, g and G). |
 
 ### Special string processing functions (from the String class in C#)
@@ -179,14 +189,15 @@ where:
 ## Part 1. Implementation of the string.h library functions
 
 It is necessary to implement the described [above](#stringh-functions) functions of the string.h library, as well as the s21_size type and the S21_NULL macro: 
+ - Before starting, clone the project from GitLab into a repository with the same name.
  - The library must be developed in C language of C11 standard using gcc compiler.
- - The library's code, including headers, makefile and library itself must be located in the src folder on the develop branch.
+ - The library's code, including headers, makefile and library itself must be located in the _src_ folder on the _develop_ branch.
  - Do not use outdated and legacy language constructions and library functions. Pay attention to the legacy and obsolete marks in the official documentation on the language and the libraries used. Use the POSIX.1-2017 standard.
  - When writing code it is necessary to follow the Google style for C++ ([link](https://google.github.io/styleguide/cppguide.html)).
  - Make it as a static library named *s21_string.a* (with the header file s21_string.h).
  - The library must be developed in accordance with the principles of structured programming, duplication in the code must be avoided.
  - Prepare a full coverage of the library's functions by unit-tests using the Check library.
- - Test's code and the executable file must be located in the src folder or its any subfolder.
+ - Test's code and the executable file must be located in the _src_ folder or its any subfolder.
  - Unit-tests must check the results of your implementation by comparing them with the implementation of the standard string.h library.
  - Unit tests must cover at least 80% of each function (checked using gcov).
  - Provide a Makefile for building the library and tests (with the targets all, clean, test, s21_string.a, gcov_report).
@@ -196,6 +207,7 @@ It is necessary to implement the described [above](#stringh-functions) functions
  - It is forbidden to use system errors arrays, including those not specified in POSIX (sys_nerr, sys_errlist). Instead, you need to implement your own platform-specific errors arrays, as it was mentioned in the description of the [strerror function](#stringh-functions).
  - You must follow the logic of the standard string.h library (in terms of checks, working with memory and behavior in emergency situations — tests will help you with that).
  - Functions must work with z-string made of single-byte characters in ASCII encoding.
+ - Your directory should not contain any files other than those specified in the assignments.
 
 ## Part 2. Partial implementation of the sprintf function
 
