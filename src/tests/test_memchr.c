@@ -11,8 +11,8 @@ START_TEST(test_find) {
     char *res = s21_memchr(inputs_s[_i], inputs_c[_i], inputs_n[_i]);
     char *expected = memchr(inputs_s[_i], inputs_c[_i], inputs_n[_i]);
     ck_assert_msg(res == expected,
-        "Ошибка на итерации %d: ожидалось %c, получили %c",
-        _i, *expected, *res);
+        "Ошибка на итерации %d: ожидалось %p, получили %p",
+        _i, expected, res);
 }
 END_TEST
 
