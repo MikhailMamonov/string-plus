@@ -3,27 +3,21 @@ CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 
 # Исходники библиотеки (укажите все ваши 5 файлов)
-SRCS = memchr.c
+SRCS = memchr.c memset.c
 OBJS = $(SRCS:.c=.o)
 NAME = s21_string.a
 
 # Исходники тестов (например, ваш тестовый main с использованием библиотеки check)
-TEST_SRCS = tests/test_main.c tests/test_memchr.c
+TEST_SRCS = tests/test_main.c tests/test_memchr.c tests/test_memset.c
 # Флаги линковки для библиотеки check
 # На Linux обычно достаточно -lcheck -lsubunit -lm -lrt -lpthread
 # На macOS (Homebrew) может потребоваться: -L/opt/homebrew/lib -lcheck
 TEST_FLAGS = -lcheck -lsubunit -lm -lrt -lpthread
 
 test:
-	$(CC) $(CFLAGS) $(GCOV_FLAGS) $(SRCS) $(TEST_SRCS) $(TEST_FLAGS) -o test_exec
+	$(CC) $(CFLAGS) $(SRCS) $(TEST_SRCS) $(TEST_FLAGS) -o test_exec
 	./test_exec
-
-gcov_report: clean test
-	lcov -t "s21_string_report" -o s21_string.info -c -d .
-	genhtml -o report s21_string.info
 	rm -f test_exec *.gcno *.gcda
-# Флаги для подключения библиотеки check (стандарт Школы 21)
-# На macOS может потребоваться дополнительно указать пути к Homebrew
 
 all: $(NAME)
 
@@ -31,6 +25,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 	ranlib $(NAME)
+	rm -f $(OBJS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -43,6 +38,7 @@ gcov_report: clean
 	./test_exec
 	# 3. Собираем данные покрытия через lcov
 	lcov -t "s21_string_report" -o s21_string.info -c -d .
+	lcov --remove s21_string.info '*/tests/*' -o s21_string.info
 	# 4. Формируем красивую HTML папку
 	genhtml -o report s21_string.info
 	# 5. Очищаем исполняемый файл и промежуточные файлы покрытия
