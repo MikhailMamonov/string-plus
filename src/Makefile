@@ -2,13 +2,14 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 
-# Исходники библиотеки (укажите все ваши 5 файлов)
-SRCS = memchr.c memset.c
+# Исходники библиотеки
+SRCS = s21_memchr.c #s21_memset.c
 OBJS = $(SRCS:.c=.o)
 NAME = s21_string.a
 
 # Исходники тестов (например, ваш тестовый main с использованием библиотеки check)
-TEST_SRCS = tests/test_main.c tests/test_memchr.c tests/test_memset.c
+TEST_LIB = tests
+TEST_SRCS = $(TEST_LIB)/test_main.c $(TEST_LIB)/test_s21_memchr.c# $(TEST_LIB)/test_s21_memset.c
 # Флаги линковки для библиотеки check
 # На Linux обычно достаточно -lcheck -lsubunit -lm -lrt -lpthread
 # На macOS (Homebrew) может потребоваться: -L/opt/homebrew/lib -lcheck
@@ -38,7 +39,7 @@ gcov_report: clean
 	./test_exec
 	# 3. Собираем данные покрытия через lcov
 	lcov -t "s21_string_report" -o s21_string.info -c -d .
-	lcov --remove s21_string.info '*/tests/*' -o s21_string.info
+	lcov --remove s21_string.info '*/$(TEST_LIB)/*' -o s21_string.info
 	# 4. Формируем красивую HTML папку
 	genhtml -o report s21_string.info
 	# 5. Очищаем исполняемый файл и промежуточные файлы покрытия
