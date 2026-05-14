@@ -3,13 +3,13 @@ CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 
 # Исходники библиотеки
-SRCS = s21_memchr.c #s21_memset.c
+SRCS = s21_memchr.c s21_memcpy.c #s21_memset.c
 OBJS = $(SRCS:.c=.o)
 NAME = s21_string.a
 
 # Исходники тестов (например, ваш тестовый main с использованием библиотеки check)
 TEST_LIB = tests
-TEST_SRCS = $(TEST_LIB)/test_main.c $(TEST_LIB)/test_s21_memchr.c# $(TEST_LIB)/test_s21_memset.c
+TEST_SRCS = $(wildcard $(TEST_LIB)/*.c)
 # Флаги линковки для библиотеки check
 # На Linux обычно достаточно -lcheck -lsubunit -lm -lrt -lpthread
 # На macOS (Homebrew) может потребоваться: -L/opt/homebrew/lib -lcheck
