@@ -1,10 +1,10 @@
 #include <check.h>
 #include <stdlib.h>
 #include "../s21_string.h"
-#include "memcpy/test_memcpy.h"
 
 
 Suite *memchr_suite_create(void);
+Suite *memcpy_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, memcpy_suite_create());
