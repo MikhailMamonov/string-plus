@@ -9,8 +9,6 @@ typedef struct {
     const void *src;
     s21_size_t size;
     const char *test_name;
-    int is_src_null;
-    int is_dest_null;
 } MemCpyTestParams;
 
 // Основная функция запуска теста
