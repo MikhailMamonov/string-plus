@@ -1,19 +1,25 @@
 CC = gcc
+UNAME_S := $(shell uname -s)
 CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 
 # Исходники библиотеки
-SRCS = s21_memchr.c s21_memcpy.c #s21_memset.c
+SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 NAME = s21_string.a
 
 # Исходники тестов (например, ваш тестовый main с использованием библиотеки check)
 TEST_LIB = tests
-TEST_SRCS = $(wildcard $(TEST_LIB)/*.c)
+TEST_SRCS = $(wildcard $(TEST_LIB)/*.c) $(wildcard $(TEST_LIB)/memcpy/*.c)
 # Флаги линковки для библиотеки check
 # На Linux обычно достаточно -lcheck -lsubunit -lm -lrt -lpthread
 # На macOS (Homebrew) может потребоваться: -L/opt/homebrew/lib -lcheck
-TEST_FLAGS = -lcheck -lsubunit -lm -lrt -lpthread
+TEST_FLAGS = -lcheck -lm -lpthread
+
+# Только для Linux добавляем специфичные библиотеки
+ifeq ($(UNAME_S),Linux)
+    TEST_FLAGS += -lsubunit -lrt
+endif
 
 test:
 	$(CC) $(CFLAGS) $(SRCS) $(TEST_SRCS) $(TEST_FLAGS) -o test_exec
