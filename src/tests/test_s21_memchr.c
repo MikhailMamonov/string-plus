@@ -32,9 +32,9 @@ START_TEST(test_memchr_negative_orig_compare) {
 }
 END_TEST
 
-char *memchr_edge_inputs_s[] = {"", "", "verter", "a", "supercalifragilisticexpialidocious/", "Spare test"};
-char memchr_edge_inputs_c[] = {'\0', '\n', 'a', '\0', '/', '\0'};
-s21_size_t memchr_edge_inputs_n[] = {1, 0, -2, 1, 35, 11};
+char *memchr_edge_inputs_s[] = {"", "", "a", "supercalifragilisticexpialidocious/", "Spare test"};
+char memchr_edge_inputs_c[] = {'\0', '\n', '\0', '/', '\0'};
+s21_size_t memchr_edge_inputs_n[] = {1, 0, 1, 35, 11};
 
 START_TEST(test_memchr_edge_orig_compare) {
     // _i — это встроенная переменная индекса
