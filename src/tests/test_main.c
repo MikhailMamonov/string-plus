@@ -5,9 +5,11 @@
 
 Suite *memchr_suite_create(void);
 Suite *memcpy_suite_create(void);
+Suite *strchr_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, memcpy_suite_create());
+    srunner_add_suite(sr, strchr_suite_create());
 }
 
 int main(void) {

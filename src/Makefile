@@ -10,7 +10,7 @@ NAME = s21_string.a
 
 # Исходники тестов (например, ваш тестовый main с использованием библиотеки check)
 TEST_LIB = tests
-TEST_SRCS = $(wildcard $(TEST_LIB)/*.c) $(wildcard $(TEST_LIB)/memcpy/*.c)
+TEST_SRCS = $(wildcard $(TEST_LIB)/*.c)
 # Флаги линковки для библиотеки check
 # На Linux обычно достаточно -lcheck -lsubunit -lm -lrt -lpthread
 # На macOS (Homebrew) может потребоваться: -L/opt/homebrew/lib -lcheck
