@@ -1,66 +1,76 @@
 #include <check.h>
-#include "../s21_string.h"
+#include <stdlib.h>
 #include <string.h>
-#include <signal.h>
+#include "../s21_string.h"
 
-char *memchr_positive_inputs_s[] = {"apple", "verter", "aaa", "supercalifragilisticexpialidocious", "Several words and 221 122 32"};
-char memchr_positive_inputs_c[] = {'p', 'r', 'a', 'u', ' '};
-s21_size_t memchr_positive_inputs_n[] = {3, 6, 3, 35, 14};
+// Структура параметров теста
+typedef struct {
+    const void *str;
+    int c;
+    s21_size_t n;
+} memchrParams;
 
-START_TEST(test_memchr_positive_orig_compare) {
-    // _i — это встроенная переменная индекса
-    char *res = s21_memchr(memchr_positive_inputs_s[_i], memchr_positive_inputs_c[_i], memchr_positive_inputs_n[_i]);
-    char *expected = memchr(memchr_positive_inputs_s[_i], memchr_positive_inputs_c[_i], memchr_positive_inputs_n[_i]);
-    ck_assert_msg(res == expected,
-        "Ошибка на итерации %d: ожидалось %p, получили %p",
-        _i, expected, res);
+// Универсальная функция запуска одиночного теста
+void run_memchr_test(memchrParams *params) {
+    char *res = s21_memchr(params->str, params->c, params->n);
+    char *expected = memchr(params->str, params->c, params->n);
+
+    // Сравниваем точные адреса указателей в памяти
+    ck_assert_ptr_eq(res, expected);
 }
-END_TEST
 
+// Макрос для создания тестовых наборов
+#define TEST_CASES(name, ...) \
+    static memchrParams name[] = {__VA_ARGS__}; \
+    START_TEST(test_##name) { \
+        for (size_t i = 0; i < sizeof(name)/sizeof(name[0]); i++) { \
+            run_memchr_test(&name[i]); \
+        } \
+    } \
+    END_TEST
 
-char *memchr_negative_inputs_s[] = {"apple", "verter", "a", "supercalifragilisticexpialidocious", "Several words and 221 122 32", "Spare test"};
-char memchr_negative_inputs_c[] = {'p', 'a', 'l', 'c', ' ', '\0'};
-s21_size_t memchr_negative_inputs_n[] = {1, 6, 1, 4, 7, 5};
+// 1. Положительные тесты (символ гарантированно есть в области видимости n)
+TEST_CASES(positive_tests,
+    {"apple", 'p', 3},
+    {"verter", 'r', 6},
+    {"aaa", 'a', 3},
+    {"supercalifragilisticexpialidocious", 'u', 35},
+    {"Several words and 221 122 32", ' ', 14}
+)
 
-START_TEST(test_memchr_negative_orig_compare) {
-    // _i — это встроенная переменная индекса
-    char *res = s21_memchr(memchr_negative_inputs_s[_i], memchr_negative_inputs_c[_i], memchr_negative_inputs_n[_i]);
-    char *expected = memchr(memchr_negative_inputs_s[_i], memchr_negative_inputs_c[_i], memchr_negative_inputs_n[_i]);
-    ck_assert_msg(res == expected,
-        "Ошибка на итерации %d: ожидалось %p, получили %p",
-        _i, expected, res);
-}
-END_TEST
+// 2. Отрицательные тесты (символ отсутствует или находится за пределами n)
+TEST_CASES(negative_tests,
+    {"apple", 'p', 1},
+    {"verter", 'a', 6},
+    {"a", 'l', 1},
+    {"supercalifragilisticexpialidocious", 'c', 4},
+    {"Several words and 221 122 32", ' ', 7},
+    {"Spare test", '\0', 5}
+)
 
-char *memchr_edge_inputs_s[] = {"", "", "verter", "a", "supercalifragilisticexpialidocious/", "Spare test"};
-char memchr_edge_inputs_c[] = {'\0', '\n', 'a', '\0', '/', '\0'};
-s21_size_t memchr_edge_inputs_n[] = {1, 0, -2, 1, 35, 11};
+// 3. Пограничные и экстремальные случаи
+TEST_CASES(edge_tests,
+    {"", '\0', 1},
+    {"", '\n', 0},
+    {"a", '\0', 1},
+    {"supercalifragilisticexpialidocious/", '/', 35},
+    {"Spare test", '\0', 11}
+)
 
-START_TEST(test_memchr_edge_orig_compare) {
-    // _i — это встроенная переменная индекса
-    char *res = s21_memchr(memchr_edge_inputs_s[_i], memchr_edge_inputs_c[_i], memchr_edge_inputs_n[_i]);
-    char *expected = memchr(memchr_edge_inputs_s[_i], memchr_edge_inputs_c[_i], memchr_edge_inputs_n[_i]);
-    ck_assert_msg(res == expected,
-        "Ошибка на итерации %d: ожидалось %p, получили %p",
-        _i, expected, res);
-}
-END_TEST
-
-
-// Функция, которую вызовет Runner
+// Функция сборки Suite для Runner
 Suite *memchr_suite_create(void) {
     Suite *s = suite_create("Memchr");
 
     TCase *tc_pos = tcase_create("Positive_Original_Compare");
-    tcase_add_loop_test(tc_pos, test_memchr_positive_orig_compare, 0, (int)(sizeof(memchr_positive_inputs_s) / sizeof(memchr_positive_inputs_s[0])));
+    tcase_add_test(tc_pos, test_positive_tests);
     suite_add_tcase(s, tc_pos);
 
     TCase *tc_neg = tcase_create("Negative_Original_Compare");
-    tcase_add_loop_test(tc_neg, test_memchr_negative_orig_compare, 0, (int)(sizeof(memchr_negative_inputs_s) / sizeof(memchr_negative_inputs_s[0])));
+    tcase_add_test(tc_neg, test_negative_tests);
     suite_add_tcase(s, tc_neg);
 
     TCase *tc_edge = tcase_create("Edge_Original_Compare");
-    tcase_add_loop_test(tc_edge, test_memchr_edge_orig_compare, 0, (int)(sizeof(memchr_edge_inputs_s) / sizeof(memchr_edge_inputs_s[0])));
+    tcase_add_test(tc_edge, test_edge_tests);
     suite_add_tcase(s, tc_edge);
 
     return s;
