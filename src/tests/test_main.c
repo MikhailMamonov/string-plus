@@ -3,10 +3,21 @@
 #include "../s21_string.h"
 
 Suite *s21_memcmp_suite_create(void);
+Suite *memcmp_suite_create(void);
+Suite *memchr_suite_create(void);
+Suite *memcpy_suite_create(void);
+Suite *strerror_suite_create(void);
+
+void assemble_srunner(SRunner *sr) {
+    srunner_add_suite(sr, memcpy_suite_create());
+    srunner_add_suite(sr, strerror_suite_create());
+    srunner_add_suite(sr, s21_memcmp_suite_create());
+}
 
 int main(void) {
     int failed = 0;
-    SRunner *sr = srunner_create(s21_memcmp_suite_create());
+    SRunner *sr = srunner_create(memchr_suite_create());
+    assemble_srunner(sr);
 
     srunner_run_all(sr, CK_NORMAL);
     failed = srunner_ntests_failed(sr);
