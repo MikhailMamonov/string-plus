@@ -2,6 +2,9 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 
+#define INT_MAX 2147483647
+#define INT_MIN (-2147483647 - 1)
+
 // Структура параметров теста
 typedef struct {
     const void *src;
@@ -12,8 +15,8 @@ typedef struct {
 
 // Структура параметров теста
 typedef struct {
-    const void *src;
-    s21_size_t size;
+    const char *str;
+    int c;
     const char *test_name;
 } StrChrTestParams;
 

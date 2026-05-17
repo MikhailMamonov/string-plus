@@ -1,72 +1,164 @@
 #include <string.h>
-#include <stdlib.h>
 #include <check.h>
 #include "../s21_string.h"
 #include "s21_test_common.h"
 
 
+static const char ext_ascii_str1[] = { 'a', 'b', 'c', 0x80, 0x81, 'd', 'e', 'f', '\0' };
+static const char ext_ascii_str2[] = { 'a', 'b', 'c', 0xFF, 'd', 'e', 'f', '\0' };
+static const char long_str_middle[500] = 
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaa"; 
 // Публичная функция запуска теста
 void run_strchr_test(StrChrTestParams *params) {
-    s21_size_t buf_size = params->size + 64;  // Запас для проверки границ
     
-    char *dest_std = malloc(buf_size);
-    char *dest_test = malloc(buf_size);
-
-    ck_assert_ptr_nonnull(dest_std);
-    ck_assert_ptr_nonnull(dest_test);
-
-    memset(dest_std, 0xAA, buf_size);  // Паттерн для отладки
-    memset(dest_test, 0xAA, buf_size);
-
-    //Тестируем только валидное поведение, как требует стандарт
-    s21_memcpy(dest_test, params->src, params->size);
-    memcpy(dest_std, params->src, params->size);
+    char *result_test = s21_strchr(params->str, params->c);
+    char *result_std = strchr(params->str, params->c);
 
     // Проверяем всю область памяти, включая границы с паттерном 0xAA
-    ck_assert_mem_eq(dest_test, dest_std, buf_size);
-
-     free(dest_std);
-     free(dest_test);
+    ck_assert_ptr_eq(result_test, result_std);
 }
 
-STRCHR_TEST_CASES(string_tests,
-    {"Hello",5 ,  "basic"},
-    {"Hello, world.",13, "full"},
-    {"World", 6, "with null terminator"},
-    {"Test", 4, "partial" },
-    {"Hello, world.",5 , "partial_5_bytes"},
-    {"", 1, "null terminator"}, 
-    {"A", 1, "single char"},
-    {"Long string for testing purposes", 30, "long string"}
+
+
+STRCHR_TEST_CASES(strchr_base_tests,
+    {"Hello",'H' ,  "Existed char in start"},
+    {"Hello, world.",'w', "Existed char in middle."},
+    {"World", 'd', "Existed char in end."},
+    {"abracadabra", 'a', "Repeated char in str." },
+    {"Hello, world.",'\0' , "Search null terminator."},
 )
 
-STRCHR_TEST_CASES(int_tests,
-    {(int[]){1,2,3,4,5}, 5* sizeof(int),  "5 ints"},
-    {(int[]){100,200,300},3 * sizeof(int), "3 ints"}, 
-    {(int[]){-1, -2, -3}, 3 * sizeof(int), "negative ints"}
+STRCHR_TEST_CASES(strchr_symbol_not_found,
+    {"Hello",'x' ,  "Not existed char not found."},
 )
 
-STRCHR_TEST_CASES(edge_tests,
-    {"", 0, "zero size"},
-    {"\x00\x01\x02\x03", 4, "binary with nulls"}, 
-    {"Hello\x00World", 11, "string with embedded null"},
-    {"\x00\x00\x00\x00", 4, "all nulls"},  
-);
+STRCHR_TEST_CASES(strchr_empty_string,
+    {"", 'x', "symbol not found."},
+    {"", '\0', "null terminator found."},
+)
+
+STRCHR_TEST_CASES(strchr_case_sensitive,
+    {"Hello World", 'h', "symbol not existed ."},
+    {"Hello World", 'H', "symbol existed."},
+)
+
+STRCHR_TEST_CASES(strchr_negative_char,
+    {"Hello World", -1, "symbol not existed ."},
+    {"Hello World", -100, "symbol existed."},
+)
+
+STRCHR_TEST_CASES(strchr_long_string_middle,
+    {long_str_middle, 'c', "c char in middle long string."},
+    {"Hello World", -100, "symbol existed."},
+)
+
+STRCHR_TEST_CASES(strchr_long_string_beginning,
+    {
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", 
+        'b', "long string with char at the very end."
+    },
+    { 
+        "baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 
+        'b', "long string with char at the very beginning."
+    },
+)
+
+STRCHR_TEST_CASES(strchr_integer_ascii_values,
+    {"Hello", 72, "ASCII 'H' (72) - Existed symbol"},
+    {"Hello", 101, "ASCII 'e' (101) - Existed symbol"},
+    {"Hello", 111, "ASCII 'o' (111) - Existed symbol"},
+    {"Hello", 120, "ASCII 'x' (120) - Not existed symbol"},
+    {"Hello", 0, "NULL terminator (0)"},
+)
+
+START_TEST(test_strchr_extended_ascii_bytes) {
+    // Тест 1: поиск 0x80
+    char *result_test = s21_strchr(ext_ascii_str1, 0x80);
+    char *result_std = strchr(ext_ascii_str1, 0x80);
+    ck_assert_ptr_eq(result_test, result_std);
+    
+    // Тест 2: поиск 0x81
+    result_test = s21_strchr(ext_ascii_str1, 0x81);
+    result_std = strchr(ext_ascii_str1, 0x81);
+    ck_assert_ptr_eq(result_test, result_std);
+    
+    // Тест 3: поиск 0xFF
+    result_test = s21_strchr(ext_ascii_str2, 0xFF);
+    result_std = strchr(ext_ascii_str2, 0xFF);
+    ck_assert_ptr_eq(result_test, result_std);
+    
+    // Тест 4: поиск несуществующего символа
+    result_test = s21_strchr(ext_ascii_str1, 0x90);
+    result_std = strchr(ext_ascii_str1, 0x90);
+    ck_assert_ptr_eq(result_test, result_std);
+    ck_assert_ptr_null(result_test);
+}
+END_TEST
+
+// Заменяем тесты с hex на отдельные тесты
+START_TEST(test_strchr_integer_extended_ascii_bytes) {
+    // Тест 1: 128 (0x80)
+    char *result_test = s21_strchr(ext_ascii_str1, 128);
+    char *result_std = strchr(ext_ascii_str1, 128);
+    ck_assert_ptr_eq(result_test, result_std);
+    ck_assert_ptr_eq(result_test, ext_ascii_str1 + 3);
+    
+    // Тест 2: 129 (0x81)
+    result_test = s21_strchr(ext_ascii_str1, 129);
+    result_std = strchr(ext_ascii_str1, 129);
+    ck_assert_ptr_eq(result_test, result_std);
+    ck_assert_ptr_eq(result_test, ext_ascii_str1 + 4);
+    
+    // Тест 3: 255 (0xFF)
+    result_test = s21_strchr(ext_ascii_str2, 255);
+    result_std = strchr(ext_ascii_str2, 255);
+    ck_assert_ptr_eq(result_test, result_std);
+    ck_assert_ptr_eq(result_test, ext_ascii_str2 + 3);
+    
+    // Тест 4: 200 - не найден
+    result_test = s21_strchr(ext_ascii_str1, 200);
+    result_std = strchr(ext_ascii_str1, 200);
+    ck_assert_ptr_eq(result_test, result_std);
+    ck_assert_ptr_null(result_test);
+}
+END_TEST
+
 
 // Функция, которую вызовет Runner
 Suite *strchr_suite_create(void) {
     Suite *s = suite_create("strchr");
-
+    
     TCase *tc_string = tcase_create("String tests");
-    tcase_add_test(tc_string, test_string_tests);
+    tcase_add_test(tc_string, test_strchr_base_tests);
+    tcase_add_test(tc_string, test_strchr_symbol_not_found);
+    tcase_add_test(tc_string, test_strchr_empty_string);
+    tcase_add_test(tc_string, test_strchr_extended_ascii_bytes);
+    tcase_add_test(tc_string, test_strchr_case_sensitive);
     suite_add_tcase(s, tc_string);
     
     TCase *tc_int = tcase_create("Integer tests");
-    tcase_add_test(tc_int, test_int_tests);
+    tcase_add_test(tc_int, test_strchr_integer_ascii_values);
+    tcase_add_test(tc_int, test_strchr_integer_extended_ascii_bytes);
+    tcase_add_test(tc_int, test_strchr_negative_char);
     suite_add_tcase(s, tc_int);
-
+    
     TCase *tc_edge = tcase_create("Edge tests");
-    tcase_add_test(tc_edge, test_edge_tests);
+    tcase_add_test(tc_edge, test_strchr_long_string_middle);
+    tcase_add_test(tc_edge, test_strchr_long_string_beginning);
     suite_add_tcase(s, tc_edge);
+    
     return s;
 }

@@ -1,17 +1,20 @@
 #include "s21_string.h"
 
 char *s21_strchr(const char *str, int c){
-    char* result =NULL;
-    unsigned char uc = (unsigned char)c;
-    for(s21_size_t i = 0;;i++){
-        if (uc == (unsigned char)str[i]){
-            result = (char*)&str[i];
-            break;
+    char* result =s21_NULL;
+    if(str != s21_NULL){
+        unsigned char search_char = (unsigned char)c;
+        while (*str != '\0') {
+            if ((unsigned char)*str == search_char) {
+                result = (char *)str;
+                break;
+            }
+            str++;
         }
-        if(str[i]!='\0'){
-            break;
+        if (search_char == '\0') {
+            result = (char *)str;
         }
     }
-
+    
     return result;
 }
