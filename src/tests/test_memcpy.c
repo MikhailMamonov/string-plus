@@ -2,23 +2,8 @@
 #include <stdlib.h>
 #include <check.h>
 #include "../s21_string.h"
+#include "s21_test_common.h"
 
-// Структура параметров теста
-typedef struct {
-    const void *src;
-    s21_size_t size;
-    const char *test_name;
-} MemCpyTestParams;
-
-// Макрос для создания тестовых наборов
-#define TEST_CASES(name, ...) \
-    static MemCpyTestParams name[] = {__VA_ARGS__}; \
-    START_TEST(test_##name) { \
-        for (s21_size_t i = 0; i < sizeof(name)/sizeof(MemCpyTestParams); i++) { \
-            run_memcpy_test(&name[i]); \
-        } \
-    } \
-    END_TEST
 
 // Публичная функция запуска теста
 void run_memcpy_test(MemCpyTestParams *params) {
@@ -44,7 +29,7 @@ void run_memcpy_test(MemCpyTestParams *params) {
      free(dest_test);
 }
 
-TEST_CASES(string_tests,
+MEMCPY_TEST_CASES(string_tests,
     {"Hello",5 ,  "basic"},
     {"Hello, world.",13, "full"},
     {"World", 6, "with null terminator"},
@@ -55,13 +40,13 @@ TEST_CASES(string_tests,
     {"Long string for testing purposes", 30, "long string"}
 )
 
-TEST_CASES(int_tests,
+MEMCPY_TEST_CASES(int_tests,
     {(int[]){1,2,3,4,5}, 5* sizeof(int),  "5 ints"},
     {(int[]){100,200,300},3 * sizeof(int), "3 ints"}, 
     {(int[]){-1, -2, -3}, 3 * sizeof(int), "negative ints"}
 )
 
-TEST_CASES(edge_tests,
+MEMCPY_TEST_CASES(edge_tests,
     {"", 0, "zero size"},
     {"\x00\x01\x02\x03", 4, "binary with nulls"}, 
     {"Hello\x00World", 11, "string with embedded null"},
