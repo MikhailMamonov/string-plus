@@ -1,7 +1,7 @@
 #include "s21_string.h"
 #include <stdio.h>
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(_WIN32) || defined(_WIN64)
 #define MAX_ERRLIST 107
 #define ERROR "Unknown error: "
 
