@@ -32,6 +32,12 @@ typedef struct {
     int errnum;
 } strerrorParams;
 
+// Структура параметров теста
+typedef struct {
+    const char *str;
+    int c;
+} strrchrParams;
+
 
 typedef struct {
     const char *str1;
@@ -65,7 +71,7 @@ typedef struct {
 #define STRERROR_TEST_CASES(name, ...) \
     TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
 
-#define STRCSPN_TEST_CASES(name, ...) \
-    TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
+#define STRRCHR_TEST_CASES(name, ...) \
+    TEST_CASES(name, strrchrParams, run_strrchr_test, __VA_ARGS__)
 
 #endif

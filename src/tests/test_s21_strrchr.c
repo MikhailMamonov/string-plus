@@ -2,12 +2,7 @@
 #include <stdlib.h>
 #include <check.h>
 #include "../s21_string.h"
-
-// Структура параметров теста
-typedef struct {
-    const char *str;
-    int c;
-} strrchrParams;
+#include "s21_test_common.h"
 
 // Вспомогательная функция проверки (сравниваем возвращаемые указатели)
 void run_strrchr_test(strrchrParams *params) {
@@ -18,18 +13,8 @@ void run_strrchr_test(strrchrParams *params) {
     ck_assert_ptr_eq(s21_res, orig_res);
 }
 
-// Макрос для создания тестовых наборов
-#define TEST_CASES(name, ...) \
-    static strrchrParams name[] = {__VA_ARGS__}; \
-    START_TEST(test_##name) { \
-        for (size_t i = 0; i < sizeof(name)/sizeof(name[0]); i++) { \
-            run_strrchr_test(&name[i]); \
-        } \
-    } \
-    END_TEST
-
 // 1. Стандартный поиск символов
-TEST_CASES(standard_tests,
+STRRCHR_TEST_CASES(standard_tests,
     {"hello", 'e'},          // Одиночный символ в середине
     {"hello", 'l'},          // Повторяющийся символ (должен найти ПОСЛЕДНИЙ)
     {"hello", 'h'},          // Символ в самом начале
@@ -39,7 +24,7 @@ TEST_CASES(standard_tests,
 )
 
 // 2. Особые случаи: поиск терминального нуля
-TEST_CASES(zero_tests,
+STRRCHR_TEST_CASES(zero_tests,
     {"hello", '\0'},         // Поиск \0 в обычной строке
     {"", '\0'},              // Поиск \0 в пустой строке
     {"a\0b\0c", '\0'},       // Поиск \0 в строке с внутренними нулями (должен найти ПЕРВЫЙ \0)
@@ -47,7 +32,7 @@ TEST_CASES(zero_tests,
 )
 
 // 3. Крайние случаи и расширенный ASCII
-TEST_CASES(edge_tests,
+STRRCHR_TEST_CASES(edge_tests,
     {"", 'a'},               // Поиск символа в пустой строке (должен вернуть NULL)
     {"\x80\x90\x80", 0x80},  // Расширенный ASCII (проверка корректности unsigned char)
     {"hello", 256 + 'e'},    // Символ за пределами char (256 + 'e' приводится к 'e')
