@@ -39,6 +39,12 @@ typedef struct {
     const char *test_name;
 } StrCSpnTestParams;
 
+typedef struct {
+    const char *str1;
+    const char *str2;
+    const char *test_name;
+} strpbrkParams;
+
 
 // Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
@@ -67,5 +73,8 @@ typedef struct {
 
 #define STRCSPN_TEST_CASES(name, ...) \
     TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
+
+#define STRPBRK_TEST_CASES(name, ...) \
+    TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
 
 #endif

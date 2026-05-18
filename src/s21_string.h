@@ -9,6 +9,7 @@ char *s21_strchr(const char *str, int c);
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n);
 s21_size_t s21_strcspn(const char *str1, const char *str2);
 char *s21_strerror(int errnum);
+char *s21_strpbrk(const char *str1, const char *str2);
 char *strrchr(const char *str, int c);
 
 #endif
