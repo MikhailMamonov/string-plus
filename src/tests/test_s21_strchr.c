@@ -6,7 +6,7 @@
 
 static const char ext_ascii_str1[] = { 'a', 'b', 'c', 0x80, 0x81, 'd', 'e', 'f', '\0' };
 static const char ext_ascii_str2[] = { 'a', 'b', 'c', 0xFF, 'd', 'e', 'f', '\0' };
-static const char long_str_middle[500] = 
+static const char long_str_middle[] = 
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
