@@ -2,14 +2,6 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 
-#ifndef INT_MAX
-    #define INT_MAX 2147483647
-#endif
-
-#ifndef INT_MIN
-    #define INT_MIN (-INT_MAX - 1)
-#endif
-
 // Структура параметров теста
 typedef struct {
     const void *src;
@@ -24,6 +16,25 @@ typedef struct {
     int c;
     const char *test_name;
 } StrChrTestParams;
+
+// Структура параметров теста
+typedef struct {
+    const void *data;
+    int chr;
+    s21_size_t num;
+    s21_size_t data_size;
+} memsetParams;
+
+typedef struct {
+    const void *str;
+    int c;
+    s21_size_t n;
+} memchrParams;
+
+// Структура параметров теста
+typedef struct {
+    int errnum;
+} strerrorParams;
 
 
 // Макрос для создания тестовых наборов
@@ -41,5 +52,14 @@ typedef struct {
 
 #define STRCHR_TEST_CASES(name, ...) \
     TEST_CASES(name, StrChrTestParams, run_strchr_test, __VA_ARGS__)
+
+#define MEMSET_TEST_CASES(name, ...) \
+    TEST_CASES(name, memsetParams, run_memset_test, __VA_ARGS__)
+
+#define MEMCHR_TEST_CASES(name, ...) \
+    TEST_CASES(name, memchrParams, run_memchr_test, __VA_ARGS__)
+
+#define STRERROR_TEST_CASES(name, ...) \
+    TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
 
 #endif

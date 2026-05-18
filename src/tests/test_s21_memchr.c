@@ -2,13 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../s21_string.h"
-
-// Структура параметров теста
-typedef struct {
-    const void *str;
-    int c;
-    s21_size_t n;
-} memchrParams;
+#include "s21_test_common.h"
 
 // Универсальная функция запуска одиночного теста
 void run_memchr_test(memchrParams *params) {
@@ -19,18 +13,8 @@ void run_memchr_test(memchrParams *params) {
     ck_assert_ptr_eq(res, expected);
 }
 
-// Макрос для создания тестовых наборов
-#define TEST_CASES(name, ...) \
-    static memchrParams name[] = {__VA_ARGS__}; \
-    START_TEST(test_##name) { \
-        for (size_t i = 0; i < sizeof(name)/sizeof(name[0]); i++) { \
-            run_memchr_test(&name[i]); \
-        } \
-    } \
-    END_TEST
-
 // 1. Положительные тесты (символ гарантированно есть в области видимости n)
-TEST_CASES(positive_tests,
+MEMCHR_TEST_CASES(positive_tests,
     {"apple", 'p', 3},
     {"verter", 'r', 6},
     {"aaa", 'a', 3},
@@ -39,7 +23,7 @@ TEST_CASES(positive_tests,
 )
 
 // 2. Отрицательные тесты (символ отсутствует или находится за пределами n)
-TEST_CASES(negative_tests,
+MEMCHR_TEST_CASES(negative_tests,
     {"apple", 'p', 1},
     {"verter", 'a', 6},
     {"a", 'l', 1},
@@ -49,7 +33,7 @@ TEST_CASES(negative_tests,
 )
 
 // 3. Пограничные и экстремальные случаи
-TEST_CASES(edge_tests,
+MEMCHR_TEST_CASES(edge_tests,
     {"", '\0', 1},
     {"", '\n', 0},
     {"a", '\0', 1},

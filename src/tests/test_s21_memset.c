@@ -2,14 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../s21_string.h"
+#include "s21_test_common.h"
 
-// Структура параметров теста
-typedef struct {
-    const void *data;
-    int chr;
-    s21_size_t num;
-    s21_size_t data_size;
-} memsetParams;
+
 
 // Функция выделения буфера памяти
 char* create_buffer(s21_size_t len, const void* str) {
@@ -35,18 +30,8 @@ void run_memset_test(memsetParams *params) {
     free(buf_orig);
 }
 
-// Макрос для создания тестовых наборов
-#define TEST_CASES(name, ...) \
-    static memsetParams name[] = {__VA_ARGS__}; \
-    START_TEST(test_##name) { \
-        for (size_t i = 0; i < sizeof(name)/sizeof(name[0]); i++) { \
-            run_memset_test(&name[i]); \
-        } \
-    } \
-    END_TEST
-
 // 1. Тесты на обычных строках
-TEST_CASES(string_tests,
+MEMSET_TEST_CASES(string_tests,
     {"apple", 'p', 3, 6},
     {"verter", 'a', 4, 7},
     {"alll", 'l', 1, 5},
@@ -55,14 +40,14 @@ TEST_CASES(string_tests,
 )
 
 // 2. Тесты на массивах целых чисел (используются составные литералы)
-TEST_CASES(int_tests,
+MEMSET_TEST_CASES(int_tests,
     {(int[]){1, 2, 3, 4, 5}, '\0', 4 * sizeof(int) + 1, 5 * sizeof(int)},
     {(int[]){100, 200, 300}, 'b',  3 * sizeof(int),     3 * sizeof(int)},
     {(int[]){-1, -2, -3},    0,    3 * sizeof(int),     3 * sizeof(int)}
 )
 
 // 3. Пограничные и экстремальные случаи
-TEST_CASES(edge_tests,
+MEMSET_TEST_CASES(edge_tests,
     {"apple", -1, 3, 6},
     {"verter", 257, 4, 7},
     {"alll", 'l', 0, 5}
