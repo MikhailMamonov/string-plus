@@ -2,22 +2,18 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 
-// Структура параметров теста
 typedef struct {
     const void *src;
     s21_size_t size;
     const char *test_name;
 } MemCpyTestParams;
 
-
-// Структура параметров теста
 typedef struct {
     const char *str;
     int c;
     const char *test_name;
 } StrChrTestParams;
 
-// Структура параметров теста
 typedef struct {
     const void *data;
     int chr;
@@ -35,6 +31,13 @@ typedef struct {
 typedef struct {
     int errnum;
 } strerrorParams;
+
+
+typedef struct {
+    const char *str1;
+    const char *str2;
+    const char *test_name;
+} StrCSpnTestParams;
 
 
 // Макрос для создания тестовых наборов
@@ -61,5 +64,8 @@ typedef struct {
 
 #define STRERROR_TEST_CASES(name, ...) \
     TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
+
+#define STRCSPN_TEST_CASES(name, ...) \
+    TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
 
 #endif

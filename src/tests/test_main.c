@@ -7,11 +7,13 @@ Suite *memcpy_suite_create(void);
 Suite *strerror_suite_create(void);
 Suite *strchr_suite_create(void);
 Suite *memset_suite_create(void);
+Suite *strcspn_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, memcpy_suite_create());
     srunner_add_suite(sr, strerror_suite_create());
     srunner_add_suite(sr, strchr_suite_create());
+    srunner_add_suite(sr, strcspn_suite_create());
     srunner_add_suite(sr, memset_suite_create());
 }
 

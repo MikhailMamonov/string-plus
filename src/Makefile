@@ -22,10 +22,11 @@ ifeq ($(UNAME_S),Linux)
 endif
 
 test:
-	# Добавляем флаг -fsanitize=address для поиска утечек памяти
+		# Добавляем флаг -fsanitize=address для поиска утечек памяти
 	$(CC) $(CFLAGS) -fsanitize=address $(SRCS) $(TEST_SRCS) $(TEST_FLAGS) -o test_exec
 	# Переменная окружения отключает ложные срабатывания внутри самой библиотеки Check
 	ASAN_OPTIONS=detect_leaks=1 ./test_exec
+
 	rm -f test_exec *.gcno *.gcda
 
 all: $(NAME)
