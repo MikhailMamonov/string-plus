@@ -11,7 +11,7 @@ void run_strcspn_test(StrCSpnTestParams *params) {
     s21_size_t expected = strcspn(params->str1, params->str2);
     s21_size_t  result = s21_strcspn(params->str1, params->str2);
 
-    ck_assert_s21_size_t_eq(result, expected);
+    ck_assert_uint_eq(result, expected);
 
 }
 

@@ -15,30 +15,30 @@ typedef struct {
 } StrChrTestParams;
 
 typedef struct {
+    const void *data;
+    int chr;
+    s21_size_t num;
+    s21_size_t data_size;
+} memsetParams;
+
+typedef struct {
+    const void *str;
+    int c;
+    s21_size_t n;
+} memchrParams;
+
+// Структура параметров теста
+typedef struct {
+    int errnum;
+} strerrorParams;
+
+
+typedef struct {
     const char *str1;
     const char *str2;
     const char *test_name;
 } StrCSpnTestParams;
 
-
-// Макрос определения правильный формат для s21_size_t
-#if defined(__APPLE__) || defined(__linux__)
-    #define S21_SIZE_T_FMT "%zu"
-#elif defined(_WIN32) || defined(_WIN64)
-    #ifdef __MINGW64__
-        #define S21_SIZE_T_FMT "%I64u"
-    #else
-        #define S21_SIZE_T_FMT "%llu"
-    #endif
-#else
-    #define S21_SIZE_T_FMT "%lu"
-#endif
-
-// Макрос для проверки s21_size_t
-#define ck_assert_s21_size_t_eq(actual, expected) \
-    ck_assert_msg((actual) == (expected), \
-                  "Expected " S21_SIZE_T_FMT ", got " S21_SIZE_T_FMT, \
-                  (actual), (expected))
 
 // Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
