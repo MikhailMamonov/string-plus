@@ -1,6 +1,5 @@
 CC = gcc
-UNAME_S := $(shell uname -s 2>/dev/null || echo Windows)
-
+UNAME_S := $(shell uname -s)
 CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 

@@ -2,14 +2,6 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 
-#ifndef INT_MAX
-    #define INT_MAX 2147483647
-#endif
-
-#ifndef INT_MIN
-    #define INT_MIN (-INT_MAX - 1)
-#endif
-
 typedef struct {
     const void *src;
     s21_size_t size;
@@ -63,6 +55,15 @@ typedef struct {
 
 #define STRCHR_TEST_CASES(name, ...) \
     TEST_CASES(name, StrChrTestParams, run_strchr_test, __VA_ARGS__)
+
+#define MEMSET_TEST_CASES(name, ...) \
+    TEST_CASES(name, memsetParams, run_memset_test, __VA_ARGS__)
+
+#define MEMCHR_TEST_CASES(name, ...) \
+    TEST_CASES(name, memchrParams, run_memchr_test, __VA_ARGS__)
+
+#define STRERROR_TEST_CASES(name, ...) \
+    TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
 
 #define STRCSPN_TEST_CASES(name, ...) \
     TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
