@@ -12,6 +12,8 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
             break;
         }
     }
+    if (ret < 0) ret = -1;
+    if (ret > 0) ret = 1;
     return ret;
 }
 

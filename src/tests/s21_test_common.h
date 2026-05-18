@@ -36,6 +36,12 @@ typedef struct {
     int errnum;
 } strerrorParams;
 
+// Структура параметров теста
+typedef struct {
+    const char *str1;
+    const char *str2;
+    s21_size_t n;
+} strncmpParams;
 
 // Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
@@ -61,5 +67,8 @@ typedef struct {
 
 #define STRERROR_TEST_CASES(name, ...) \
     TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
+
+#define STRNCMP_TEST_CASES(name, ...) \
+    TEST_CASES(name, strncmpParams, run_strncmp_test, __VA_ARGS__)
 
 #endif
