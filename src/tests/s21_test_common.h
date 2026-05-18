@@ -74,4 +74,7 @@ typedef struct {
 #define STRRCHR_TEST_CASES(name, ...) \
     TEST_CASES(name, strrchrParams, run_strrchr_test, __VA_ARGS__)
 
+#define STRCSPN_TEST_CASES(name, ...) \
+    TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
+
 #endif
