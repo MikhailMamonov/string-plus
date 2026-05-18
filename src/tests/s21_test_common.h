@@ -18,8 +18,8 @@ typedef struct {
 
 // Структура параметров теста
 typedef struct {
-    const void *src;
-    s21_size_t size;
+    const char *str;
+    int c;
     const char *test_name;
 } StrChrTestParams;
 

@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include "../s21_string.h"
 
-
 Suite *memchr_suite_create(void);
 Suite *memcpy_suite_create(void);
+Suite *strerror_suite_create(void);
 Suite *strchr_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, memcpy_suite_create());
+    srunner_add_suite(sr, strerror_suite_create());
     srunner_add_suite(sr, strchr_suite_create());
 }
 
