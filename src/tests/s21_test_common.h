@@ -2,6 +2,17 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 
+<<<<<<< Updated upstream
+=======
+#ifndef INT_MAX
+    #define INT_MAX 2147483647
+#endif
+
+#ifndef INT_MIN
+    #define INT_MIN (-INT_MAX - 1)
+#endif
+
+>>>>>>> Stashed changes
 // Структура параметров теста
 typedef struct {
     const void *src;
