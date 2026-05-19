@@ -1,5 +1,8 @@
 #include "s21_string.h"
 
+#define NEGATIVE_VALUE -1
+#define POSITIVE_VALUE 1
+
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     const unsigned char *s1 = (const unsigned char *)str1;
     const unsigned char *s2 = (const unsigned char *)str2;
@@ -12,8 +15,8 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
             break;
         }
     }
-    if (ret < 0) ret = -1;
-    if (ret > 0) ret = 1;
+    if (ret < 0) ret = NEGATIVE_VALUE;
+    if (ret > 0) ret = POSITIVE_VALUE;
     return ret;
 }
 
