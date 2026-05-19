@@ -257,12 +257,12 @@ static const char *errorList[] = {
 #endif
 
 char *s21_strerror(int errnum) {
-    static char result[100];
-    if (errnum < 0 || errnum >= MAX_ERRLIST) {
-        // Форматируем строку в буфер
-        sprintf(result, "%s%d", ERROR, errnum);
-    } else {
-        sprintf(result, "%s", (char *)errorList[errnum]);
-    }
-    return result;
+  static char result[100];
+  if (errnum < 0 || errnum >= MAX_ERRLIST) {
+    // Форматируем строку в буфер
+    sprintf(result, "%s%d", ERROR, errnum);
+  } else {
+    sprintf(result, "%s", (char *)errorList[errnum]);
+  }
+  return result;
 }

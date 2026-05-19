@@ -2,22 +2,18 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 
-// Структура параметров теста
 typedef struct {
     const void *src;
     s21_size_t size;
     const char *test_name;
 } MemCpyTestParams;
 
-
-// Структура параметров теста
 typedef struct {
     const char *str;
     int c;
     const char *test_name;
 } StrChrTestParams;
 
-// Структура параметров теста
 typedef struct {
     const void *data;
     int chr;
@@ -37,6 +33,24 @@ typedef struct {
 } strerrorParams;
 
 // Структура параметров теста
+typedef struct {
+    const char *str;
+    int c;
+} strrchrParams;
+
+
+typedef struct {
+    const char *str1;
+    const char *str2;
+    const char *test_name;
+} StrCSpnTestParams;
+
+typedef struct {
+    char *str;
+    const char *delim;
+    const char *test_name;
+} strtokParams;
+
 typedef struct {
     const char *str1;
     const char *str2;
@@ -67,6 +81,15 @@ typedef struct {
 
 #define STRERROR_TEST_CASES(name, ...) \
     TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
+
+#define STRRCHR_TEST_CASES(name, ...) \
+    TEST_CASES(name, strrchrParams, run_strrchr_test, __VA_ARGS__)
+
+#define STRCSPN_TEST_CASES(name, ...) \
+    TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
+
+#define STRTOK_TEST_CASES(name, ...) \
+    TEST_CASES(name, strtokParams, run_strtok_test, __VA_ARGS__)
 
 #define STRNCMP_TEST_CASES(name, ...) \
     TEST_CASES(name, strncmpParams, run_strncmp_test, __VA_ARGS__)
