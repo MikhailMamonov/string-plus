@@ -4,9 +4,13 @@
 #include "../s21_string.h"
 #include "s21_test_common.h"
 
+int sign(int x) {
+    return (x > 0) - (x < 0);
+}
+
 // Публичная функция запуска теста
 void run_strncmp_test(strncmpParams *params) {
-    ck_assert_int_eq(s21_strncmp(params->str1, params->str2, params->n), strncmp(params->str1, params->str2, params->n));
+    ck_assert_int_eq(sign(s21_strncmp(s1, s2, n)), sign(strncmp(s1, s2, n)));
 }
 
 STRNCMP_TEST_CASES(string_tests,
