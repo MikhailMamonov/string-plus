@@ -48,13 +48,24 @@ void parseSpecifier(char input, va_list *args, char **out) {
                 }
                 break;
             }
-            case 'd': {
+            case 'd':
+            case 'i': {
                 int d = va_arg(*args, int);
                 *out = int_to_str(*out, d);
                 break;
             }
             case '%': {
                 *(*out)++ = '%';
+                break;
+            }
+            case 'e':
+            case 'E': {
+                double val = va_arg(*args, double);
+                // Предполагаем, что вы передаете precision (например, spec->precision)
+                // Для теста передадим -1 (6 знаков по умолчанию)
+                double_to_exp_str(*out, val, -1, input);
+                // Сдвигаем указатель out на длину записанной строки
+                *out += s21_strlen(*out);
                 break;
             }
             default: {
