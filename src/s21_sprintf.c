@@ -106,8 +106,6 @@ char* parseFormat(char *format, formatSpec * spec, va_list* args){
         format++;
     }
 
-
-
 } 
 
 int s21_sprintf(char *str, const char *format, ...) {
@@ -124,12 +122,8 @@ int s21_sprintf(char *str, const char *format, ...) {
             formatSpec spec = {0};
             format = parseFormat(format, &spec); 
 
-
-            //Parse specifier
-            if(parseSpecifier(*format)){
-                format++;
-                len++;
-            }
+            // Форматируем на основе spec
+            // format_specifier(&str, &spec, &args);
         } else{
             *str++ = *format++;
             len++;
