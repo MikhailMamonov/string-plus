@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "../s21_string.h"
 
-Suite *s21_memcmp_suite_create(void);
 Suite *memcmp_suite_create(void);
 Suite *memchr_suite_create(void);
 Suite *memcpy_suite_create(void);
