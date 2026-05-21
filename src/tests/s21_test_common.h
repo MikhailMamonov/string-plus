@@ -58,9 +58,10 @@ typedef struct {
 } strncmpParams;
 
 typedef struct {
-    const char *str;
-    const char *format;
     const char *test_name;
+    const char *format;
+    const char *args_as_string;                 // Массив аргументов
+    int num_args;
 } sprintfParams;
 
 // Макрос для создания тестовых наборов
@@ -99,5 +100,8 @@ typedef struct {
 
 #define STRNCMP_TEST_CASES(name, ...) \
     TEST_CASES(name, strncmpParams, run_strncmp_test, __VA_ARGS__)
+
+#define SPRINTF_TEST_CASES(name, ...) \
+    TEST_CASES(name, sprintfParams, run_sprintf_test, __VA_ARGS__)
 
 #endif

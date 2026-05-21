@@ -20,7 +20,7 @@ char* parseWidth(char *input, formatSpec * spec, va_list* args);
 char* parsePrecision(char *input, formatSpec * spec, va_list* args);
 char* parseLength(char *format, formatSpec * spec);
 int parseSpecifier(char input, formatSpec *spec); 
-char* parseFormat(char *format, formatSpec * spec, va_list* args,  char **out);
+char* parseFormat(char *format, formatSpec * spec, va_list* args);
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out);
 
 

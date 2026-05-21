@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 
 # Исходники библиотеки
-SRCS = $(wildcard *.c)
+SRCS = $(wildcard *.c) $(wildcard s21_sprintf/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = s21_string.a
 

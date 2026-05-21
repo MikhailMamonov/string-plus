@@ -2,91 +2,89 @@
 #include <stdarg.h>
 #include <string.h> //for strlen()
 
-
-void formatWidth(formatSpec *spec, va_list *args, char **out){
-    while(spec->width>strlen(str)){
-        *(*out)++ = ' ';
-    }
+void formatWidth(formatSpec *spec, va_list *args, char **out) {
+  while (spec->width > strlen(str)) {
+    *(*out)++ = ' ';
+  }
 }
 
 // Отдельная функция для форматирования
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
-    formatWidth
-    switch (spec->specifier) {
-        case 'c': {
-            char c = (char)va_arg(*args, int);
-            *(*out)++ = c;
-            *out = handle_width(*out, 1, *spec);
-            break;
-        }
-        case 's': {
-            char *s = va_arg(*args, char*);
-            int len = strlen(s);
-            while (*s) {
-                *(*out)++ = *s++;
-            }
-            *out = handle_width(*out, len, *spec);
-            break;
-        }
-        case 'd':
-        case 'i': {
-            int d = va_arg(*args, int);
-            int len = 0;
-            *out = int_to_str(*out, d, &len);
-            *out = handle_width(*out, len, *spec);
-            break;
-        }
-        case 'e':
-        case 'E': {
-            double exp = va_arg(*args, double);
-            int len = 0;
-            *out = double_to_exp_str(*out, exp, *spec, &len);
-            *out = handle_width(*out, len, *spec);
-            break;
-        }
-        case 'u': {
-            unsigned int u = va_arg(*args, unsigned int);
-            *out = uint_to_str(*out, u);
-            break;
-        }
-        case 'x':
-        case 'X': {
-            unsigned int hex = va_arg(*args, unsigned int);
-            *out = hex_to_str(*out, hex, spec->specifier == 'X');
-            break;
-        }
-        case '%': {
-            *(*out)++ = '%';
-            break;
-        }
-        default: {
-            *(*out)++ = '%';
-            if (spec->specifier) {
-                *(*out)++ = spec->specifier;
-            }
-            break;
-        }
+  formatWidth switch (spec->specifier) {
+  case 'c': {
+    char c = (char)va_arg(*args, int);
+    *(*out)++ = c;
+    *out = handle_width(*out, 1, *spec);
+    break;
+  }
+  case 's': {
+    char *s = va_arg(*args, char *);
+    int len = strlen(s);
+    while (*s) {
+      *(*out)++ = *s++;
     }
+    *out = handle_width(*out, len, *spec);
+    break;
+  }
+  case 'd':
+  case 'i': {
+    int d = va_arg(*args, int);
+    int len = 0;
+    *out = int_to_str(*out, d, &len);
+    *out = handle_width(*out, len, *spec);
+    break;
+  }
+  case 'e':
+  case 'E': {
+    double exp = va_arg(*args, double);
+    int len = 0;
+    *out = double_to_exp_str(*out, exp, *spec, &len);
+    *out = handle_width(*out, len, *spec);
+    break;
+  }
+  case 'u': {
+    unsigned int u = va_arg(*args, unsigned int);
+    *out = uint_to_str(*out, u);
+    break;
+  }
+  case 'x':
+  case 'X': {
+    unsigned int hex = va_arg(*args, unsigned int);
+    *out = hex_to_str(*out, hex, spec->specifier == 'X');
+    break;
+  }
+  case '%': {
+    *(*out)++ = '%';
+    break;
+  }
+  default: {
+    *(*out)++ = '%';
+    if (spec->specifier) {
+      *(*out)++ = spec->specifier;
+    }
+    break;
+  }
+  }
 }
 
 char *handle_width(char *buf, int length, formatSpec spec) {
-    int spaces_to_add = 0;
-    if (spec.width > length) {
-        spaces_to_add = spec.width - length;
-        char *from = buf - 1;               
-        char *to = buf + spaces_to_add - 1;      
-           
-        for (int i = 0; i < length; i++) {
-            *to = *from;
-            to--;
-            from--;
-        }
+  int spaces_to_add = 0;
+  if (spec.width > length) {
+    spaces_to_add = spec.width - length;
+    char *from = buf - 1;
+    char *to = buf + spaces_to_add - 1;
 
-        while (to >= (buf - length)) {
-            *to = ' ';
-            to--;
-        }
+    for (int i = 0; i < length; i++) {
+      *to = *from;
+      to--;
+      from--;
     }
-    buf += spaces_to_add; 
-    return buf;
+
+    while (to >= (buf - length)) {
+      *to = ' ';
+      to--;
+    }
+  }
+  buf += spaces_to_add;
+  return buf;
 }
