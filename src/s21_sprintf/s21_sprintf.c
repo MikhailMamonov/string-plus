@@ -3,8 +3,6 @@
 #include "sprintf_utils.h"
 #include <stdarg.h>
 
-
-
 int s21_sprintf(char *str, const char *format, ...) {
     va_list args;
     va_start(args, format);
@@ -18,7 +16,8 @@ int s21_sprintf(char *str, const char *format, ...) {
                 continue;
             }
             formatSpec spec = {0};
-            format = parseFormat(format, &spec, &args, &str); 
+            format = parseFormat(format, &spec, &args); 
+            formatBySpecifier(&spec, &args, &str)
 
         } else{
             *str++ = *format++;

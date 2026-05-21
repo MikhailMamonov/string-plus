@@ -57,6 +57,12 @@ typedef struct {
     s21_size_t n;
 } strncmpParams;
 
+typedef struct {
+    const char *str;
+    const char *format;
+    const char *test_name;
+} sprintfParams;
+
 // Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
     static param_type name[] = {__VA_ARGS__}; \
