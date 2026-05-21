@@ -1,12 +1,13 @@
 #include "sprintf_utils.h"
 
-char* int_to_str(char *buf, int num) {
+char* int_to_str(char *buf, int num, int *len) {
     char tmp[12]; // Временный буфер для разворота числа
     int i = 0;
     int is_negative = 0;
 
     if (num == 0) {
         *buf++ = '0';
+        *len = 1;
         return buf;
     }
 
@@ -18,6 +19,7 @@ char* int_to_str(char *buf, int num) {
     // Разбираем число на цифры с конца
     while (num > 0) {
         tmp[i++] = (num % 10) + '0';
+        (*len)++;
         num /= 10;
     }
 

@@ -1,40 +1,55 @@
-#include <math.h> // Понадобятся функции log10, pow, floor
+#include <math.h> 
+#include "sprintf_utils.h"
 
-void double_to_exp_str(char *buf, double val, int precision, char specifier) {
-    // 1. Обработка знака
-    if (signbit(val)) {
-        *buf++ = '-';
-        val = -val;
-    }
+char *write_exp(char *buf, formatSpec spec, double val, int exponent, int is_negative, int *len);
 
-    // 2. Вычисление экспоненты (порядка)
+char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
+    // 1. Сразу определяем и сохраняем знак
+    int is_negative = signbit(val);
+    val = fabs(val);
+
     int exponent = 0;
     if (val != 0.0) {
         exponent = (int)floor(log10(val));
-        // Приводим число к диапазону [1.0, 10.0)
-        val /= pow(10, exponent);
+        // Используем умножение для отрицательных степеней во избежание потери точности
+        val *= pow(10, -exponent);
     }
 
-    // 3. Округление мантиссы до нужной точности
-    if (precision < 0) precision = 6; // Точность по умолчанию
-    double round_offset = 0.5 / pow(10, precision);
+    if (spec.precision < 0) spec.precision = 6;
+
+    // 2. Округление мантиссы
+    double round_offset = 0.5 / pow(10, spec.precision);
     val += round_offset;
 
-    // Если после окружения получилось 10.0 (например, было 9.999), корректируем
     if (val >= 10.0) {
         val /= 10.0;
         exponent++;
     }
 
-    // 4. Запись целой части (одна цифра)
+    // 3. Отсекаем лишний «хвост», который остался после round_offset
+    // Например, если было 1.234 + 0.005 = 1.239, делаем из него строго 1.230
+    double factor = pow(10, spec.precision);
+    val = floor(val * factor) / factor;
+
+    return write_exp(buf, spec, val, exponent, is_negative, len);
+}
+
+char *write_exp(char *buf, formatSpec spec, double val, int exponent, int is_negative, int *len) {
+    char *start = buf;
+    // Выводим сохраненный знак
+    if (is_negative) {
+        *buf++ = '-';
+    }
+
+    // Запись целой части
     int digit = (int)val;
     *buf++ = digit + '0';
     val -= digit;
 
-    // 5. Запись дробной части
-    if (precision > 0) {
+    // Запись дробной части
+    if (spec.precision > 0) {
         *buf++ = '.';
-        for (int i = 0; i < precision; i++) {
+        for (int i = 0; i < spec.precision; i++) {
             val *= 10.0;
             digit = (int)val;
             *buf++ = digit + '0';
@@ -42,8 +57,8 @@ void double_to_exp_str(char *buf, double val, int precision, char specifier) {
         }
     }
 
-    // 6. Запись экспоненты
-    *buf++ = specifier; // 'e' или 'E'
+    // Запись экспоненты
+    *buf++ = spec.specifier; // 'e' или 'E'
     if (exponent >= 0) {
         *buf++ = '+';
     } else {
@@ -51,22 +66,23 @@ void double_to_exp_str(char *buf, double val, int precision, char specifier) {
         exponent = -exponent;
     }
 
-    // Универсальный вывод порядка (минимум 2 цифры)
+    // Вывод порядка (минимум 2 цифры)
     if (exponent < 10) {
-        *buf++ = '0';            // Ведущий ноль для чисел 0-9
+        *buf++ = '0';            
         *buf++ = exponent + '0';
     } else {
-        // Если цифр 2 или 3 (максимум 308 для double)
         char temp_exp[4];
         int i = 0;
         while (exponent > 0) {
             temp_exp[i++] = (exponent % 10) + '0';
             exponent /= 10;
         }
-        // Записываем цифры в правильном порядке
         while (i > 0) {
             *buf++ = temp_exp[--i];
         }
     }
-    *buf = '\0';
+    *len = buf - start;
+    return buf; 
 }
+
+

@@ -1,5 +1,6 @@
 #include "sprintf_utils.h"
 #include <stdarg.h>
+#include <string.h> //for strlen()
 
 
 void formatWidth(formatSpec *spec, va_list *args, char **out){
@@ -15,18 +16,32 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
         case 'c': {
             char c = (char)va_arg(*args, int);
             *(*out)++ = c;
+            *out = handle_width(*out, 1, *spec);
             break;
         }
         case 's': {
             char *s = va_arg(*args, char*);
+            int len = strlen(s);
             while (*s) {
                 *(*out)++ = *s++;
             }
+            *out = handle_width(*out, len, *spec);
             break;
         }
-        case 'd': {
+        case 'd':
+        case 'i': {
             int d = va_arg(*args, int);
-            *out = int_to_str(*out, d);
+            int len = 0;
+            *out = int_to_str(*out, d, &len);
+            *out = handle_width(*out, len, *spec);
+            break;
+        }
+        case 'e':
+        case 'E': {
+            double exp = va_arg(*args, double);
+            int len = 0;
+            *out = double_to_exp_str(*out, exp, *spec, &len);
+            *out = handle_width(*out, len, *spec);
             break;
         }
         case 'u': {
@@ -52,4 +67,26 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
             break;
         }
     }
+}
+
+char *handle_width(char *buf, int length, formatSpec spec) {
+    int spaces_to_add = 0;
+    if (spec.width > length) {
+        spaces_to_add = spec.width - length;
+        char *from = buf - 1;               
+        char *to = buf + spaces_to_add - 1;      
+           
+        for (int i = 0; i < length; i++) {
+            *to = *from;
+            to--;
+            from--;
+        }
+
+        while (to >= (buf - length)) {
+            *to = ' ';
+            to--;
+        }
+    }
+    buf += spaces_to_add; 
+    return buf;
 }
