@@ -10,7 +10,7 @@ Suite *strerror_suite_create(void);
 void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, memcpy_suite_create());
     srunner_add_suite(sr, strerror_suite_create());
-    srunner_add_suite(sr, s21_memcmp_suite_create());
+    srunner_add_suite(sr, memcmp_suite_create());
 }
 
 int main(void) {
