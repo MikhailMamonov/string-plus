@@ -46,6 +46,12 @@ typedef struct {
 } StrCSpnTestParams;
 
 typedef struct {
+    const char *str1;
+    const char *str2;
+    const char *test_name;
+} strpbrkParams;
+
+typedef struct {
     char *str;
     const char *delim;
     const char *test_name;
@@ -93,5 +99,8 @@ typedef struct {
 
 #define STRNCMP_TEST_CASES(name, ...) \
     TEST_CASES(name, strncmpParams, run_strncmp_test, __VA_ARGS__)
+
+#define STRPBRK_TEST_CASES(name, ...) \
+    TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
 
 #endif
