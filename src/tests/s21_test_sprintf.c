@@ -1,77 +1,56 @@
 #include "../s21_string.h"
 #include "s21_test_common.h"
+#include <stdio.h> 
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TEST_STR_LEN 1024
 
-void run_sprintf_test(sprintfParams *params) {
+RUN_SPRINTF_TEST(string_basic, "Hello", "%s", "Hello");
+RUN_SPRINTF_TEST(string_with_space, "Hello World", "%s %s", "Hello", "World");
+RUN_SPRINTF_TEST(string_empty, "", "%s", "");
+RUN_SPRINTF_TEST(string_percent, "Hello%", "Hello%%");
+RUN_SPRINTF_TEST(string_percent_start, "%Hello", "%%Hello");
 
-  char str_orig[MAX_TEST_STR_LEN];
-  char str_test[MAX_TEST_STR_LEN];
-  strcpy(str_orig, params->str);
-  strcpy(str_test, params->str);
+RUN_SPRINTF_TEST(int_positive, "42", "%d", 42);
+RUN_SPRINTF_TEST(int_negative, "-123", "%d", -123);
+RUN_SPRINTF_TEST(int_zero, "0", "%d", 0);
+RUN_SPRINTF_TEST(int_two, "10 20", "%d %d", 10, 20);
+RUN_SPRINTF_TEST(int_three, "10 + 20 = 30", "%d + %d = %d", 10, 20, 30);
 
-  char *expected = sprintf(str_orig, params->delim);
-  char *result = s21_sprintf(str_test, params->delim);
+RUN_SPRINTF_TEST(short_int, "2342", "%hd", (short)2342);
+RUN_SPRINTF_TEST(long_long, "45646546546465", "%lld", 45646546546465LL);
+RUN_SPRINTF_TEST(signed_char, "-56", "%hhd", (signed char)-56)
 
-  while (1) {
-    if (expected == NULL) {
-      ck_assert_ptr_eq(result, NULL);
-      break;
-    }
-    ck_assert_ptr_ne(result, NULL);
-    ck_assert_str_eq(result, expected);
-
-    expected = sprintf(NULL, params->delim);
-    result = s21_sprintf(NULL, params->delim);
-  }
-
-  ck_assert_ptr_eq(expected, NULL);
-  ck_assert_ptr_eq(result, NULL);
-}
-
-SPRINTF_TEST_CASES(sprintf_string_basic_tests,
-                   {"", "Hello", "test basic without specification."},
-                   {"", "Hello%%", "test basic with screening in end."},
-                   {"", "%%Hello", "test basic with screening in start."}
-
-)
-
-SPRINTF_TEST_CASES(sprintf_integer_specifier_tests,
-                   {"", "integer input equals %d",
-                    "test basic with positive integer specifier."},
-                   {"", "integer input equals %d",
-                    "test basic with negative integer specifier."},
-                   {"", "integer input converted short  %hd",
-                    "test basic with converting to short."},
-                   {"", "integer input converted short  %lld",
-                    "test basic with converting to long long."},
-                   {"", "integer input converted short  %hhd",
-                    "test basic with convertting to signed char."}
-
-)
-
-SPRINTF_TEST_CASES(sprintf_edge_tests, {"Hello", "", "empty delimiter."},
-                   {"привет,мир", ",", "unicode symbols."},
-                   {"  abc  def", " ", "skip leader spaces."},
-                   {"  abc  def", "", "Empty delimiter."})
+RUN_SPRINTF_TEST(mixed_string_int, "answer 42", "%s %d", "answer", 42);
+RUN_SPRINTF_TEST(mixed_int_string, "42 is answer", "%d %s %s", 42, "is",
+                 "answer");
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
   Suite *s = suite_create("sprintf");
 
-  TCase *tc_string = tcase_create("String tests");
-  tcase_add_test(tc_string, test_sprintf_string_basic_tests);
-  suite_add_tcase(s, tc_string);
+  TCase *tc_core = tcase_create("Core");
+  tcase_add_test(tc_core, test_string_basic);
+  tcase_add_test(tc_core, test_string_with_space);
+  tcase_add_test(tc_core, test_string_empty);
+  tcase_add_test(tc_core, test_string_percent);
+  tcase_add_test(tc_core, test_string_percent_start);
 
-  TCase *tc_modification = tcase_create("String modification test");
-  tcase_add_test(tc_modification, test_sprintf_modification_string);
-  suite_add_tcase(s, tc_modification);
+  tcase_add_test(tc_core, test_int_positive);
+  tcase_add_test(tc_core, test_int_negative);
+  tcase_add_test(tc_core, test_int_zero);
+  tcase_add_test(tc_core, test_int_two);
+  tcase_add_test(tc_core, test_int_three);
 
-  TCase *tc_edge = tcase_create("edge string tests");
-  tcase_add_test(tc_edge, test_sprintf_edge_tests);
-  suite_add_tcase(s, tc_edge);
+  tcase_add_test(tc_core, test_short_int);
+  tcase_add_test(tc_core, test_long_long);
+  tcase_add_test(tc_core, test_signed_char);
+
+
+  tcase_add_test(tc_core, test_mixed_string_int);
+  tcase_add_test(tc_core, test_mixed_int_string);
+  suite_add_tcase(s, tc_core);
+
   return s;
 }

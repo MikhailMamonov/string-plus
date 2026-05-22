@@ -1,6 +1,6 @@
+#include "../s21_string.h"
 #include "sprintf_utils.h"
 #include <ctype.h>
-#include <stdarg.h>
 #include <string.h> // для memset
 
 int parseFlag(char input) {
@@ -8,7 +8,7 @@ int parseFlag(char input) {
           input == '0');
 }
 
-char *parseWidth(char *input, formatSpec *spec, va_list *args) {
+const char *parseWidth(const char *input, formatSpec *spec, va_list *args) {
   if (*input == '*') {
     spec->width = va_arg(*args, int);
     if (spec->width < 0) {
@@ -27,7 +27,7 @@ char *parseWidth(char *input, formatSpec *spec, va_list *args) {
   return input;
 }
 
-char *parsePrecision(char *input, formatSpec *spec, va_list *args) {
+const char *parsePrecision(const char *input, formatSpec *spec, va_list *args) {
   if (*input == '.') {
     input++;
     if (*input == '*') {
@@ -47,7 +47,7 @@ char *parsePrecision(char *input, formatSpec *spec, va_list *args) {
   return input;
 }
 
-char *parseLength(char *input, formatSpec *spec) {
+const char *parseLength(const char *input, formatSpec *spec) {
   if (*input == 'l' || *input == 'L' || *input == 'h') {
     spec->length = *input;
     input++;
@@ -73,7 +73,7 @@ int parseSpecifier(char input, formatSpec *spec) {
   return 0;
 }
 
-char *parseFormat(char *format, formatSpec *spec, va_list *args) {
+const char *parseFormat(const char *format, formatSpec *spec, va_list *args) {
   memset(spec, 0, sizeof(formatSpec));
   spec->width = -1;
   spec->precision = -1;

@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #ifndef SPRINTF_UTILS_H
 #define SPRINTF_UTILS_H
 
@@ -14,13 +15,14 @@ typedef struct {
 } formatSpec;
 
 
-char* int_to_str(char *buf, int num);
+char *int_to_str(char *buf, int num, int *len);
+char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len);
 int parseFlag(char input);
-char* parseWidth(char *input, formatSpec * spec, va_list* args);
-char* parsePrecision(char *input, formatSpec * spec, va_list* args);
-char* parseLength(char *format, formatSpec * spec);
+const char* parseWidth(const char *input, formatSpec * spec, va_list* args);
+const char* parsePrecision(const char* input, formatSpec * spec, va_list* args);
+const char* parseLength(const char *format, formatSpec * spec);
 int parseSpecifier(char input, formatSpec *spec); 
-char* parseFormat(char *format, formatSpec * spec, va_list* args);
+const char* parseFormat(const char *format, formatSpec * spec, va_list* args);
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out);
 
 
