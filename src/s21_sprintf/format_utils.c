@@ -1,7 +1,6 @@
 #include "sprintf_utils.h"
 #include <string.h> //for strlen()
 
-
 char *handle_width(char *buf, int length, formatSpec spec) {
   int spaces_to_add = 0;
   if (spec.width > length) {
@@ -58,19 +57,19 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
     *out = handle_width(*out, len, *spec);
     break;
   }
-  //TODO: need implementation
-  // case 'u': {
-  //   unsigned int u = va_arg(*args, unsigned int);
-  //   *out = uint_to_str(*out, u);
-  //   break;
-  // }
-  //TODO: need implementation
-  // case 'x':
-  // case 'X': {
-  //   unsigned int hex = va_arg(*args, unsigned int);
-  //   *out = hex_to_str(*out, hex, spec->specifier == 'X');
-  //   break;
-  // }
+  // TODO: need implementation
+  //  case 'u': {
+  //    unsigned int u = va_arg(*args, unsigned int);
+  //    *out = uint_to_str(*out, u);
+  //    break;
+  //  }
+  // TODO: need implementation
+  //  case 'x':
+  //  case 'X': {
+  //    unsigned int hex = va_arg(*args, unsigned int);
+  //    *out = hex_to_str(*out, hex, spec->specifier == 'X');
+  //    break;
+  //  }
   case '%': {
     *(*out)++ = '%';
     break;

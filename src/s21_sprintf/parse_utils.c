@@ -1,7 +1,6 @@
 #include "../s21_string.h"
 #include "sprintf_utils.h"
 #include <ctype.h>
-#include <string.h> // для memset
 
 int parseFlag(char input) {
   return (input == '+' || input == '-' || input == ' ' || input == '#' ||
@@ -74,7 +73,7 @@ int parseSpecifier(char input, formatSpec *spec) {
 }
 
 const char *parseFormat(const char *format, formatSpec *spec, va_list *args) {
-  memset(spec, 0, sizeof(formatSpec));
+  s21_memset(spec, 0, sizeof(formatSpec));
   spec->width = -1;
   spec->precision = -1;
   // Parse flags

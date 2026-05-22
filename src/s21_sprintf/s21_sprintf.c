@@ -11,12 +11,11 @@ int s21_sprintf(char *str, const char *format, ...) {
       if (*format == '%') {
         *str++ = *format;
         format++;
-        continue;
+      } else {
+        formatSpec spec = {0};
+        format = parseFormat(format, &spec, &args);
+        formatBySpecifier(&spec, &args, &str);
       }
-      formatSpec spec = {0};
-      format = parseFormat(format, &spec, &args);
-      formatBySpecifier(&spec, &args, &str);
-
     } else {
       *str++ = *format++;
     }

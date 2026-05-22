@@ -1,10 +1,9 @@
 #include "../s21_string.h"
 #include "s21_test_common.h"
-#include <stdio.h> 
 #include <check.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 RUN_SPRINTF_TEST(string_basic, "Hello", "%s", "Hello");
 RUN_SPRINTF_TEST(string_with_space, "Hello World", "%s %s", "Hello", "World");
@@ -46,7 +45,6 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_short_int);
   tcase_add_test(tc_core, test_long_long);
   tcase_add_test(tc_core, test_signed_char);
-
 
   tcase_add_test(tc_core, test_mixed_string_int);
   tcase_add_test(tc_core, test_mixed_int_string);

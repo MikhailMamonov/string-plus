@@ -1,7 +1,7 @@
 #include "../s21_string.h"
 #include <check.h>
 #include <stdlib.h>
-//standart library functions
+// standart library functions
 Suite *memchr_suite_create(void);
 Suite *memcpy_suite_create(void);
 Suite *strerror_suite_create(void);
@@ -11,11 +11,11 @@ Suite *strcspn_suite_create(void);
 Suite *strrchr_suite_create(void);
 Suite *strtok_suite_create(void);
 Suite *strncmp_suite_create(void);
-//extended functions
+// extended functions
 Suite *sprintf_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
-  //standart library functions
+  // standart library functions
   srunner_add_suite(sr, memcpy_suite_create());
   srunner_add_suite(sr, strerror_suite_create());
   srunner_add_suite(sr, strchr_suite_create());
@@ -25,7 +25,7 @@ void assemble_srunner(SRunner *sr) {
   srunner_add_suite(sr, strtok_suite_create());
   srunner_add_suite(sr, strncmp_suite_create());
 
-  //extended functions
+  // extended functions
   srunner_add_suite(sr, sprintf_suite_create());
 }
 
