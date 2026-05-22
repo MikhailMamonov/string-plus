@@ -16,7 +16,7 @@ typedef struct {
 } formatSpec;
 
 
-char *int_to_str(char *buf, int num, int *len);
+char *int_to_str(char *buf, long long num, int *len);
 char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len);
 int parseFlag(char input);
 const char* parseWidth(const char *input, formatSpec * spec, va_list* args);
@@ -28,6 +28,6 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out);
 //char *handle_precision(char *buf, int length, char spec);
 char *handle_width(char *buf, int length, formatSpec spec);
 char *handle_special_floats(char *buf, double val, formatSpec spec, int *len);
-
+char *float_to_str(char *buf, double num, formatSpec spec, int *len);
 
 #endif
