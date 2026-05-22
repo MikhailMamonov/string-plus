@@ -48,6 +48,27 @@ RUN_SPRINTF_TEST(infinity_exponent, "-inf", "%e", -INFINITY);
 RUN_SPRINTF_TEST(nan_exponent, "NAN", "%E", NAN);
 RUN_SPRINTF_TEST(mixed_str_int_exp, "The number 1000 can be presented as 1.000000E+03. Interesting!", "The number %d can be presented as %E. Interesting!", 1000, 1000.0);
 
+RUN_SPRINTF_TEST(zero_float, "0.000000", "%f", 0.0);
+RUN_SPRINTF_TEST(negative_zero_float, "-0.000000", "%f", -0.0);
+RUN_SPRINTF_TEST(positive_number_float, "123.456000", "%f", 123.456);
+RUN_SPRINTF_TEST(negative_number_float, "-123.456000", "%f", -123.456);
+RUN_SPRINTF_TEST(precision_zero_float, "123", "%.0f", 123.456);
+RUN_SPRINTF_TEST(precision_short_float, "123.46", "%.2f", 123.456);
+RUN_SPRINTF_TEST(precision_long_float, "0.00123000", "%.8f", 0.00123);
+RUN_SPRINTF_TEST(round_down_float, "1.23", "%.2f", 1.234);
+RUN_SPRINTF_TEST(round_up_float, "1.24", "%.2f", 1.236);
+RUN_SPRINTF_TEST(round_carry_to_int_float, "10.00", "%.2f", 9.999); // Перенос разряда в целую часть
+RUN_SPRINTF_TEST(flag_plus_positive_float, "+1.230000", "%+f", 1.23);
+RUN_SPRINTF_TEST(flag_plus_negative_float, "-1.230000", "%+f", -1.23);
+RUN_SPRINTF_TEST(flag_space_positive_float, " 1.230000", "% f", 1.23);
+RUN_SPRINTF_TEST(flag_space_negative_float, "-1.230000", "% f", -1.23);
+RUN_SPRINTF_TEST(infinity_lowercase_float, "inf", "%f", INFINITY);
+RUN_SPRINTF_TEST(nan_lowercase_float, "nan", "%f", NAN);
+RUN_SPRINTF_TEST(nan_with_plus_flag_float, "+nan", "%+f", NAN);
+RUN_SPRINTF_TEST(very_small_float, "0.000000", "%f", 1e-10); // Округляется до 0 при дефолтной точности 6
+RUN_SPRINTF_TEST(large_number_float, "1000000000.000000", "%f", 1000000000.0);
+RUN_SPRINTF_TEST(mixed_str_int_float, "Price: 49.99 USD (discounted from 50)", "Price: %.2f %s (discounted from %d)", 49.99, "USD", 50);
+
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
@@ -88,6 +109,27 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_char_digit);
   tcase_add_test(tc_core, test_char_special);
   tcase_add_test(tc_core, test_char_null);
+
+  tcase_add_test(tc_core, test_zero_float);
+  tcase_add_test(tc_core, test_negative_zero_float);
+  tcase_add_test(tc_core, test_positive_number_float);
+  tcase_add_test(tc_core, test_negative_number_float);
+  tcase_add_test(tc_core, test_precision_zero_float);
+  tcase_add_test(tc_core, test_precision_short_float);
+  tcase_add_test(tc_core, test_precision_long_float);
+  tcase_add_test(tc_core, test_round_down_float);
+  tcase_add_test(tc_core, test_round_up_float);
+  tcase_add_test(tc_core, test_round_carry_to_int_float);
+  tcase_add_test(tc_core, test_flag_plus_positive_float);
+  tcase_add_test(tc_core, test_flag_plus_negative_float);
+  tcase_add_test(tc_core, test_flag_space_positive_float);
+  tcase_add_test(tc_core, test_flag_space_negative_float);
+  tcase_add_test(tc_core, test_infinity_lowercase_float);
+  tcase_add_test(tc_core, test_nan_lowercase_float);
+  tcase_add_test(tc_core, test_nan_with_plus_flag_float);
+  tcase_add_test(tc_core, test_very_small_float);
+  tcase_add_test(tc_core, test_large_number_float);
+  tcase_add_test(tc_core, test_mixed_str_int_float);
 
   suite_add_tcase(s, tc_core);
 

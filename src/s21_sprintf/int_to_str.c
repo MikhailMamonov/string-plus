@@ -1,6 +1,6 @@
 #include "sprintf_utils.h"
 
-char *int_to_str(char *buf, int num, int *len) {
+char *int_to_str(char *buf, long long num, int *len) {
   char tmp[12]; // Временный буфер для разворота числа
   int i = 0;
   int is_negative = 0;
