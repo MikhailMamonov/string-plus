@@ -14,10 +14,13 @@ RUN_SPRINTF_TEST(string_percent_start, "%Hello", "%%Hello");
 // Test char symbols
 RUN_SPRINTF_TEST(char_basic, "A", "%c", 'A');
 RUN_SPRINTF_TEST(char_digit, "5", "%c", '5');
+RUN_SPRINTF_TEST(char_width, "|         A|", "|%10c|", 'A');
+RUN_SPRINTF_TEST(char_width_left_align, "|A         |", "|%-10c|", 'A');
+RUN_SPRINTF_TEST(char_width_left_null_string, "|          |", "|%-10c|", '\0');
 RUN_SPRINTF_TEST(char_special, "\n", "%c", '\n');
-RUN_SPRINTF_TEST(char_null, "", "%c", '\0'); 
+RUN_SPRINTF_TEST(char_null, "", "%c", '\0');
 
-// Test strings with precision 
+// Test strings with precision
 // RUN_SPRINTF_TEST(string_precision, "Hell", "%.4s", "Hello");
 // RUN_SPRINTF_TEST(string_precision_more, "Hello", "%.10s", "Hello");
 // RUN_SPRINTF_TEST(string_precision_zero, "", "%.0s", "Hello");
@@ -28,6 +31,11 @@ RUN_SPRINTF_TEST(int_negative, "-123", "%d", -123);
 RUN_SPRINTF_TEST(int_zero, "0", "%d", 0);
 RUN_SPRINTF_TEST(int_two, "10 20", "%d %d", 10, 20);
 RUN_SPRINTF_TEST(int_three, "10 + 20 = 30", "%d + %d = %d", 10, 20, 30);
+RUN_SPRINTF_TEST(int_width, "|      42|", "|%8d|", 42);
+RUN_SPRINTF_TEST(int_width_left_align, "|42      |", "|%-8d|", 42);
+RUN_SPRINTF_TEST(int_negative_width, "|       -42|", "|%10d|", -42);
+RUN_SPRINTF_TEST(int_negative_width_left_align, "|-42       |", "|%-10d|",
+                 -42);
 
 RUN_SPRINTF_TEST(short_int, "2342", "%hd", (short)2342);
 RUN_SPRINTF_TEST(long_long, "45646546546465", "%lld", 45646546546465LL);
@@ -46,8 +54,10 @@ RUN_SPRINTF_TEST(capital_letter_exponent, "-1.230000E-03", "%E", -0.00123);
 RUN_SPRINTF_TEST(round_exponent, "1.24e+03", "%.2e", 1239.56);
 RUN_SPRINTF_TEST(infinity_exponent, "-inf", "%e", -INFINITY);
 RUN_SPRINTF_TEST(nan_exponent, "NAN", "%E", NAN);
-RUN_SPRINTF_TEST(mixed_str_int_exp, "The number 1000 can be presented as 1.000000E+03. Interesting!", "The number %d can be presented as %E. Interesting!", 1000, 1000.0);
-
+RUN_SPRINTF_TEST(
+    mixed_str_int_exp,
+    "The number 1000 can be presented as 1.000000E+03. Interesting!",
+    "The number %d can be presented as %E. Interesting!", 1000, 1000.0);
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
@@ -65,6 +75,10 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_int_zero);
   tcase_add_test(tc_core, test_int_two);
   tcase_add_test(tc_core, test_int_three);
+  tcase_add_test(tc_core, test_int_width);
+  tcase_add_test(tc_core, test_int_width_left_align);
+  tcase_add_test(tc_core, test_int_negative_width);
+  tcase_add_test(tc_core, test_int_negative_width_left_align);
 
   tcase_add_test(tc_core, test_short_int);
   tcase_add_test(tc_core, test_long_long);
@@ -88,6 +102,9 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_char_digit);
   tcase_add_test(tc_core, test_char_special);
   tcase_add_test(tc_core, test_char_null);
+  tcase_add_test(tc_core, test_char_width);
+  tcase_add_test(tc_core, test_char_width_left_align);
+  tcase_add_test(tc_core, test_char_width_left_null_string);
 
   suite_add_tcase(s, tc_core);
 

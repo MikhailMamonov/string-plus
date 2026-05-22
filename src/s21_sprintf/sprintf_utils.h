@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <stdio.h>
 #ifndef SPRINTF_UTILS_H
 #define SPRINTF_UTILS_H
 

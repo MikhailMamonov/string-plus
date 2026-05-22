@@ -74,8 +74,6 @@ int parseSpecifier(char input, formatSpec *spec) {
 
 const char *parseFormat(const char *format, formatSpec *spec, va_list *args) {
   s21_memset(spec, 0, sizeof(formatSpec));
-  spec->width = -1;
-  spec->precision = -1;
   // Parse flags
   while (parseFlag(*format)) {
     switch (*format) {

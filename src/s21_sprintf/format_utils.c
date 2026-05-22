@@ -8,6 +8,7 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   switch (spec->specifier) {
   case 'c': {
     char c = (char)va_arg(*args, int);
+    printf("DEBUG: left_align = %d, width = %d\n", spec->left_align, spec->width);
     *(*out)++ = c;
     *out = handle_width(*out, 1, *spec);
     break;
@@ -26,7 +27,8 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   case 'i': {
     int d = va_arg(*args, int);
     int len = 0;
-    *out = int_to_str(*out, d, &len);
+        
+    *out = int_to_str(*out, d, &len);   
     *out = handle_width(*out, len, *spec);
     break;
   }

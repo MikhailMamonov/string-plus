@@ -2,14 +2,14 @@
 #include <math.h>
 #include <string.h> //strlen, strncat
 
-char *write_exp(char *buf, formatSpec spec, long long mantissa_int, int exponent,
-                int is_negative, int *len);
+char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
+                int exponent, int is_negative, int *len);
 
 char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
   char *next_buf = handle_special_floats(buf, val, spec, len);
 
   if (next_buf != NULL) {
-      return next_buf;
+    return next_buf;
   }
   // 1. Сразу определяем и сохраняем знак
   int is_negative = signbit(val);
@@ -29,7 +29,8 @@ char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
   if (val >= 10.0) {
     val /= 10.0;
     exponent++;
-  } else if (val < 1.0 && val > 0.0 && exponent != 0) { // Для редких пограничных случаев
+  } else if (val < 1.0 && val > 0.0 &&
+             exponent != 0) { // Для редких пограничных случаев
     val *= 10.0;
     exponent--;
   }
@@ -39,11 +40,12 @@ char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
   return write_exp(buf, spec, mantissa_int, exponent, is_negative, len);
 }
 
-char *write_exp(char *buf, formatSpec spec, long long mantissa_int, int exponent,
-                int is_negative, int *len) {
+char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
+                int exponent, int is_negative, int *len) {
   char *start = buf;
 
-  if (is_negative) *buf++ = '-';
+  if (is_negative)
+    *buf++ = '-';
 
   char digits[64];
   int num_digits = 1 + spec.precision;
@@ -93,4 +95,3 @@ char *write_exp(char *buf, formatSpec spec, long long mantissa_int, int exponent
   *len = buf - start;
   return buf;
 }
-

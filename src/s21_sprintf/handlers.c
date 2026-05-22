@@ -7,21 +7,25 @@ char *handle_width(char *buf, int length, formatSpec spec) {
   int spaces_to_add = 0;
   if (spec.width > length) {
     spaces_to_add = spec.width - length;
-    char *from = buf - 1;
-    char *to = buf + spaces_to_add - 1;
-
-    for (int i = 0; i < length; i++) {
-      *to = *from;
-      to--;
-      from--;
-    }
-
-    while (to >= (buf - length)) {
-      *to = ' ';
-      to--;
-    }
+    if (spec.left_align) {
+            // Левое выравнивание: добавляем пробелы справа
+            for (int i = 0; i < spaces_to_add; i++) {
+                *buf++ = ' ';
+            }
+    } else{
+        char *from = buf - 1;
+        char *to = buf + spaces_to_add - 1;
+        
+        for (int i = 0; i < length; i++) {
+            *to-- = *from--;
+        }
+        
+        for (int i = 0; i < spaces_to_add; i++) {
+            *to-- = ' ';
+        }
+        buf += spaces_to_add;
   }
-  buf += spaces_to_add;
+}
   return buf;
 }
 

@@ -23,9 +23,12 @@ char *int_to_str(char *buf, int num, int *len) {
     num /= 10;
   }
 
+  *len = i;  
   if (is_negative) {
-    *buf++ = '-';
+        (*len)++;  // плюс знак минус
+        *buf++ = '-';
   }
+
 
   // Записываем цифры в правильном порядке в основной буфер
   while (i > 0) {

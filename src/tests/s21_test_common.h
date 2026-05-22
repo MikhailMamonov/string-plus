@@ -120,5 +120,4 @@ typedef struct {
 
 #define SPRINTF_TEST_CASES(name, ...) \
     TEST_CASES(name, sprintfParams, run_sprintf_test, __VA_ARGS__)
-
 #endif
