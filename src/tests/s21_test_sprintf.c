@@ -11,6 +11,18 @@ RUN_SPRINTF_TEST(string_empty, "", "%s", "");
 RUN_SPRINTF_TEST(string_percent, "Hello%", "Hello%%");
 RUN_SPRINTF_TEST(string_percent_start, "%Hello", "%%Hello");
 
+// Test char symbols
+RUN_SPRINTF_TEST(char_basic, "A", "%c", 'A');
+RUN_SPRINTF_TEST(char_digit, "5", "%c", '5');
+RUN_SPRINTF_TEST(char_special, "\n", "%c", '\n');
+RUN_SPRINTF_TEST(char_null, "", "%c", '\0'); 
+
+// Test strings with precision 
+// RUN_SPRINTF_TEST(string_precision, "Hell", "%.4s", "Hello");
+// RUN_SPRINTF_TEST(string_precision_more, "Hello", "%.10s", "Hello");
+// RUN_SPRINTF_TEST(string_precision_zero, "", "%.0s", "Hello");
+// RUN_SPRINTF_TEST(string_precision_star, "Hell", "%.*s", 4, "Hello");
+
 RUN_SPRINTF_TEST(int_positive, "42", "%d", 42);
 RUN_SPRINTF_TEST(int_negative, "-123", "%d", -123);
 RUN_SPRINTF_TEST(int_zero, "0", "%d", 0);
@@ -35,6 +47,7 @@ RUN_SPRINTF_TEST(round_exponent, "1.24e+03", "%.2e", 1239.56);
 RUN_SPRINTF_TEST(infinity_exponent, "-inf", "%e", -INFINITY);
 RUN_SPRINTF_TEST(nan_exponent, "NAN", "%E", NAN);
 RUN_SPRINTF_TEST(mixed_str_int_exp, "The number 1000 can be presented as 1.000000E+03. Interesting!", "The number %d can be presented as %E. Interesting!", 1000, 1000.0);
+
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
@@ -70,6 +83,12 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_infinity_exponent);
   tcase_add_test(tc_core, test_nan_exponent);
   tcase_add_test(tc_core, test_mixed_str_int_exp);
+
+  tcase_add_test(tc_core, test_char_basic);
+  tcase_add_test(tc_core, test_char_digit);
+  tcase_add_test(tc_core, test_char_special);
+  tcase_add_test(tc_core, test_char_null);
+
   suite_add_tcase(s, tc_core);
 
   return s;

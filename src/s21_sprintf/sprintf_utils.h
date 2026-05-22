@@ -24,6 +24,8 @@ const char* parseLength(const char *format, formatSpec * spec);
 int parseSpecifier(char input, formatSpec *spec); 
 const char* parseFormat(const char *format, formatSpec * spec, va_list* args);
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out);
+//char *handle_precision(char *buf, int length, char spec);
+char *handle_width(char *buf, int length, formatSpec spec);
 char *handle_special_floats(char *buf, double val, formatSpec spec, int *len);
 
 

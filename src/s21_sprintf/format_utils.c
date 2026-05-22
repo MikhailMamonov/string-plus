@@ -1,27 +1,7 @@
 #include "sprintf_utils.h"
 #include <string.h> //for strlen()
 
-char *handle_width(char *buf, int length, formatSpec spec) {
-  int spaces_to_add = 0;
-  if (spec.width > length) {
-    spaces_to_add = spec.width - length;
-    char *from = buf - 1;
-    char *to = buf + spaces_to_add - 1;
 
-    for (int i = 0; i < length; i++) {
-      *to = *from;
-      to--;
-      from--;
-    }
-
-    while (to >= (buf - length)) {
-      *to = ' ';
-      to--;
-    }
-  }
-  buf += spaces_to_add;
-  return buf;
-}
 
 // Отдельная функция для форматирования
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
@@ -35,6 +15,7 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   case 's': {
     char *s = va_arg(*args, char *);
     int len = strlen(s);
+
     while (*s) {
       *(*out)++ = *s++;
     }
