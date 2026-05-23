@@ -47,6 +47,14 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
     *out = handle_width(*out, len, *spec);
     break;
   }
+  case 'g':
+  case 'G': {
+    double num = va_arg(*args, double);
+    int len = 0;
+    *out = g_spec(*out, num, *spec, &len);
+    *out = handle_width(*out, len, *spec);
+    break;
+  }
   // TODO: need implementation
   //  case 'u': {
   //    unsigned int u = va_arg(*args, unsigned int);

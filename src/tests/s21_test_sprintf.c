@@ -79,6 +79,35 @@ RUN_SPRINTF_TEST(nan_with_plus_flag_float, "+nan", "%+f", NAN);
 RUN_SPRINTF_TEST(very_small_float, "0.000000", "%f", 1e-10); // Округляется до 0 при дефолтной точности 6
 RUN_SPRINTF_TEST(large_number_float, "1000000000.000000", "%f", 1000000000.0);
 RUN_SPRINTF_TEST(mixed_str_int_float, "Price: 49.99 USD (discounted from 50)", "Price: %.2f %s (discounted from %d)", 49.99, "USD", 50);
+
+// Тесты для обычных чисел, которые должны выводиться через %f (без экспоненты)
+RUN_SPRINTF_TEST(g_zero, "0", "%g", 0.0);
+RUN_SPRINTF_TEST(g_negative_zero, "-0", "%g", -0.0);
+RUN_SPRINTF_TEST(g_simple_float, "123.456", "%g", 123.456);
+RUN_SPRINTF_TEST(g_trailing_zeros_flat, "1.23", "%g", 1.230000);
+RUN_SPRINTF_TEST(g_no_dot_needed, "125", "%g", 125.000000);
+
+// Тесты для чисел, которые переключаются в экспоненциальную форму (%e)
+RUN_SPRINTF_TEST(g_large_number, "1.23456e+06", "%g", 1234560.0);
+RUN_SPRINTF_TEST(g_small_number, "1.23456e-05", "%g", 0.0000123456);
+RUN_SPRINTF_TEST(g_capital_letter, "1.23456E+06", "%G", 1234560.0);
+
+// Тесты со специфическим удалением нулей перед экспонентой
+RUN_SPRINTF_TEST(g_exp_trailing_zeros, "1.2e+06", "%g", 1200000.0);
+RUN_SPRINTF_TEST(g_exp_no_dot, "1E+06", "%G", 1000000.0);
+
+// Тесты на явное указание точности (precision)
+RUN_SPRINTF_TEST(g_precision_large, "12", "%.2g", 12.345);
+RUN_SPRINTF_TEST(g_precision_round, "1.24", "%.3g", 1.23956);
+RUN_SPRINTF_TEST(g_precision_zero, "1", "%.0g", 1.2345); // Точность 0 должна трактоваться как 1
+
+// Специальные значения
+RUN_SPRINTF_TEST(g_infinity, "-inf", "%g", -INFINITY);
+RUN_SPRINTF_TEST(g_nan, "NAN", "%G", NAN);
+
+// Смешанный тест в строке
+RUN_SPRINTF_TEST(g_mixed_str, "Value: 0.000123 and 45.67", "Value: %g and %g", 0.000123, 45.67);
+
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
   Suite *s = suite_create("sprintf");
@@ -147,6 +176,23 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_large_number_float);
   tcase_add_test(tc_core, test_mixed_str_int_float);
   tcase_add_test(tc_core, test_positive_number_exponent);
+
+  tcase_add_test(tc_core, test_g_zero);
+  tcase_add_test(tc_core, test_g_negative_zero);
+  tcase_add_test(tc_core, test_g_simple_float);
+  tcase_add_test(tc_core, test_g_trailing_zeros_flat);
+  tcase_add_test(tc_core, test_g_no_dot_needed);
+  tcase_add_test(tc_core, test_g_large_number);
+  tcase_add_test(tc_core, test_g_small_number);
+  tcase_add_test(tc_core, test_g_capital_letter);
+  tcase_add_test(tc_core, test_g_exp_trailing_zeros);
+  tcase_add_test(tc_core, test_g_exp_no_dot);
+  tcase_add_test(tc_core, test_g_precision_large);
+  tcase_add_test(tc_core, test_g_precision_round);
+  tcase_add_test(tc_core, test_g_precision_zero);
+  tcase_add_test(tc_core, test_g_infinity);
+  tcase_add_test(tc_core, test_g_nan);
+  tcase_add_test(tc_core, test_g_mixed_str);
 
   suite_add_tcase(s, tc_core);
 

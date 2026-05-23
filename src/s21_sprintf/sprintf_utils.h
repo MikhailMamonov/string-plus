@@ -29,5 +29,6 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out);
 char *handle_width(char *buf, int length, formatSpec spec);
 char *handle_special_floats(char *buf, double val, formatSpec spec, int *len);
 char *float_to_str(char *buf, double num, formatSpec spec, int *len);
+char *g_spec(char *buf, double val, formatSpec spec, int *len);
 
 #endif
