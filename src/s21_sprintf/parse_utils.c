@@ -43,6 +43,7 @@ const char *parsePrecision(const char *input, formatSpec *spec, va_list *args) {
       }
     }
   }
+  else spec->precision = -1;
   return input;
 }
 

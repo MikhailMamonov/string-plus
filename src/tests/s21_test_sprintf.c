@@ -79,7 +79,6 @@ RUN_SPRINTF_TEST(nan_with_plus_flag_float, "+nan", "%+f", NAN);
 RUN_SPRINTF_TEST(very_small_float, "0.000000", "%f", 1e-10); // Округляется до 0 при дефолтной точности 6
 RUN_SPRINTF_TEST(large_number_float, "1000000000.000000", "%f", 1000000000.0);
 RUN_SPRINTF_TEST(mixed_str_int_float, "Price: 49.99 USD (discounted from 50)", "Price: %.2f %s (discounted from %d)", 49.99, "USD", 50);
-
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
   Suite *s = suite_create("sprintf");
@@ -147,6 +146,7 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_very_small_float);
   tcase_add_test(tc_core, test_large_number_float);
   tcase_add_test(tc_core, test_mixed_str_int_float);
+  tcase_add_test(tc_core, test_positive_number_exponent);
 
   suite_add_tcase(s, tc_core);
 

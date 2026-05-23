@@ -83,9 +83,9 @@ typedef struct {
         int test_len; \
         std_len = sprintf(std_buf, format, ##__VA_ARGS__); \
         test_len = s21_sprintf(test_buf, format, ##__VA_ARGS__); \
-        ck_assert_int_eq(std_len, test_len); \
         ck_assert_str_eq(std_buf, test_buf); \
         ck_assert_str_eq(std_buf, expected); \
+        ck_assert_int_eq(std_len, test_len); \
         printf("[PASS] %s: \"%s\" -> \"%s\"\n", #test_name, format, std_buf); \
     } \
     END_TEST

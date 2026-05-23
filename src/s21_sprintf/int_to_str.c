@@ -10,7 +10,7 @@ char *int_to_str(char *buf, long long num, int *len) {
     *len = 1;
     return buf;
   }
-
+  char *start = buf;
   if (num < 0) {
     is_negative = 1;
     num = -num; // Делаем число положительным для деления
@@ -19,13 +19,10 @@ char *int_to_str(char *buf, long long num, int *len) {
   // Разбираем число на цифры с конца
   while (num > 0) {
     tmp[i++] = (num % 10) + '0';
-    (*len)++;
     num /= 10;
   }
 
-  *len = i;  
   if (is_negative) {
-        (*len)++;  // плюс знак минус
         *buf++ = '-';
   }
 
@@ -34,6 +31,6 @@ char *int_to_str(char *buf, long long num, int *len) {
   while (i > 0) {
     *buf++ = tmp[--i];
   }
-
+  *len = buf - start;
   return buf; // Возвращаем указатель на текущую позицию в буфере
 }
