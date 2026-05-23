@@ -75,7 +75,7 @@ typedef struct {
 
 
 // Новый макрос для тестов sprintf с переменным количеством аргументов
-#define RUN_SPRINTF_TEST(test_name, expected, format, ...) \
+#define RUN_SPRINTF_TEST(test_name, format, ...) \
     START_TEST(test_##test_name) { \
         char std_buf[512] = {0}; \
         char test_buf[512] = {0}; \
@@ -84,7 +84,6 @@ typedef struct {
         std_len = sprintf(std_buf, format, ##__VA_ARGS__); \
         test_len = s21_sprintf(test_buf, format, ##__VA_ARGS__); \
         ck_assert_str_eq(std_buf, test_buf); \
-        ck_assert_str_eq(std_buf, expected); \
         ck_assert_int_eq(std_len, test_len); \
         printf("[PASS] %s: \"%s\" -> \"%s\"\n", #test_name, format, std_buf); \
     } \

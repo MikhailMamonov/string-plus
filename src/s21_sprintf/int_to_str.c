@@ -1,22 +1,26 @@
 #include "sprintf_utils.h"
 
-char *int_to_str(char *buf, long long num, int *len) {
+char *int_to_str(char *buf, long long num, int *len, formatSpec spec) {
   char tmp[64]; // Временный буфер для разворота числа
   int i = 0;
   int is_negative = 0;
+  char *start = buf; 
 
   if (num == 0) {
+    if (spec.show_sign) {
+      *buf++ = '+';
+    } else if (spec.space_sign) {
+      *buf++ = ' ';
+    }
     *buf++ = '0';
-    *len = 1;
+    *len = buf - start;
     return buf;
   }
-  char *start = buf;
-  unsigned long long u_num; 
+  unsigned long long u_num;
   if (num < 0) {
     is_negative = 1;
     u_num = (unsigned long long)(-num);
-  }
-  else {
+  } else {
     u_num = (unsigned long long)num;
   }
 
@@ -27,9 +31,12 @@ char *int_to_str(char *buf, long long num, int *len) {
   }
 
   if (is_negative) {
-        *buf++ = '-';
+    *buf++ = '-';
+  } else if (spec.show_sign) {
+    *buf++ = '+';
+  } else if (spec.space_sign) {
+    *buf++ = ' ';
   }
-
 
   // Записываем цифры в правильном порядке в основной буфер
   while (i > 0) {

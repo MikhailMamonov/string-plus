@@ -16,7 +16,7 @@ typedef struct {
 } formatSpec;
 
 
-char *int_to_str(char *buf, long long num, int *len);
+char *int_to_str(char *buf, long long num, int *len,  formatSpec spec);
 char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len);
 int parseFlag(char input);
 const char* parseWidth(const char *input, formatSpec * spec, va_list* args);

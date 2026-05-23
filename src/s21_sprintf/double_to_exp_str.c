@@ -36,9 +36,10 @@ char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
 
   long long mantissa_int = llround(val * pow(10, spec.precision));
 
-  // Защита от переполнения порядка (например, когда 9.999999 округлилось до 10000000)
+  // Защита от переполнения порядка (например, когда 9.999999 округлилось до
+  // 10000000)
   long long limit = llround(pow(10, spec.precision + 1));
-  
+
   if (mantissa_int >= limit) {
     mantissa_int /= 10; // Убираем лишний разряд
     exponent++;         // Сдвигаем экспоненту вверх
@@ -54,13 +55,14 @@ char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
   if (is_negative)
     *buf++ = '-';
 
-    // 1. Создаем буфер для цифр и гарантированно заполняем его символами '0'
+  // 1. Создаем буфер для цифр и гарантированно заполняем его символами '0'
   char digits[64];
   for (int i = 0; i < 64; i++) {
     digits[i] = '0';
   }
 
-  // 2. Считаем, сколько всего цифр нам нужно получить (1 целая + precision дробных)
+  // 2. Считаем, сколько всего цифр нам нужно получить (1 целая + precision
+  // дробных)
   int num_digits = 1 + spec.precision;
 
   // 3. Заполняем массив цифрами СПРАВА НАЛЕВО, начиная с конца нужной точности
