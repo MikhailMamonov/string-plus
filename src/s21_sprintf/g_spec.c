@@ -19,16 +19,20 @@ char *g_spec(char *buf, double val, formatSpec spec, int *len) {
         if (spec.specifier == 'g') spec.specifier = 'e';
         else spec.specifier = 'E';
         buf = double_to_exp_str(buf, val, spec, len);
-        char *buf_p = buf;
-        while (*buf_p != 'e' && *buf_p != 'E') buf_p--;
-        buf_p--;
-        buf = remove_tail_zeroes(buf, buf_p);
+        if (!spec.alt_format) {
+            char *buf_p = buf;
+            while (*buf_p != 'e' && *buf_p != 'E') buf_p--;
+            buf_p--;
+            buf = remove_tail_zeroes(buf, buf_p);
+        }
     } else {
         spec.precision -= (exponent + 1);
         if (spec.precision < 0) spec.precision = 0;
         buf = float_to_str(buf, val, spec, len);
-        char *buf_p = buf - 1;
-        buf = remove_tail_zeroes(buf, buf_p);
+        if (!spec.alt_format) {
+            char *buf_p = buf - 1;
+            buf = remove_tail_zeroes(buf, buf_p);
+        }
     }
     *len = buf - start;
     return buf;

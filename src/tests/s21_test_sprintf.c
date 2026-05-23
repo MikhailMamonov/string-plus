@@ -108,6 +108,23 @@ RUN_SPRINTF_TEST(g_nan, "NAN", "%G", NAN);
 // Смешанный тест в строке
 RUN_SPRINTF_TEST(g_mixed_str, "Value: 0.000123 and 45.67", "Value: %g and %g", 0.000123, 45.67);
 
+RUN_SPRINTF_TEST(g_hash_zero, "0.00000", "%#g", 0.0);
+RUN_SPRINTF_TEST(g_hash_flat_zeros, "1.23000", "%#g", 1.23);
+RUN_SPRINTF_TEST(g_hash_no_dot_originally, "125.000", "%#g", 125.0);
+RUN_SPRINTF_TEST(g_hash_exp_zeros, "1.20000e+06", "%#g", 1200000.0);
+RUN_SPRINTF_TEST(g_hash_exp_no_dot_originally, "1.00000E+06", "%#G", 1000000.0);
+RUN_SPRINTF_TEST(g_hash_with_precision, "1.240", "%#.4g", 1.24);
+
+// Тесты для %f с флагом #
+RUN_SPRINTF_TEST(f_hash_zero_precision, "123.", "%#.0f", 123.0);
+RUN_SPRINTF_TEST(f_hash_normal, "123.456000", "%#f", 123.456);     // обычный вывод с дефолтной точностью 6
+RUN_SPRINTF_TEST(f_hash_zero_val, "0.", "%#.0f", 0.0);             // ноль с точностью 0 и точкой
+
+// Тесты для %e и %E с флагом #
+RUN_SPRINTF_TEST(e_hash_zero_precision, "1.e+02", "%#.0e", 123.0);  // точка перед экспонентой сохраняется при .0
+RUN_SPRINTF_TEST(E_hash_zero_precision, "1.E+02", "%#.0E", 123.0);  // то же самое для заглавной E
+RUN_SPRINTF_TEST(e_hash_normal, "1.234560e+02", "%#e", 123.456);   // стандартный вывод не ломается
+
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
   Suite *s = suite_create("sprintf");
@@ -193,6 +210,18 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_g_infinity);
   tcase_add_test(tc_core, test_g_nan);
   tcase_add_test(tc_core, test_g_mixed_str);
+  tcase_add_test(tc_core, test_g_hash_zero);
+  tcase_add_test(tc_core, test_g_hash_flat_zeros);
+  tcase_add_test(tc_core, test_g_hash_no_dot_originally);
+  tcase_add_test(tc_core, test_g_hash_exp_zeros);
+  tcase_add_test(tc_core, test_g_hash_exp_no_dot_originally);
+  tcase_add_test(tc_core, test_g_hash_with_precision);
+  tcase_add_test(tc_core, test_f_hash_zero_precision);
+  tcase_add_test(tc_core, test_f_hash_normal);
+  tcase_add_test(tc_core, test_f_hash_zero_val);
+  tcase_add_test(tc_core, test_e_hash_zero_precision);
+  tcase_add_test(tc_core, test_E_hash_zero_precision);
+  tcase_add_test(tc_core, test_e_hash_normal);
 
   suite_add_tcase(s, tc_core);
 

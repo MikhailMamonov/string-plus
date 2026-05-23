@@ -75,7 +75,7 @@ char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
   *buf++ = digits[current_digit++];
 
   // Запись дробной части
-  if (spec.precision > 0) {
+  if (spec.precision > 0 || spec.alt_format) {
     *buf++ = '.';
     for (int i = 0; i < spec.precision; i++) {
       *buf++ = digits[current_digit++];

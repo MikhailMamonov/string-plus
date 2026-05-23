@@ -22,7 +22,7 @@ char *float_to_str(char *buf, double num, formatSpec spec, int *len) {
   }
   buf = int_to_str(buf, (long long)num, len);
   num -= (long long)num;
-  if (prec > 0) {
+  if (prec > 0 || spec.alt_format) {
     *buf++ = '.';
     while(prec > 0) {
       num *= 10;
