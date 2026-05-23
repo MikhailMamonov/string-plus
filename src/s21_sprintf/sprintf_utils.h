@@ -31,5 +31,6 @@ char *handle_special_floats(char *buf, double val, formatSpec spec, int *len);
 char *float_to_str(char *buf, double num, formatSpec spec, int *len);
 char *g_spec(char *buf, double val, formatSpec spec, int *len);
 char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
+char *hex_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 
 #endif

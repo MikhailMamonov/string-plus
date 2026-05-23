@@ -1,5 +1,4 @@
 #include "sprintf_utils.h"
-#include <math.h>
 
 char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len) {
   if (val == 0) {

@@ -181,9 +181,28 @@ RUN_SPRINTF_TEST(i_length_l_min, "%li",
                  -2147483647L - 1L);                  // LONG_MIN на 32-бит
 RUN_SPRINTF_TEST(d_length_l_max, "%ld", 2147483647L); // LONG_MAX на 32-бит
 #endif
-
 // Модификаторы длины вместе с шириной и точностью в середине строки
 RUN_SPRINTF_TEST(d_length_mixed, "Result is: %012ld!", -1234567890L);
+// Базовые тесты %x и %X
+RUN_SPRINTF_TEST(x_simple, "%x", 171);
+RUN_SPRINTF_TEST(X_simple_caps,  "%X", 171);
+RUN_SPRINTF_TEST(x_zero,  "%x", 0);
+
+// Тесты с точностью (precision)
+RUN_SPRINTF_TEST(x_precision, "%.4x", 171);
+RUN_SPRINTF_TEST(x_zero_precision_zero_val,  "%.0x", 0); // Должна быть пустая строка
+
+// Тесты с флагом # (alt_format)
+RUN_SPRINTF_TEST(x_hash, "%#x", 171);
+RUN_SPRINTF_TEST(X_hash_caps,"%#X", 171);
+RUN_SPRINTF_TEST(x_hash_zero, "%#x", 0); // Для нуля 0x выводиться НЕ должен!
+
+// Совместная работа флага # и точности (они независимы)
+RUN_SPRINTF_TEST(x_hash_and_precision, "%#.4x", 171);
+
+// Большие беззнаковые числа и вывод в середине строки
+RUN_SPRINTF_TEST(x_uint_max, "%x", 4294967295U);
+RUN_SPRINTF_TEST(x_middle_str,  "Address: %#.4x is loaded.", 255);
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
@@ -300,6 +319,7 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_o_width_zero_flag);
   tcase_add_test(tc_core, test_o_hash_width_flags);
   tcase_add_test(tc_core, test_o_uint_max);
+
   tcase_add_test(tc_core, test_d_length_h_normal);
   tcase_add_test(tc_core, test_i_length_h_neg);
   tcase_add_test(tc_core, test_d_length_h_max);
@@ -307,6 +327,18 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_i_length_l_min);
   tcase_add_test(tc_core, test_d_length_l_max);
   tcase_add_test(tc_core, test_d_length_mixed);
+
+  tcase_add_test(tc_core, test_x_simple);
+  tcase_add_test(tc_core, test_X_simple_caps);
+  tcase_add_test(tc_core, test_x_zero);
+  tcase_add_test(tc_core, test_x_precision);
+  tcase_add_test(tc_core, test_x_zero_precision_zero_val);
+  tcase_add_test(tc_core, test_x_hash);
+  tcase_add_test(tc_core, test_X_hash_caps);
+  tcase_add_test(tc_core, test_x_hash_zero);
+  tcase_add_test(tc_core, test_x_hash_and_precision);
+  tcase_add_test(tc_core, test_x_uint_max);
+  tcase_add_test(tc_core, test_x_middle_str);
 
   suite_add_tcase(s, tc_core);
 
