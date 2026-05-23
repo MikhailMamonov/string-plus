@@ -66,7 +66,7 @@ const char *parseLength(const char *input, formatSpec *spec) {
 }
 
 int parseSpecifier(char input, formatSpec *spec) {
-  if (input && s21_strchr("diouxXeEfgGcspn%", input) != NULL) {
+  if (input && s21_strchr("diouxXeEfgGcspn%", input) != s21_NULL) {
     spec->specifier = input;
     return 1;
   }

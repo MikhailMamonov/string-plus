@@ -44,17 +44,13 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   }
   case 'f': {
     double num = va_arg(*args, double);
-    int len = 0;
     *out = float_to_str(*out, num, *spec, &len);
-    *out = handle_width(*out, len, *spec);
     break;
   }
   case 'g':
   case 'G': {
     double num = va_arg(*args, double);
-    int len = 0;
     *out = g_spec(*out, num, *spec, &len);
-    *out = handle_width(*out, len, *spec);
     break;
   }
   case 'o': {
@@ -70,11 +66,24 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
     } else {
         val = va_arg(*args, unsigned int); // Обычный %o
     }
-    int len = 0;
     *out = o_spec(*out, val, *spec, &len);
-    *out = handle_width(*out, len, *spec);
     break;
-}
+  }
+  case 'x':
+  case 'X': {
+    unsigned long long val = 0;
+    
+    // Считываем и сразу приводим к нужному беззнаковому типу
+    if (spec->length == 'l') {
+        val = (unsigned long)va_arg(*args, unsigned long);
+    } else if (spec->length == 'h') {
+        val = (unsigned short)va_arg(*args, int); // short в va_arg продвигается до int
+    } else {
+        val = va_arg(*args, unsigned int); // Обычный %o
+    }
+    *out = hex_spec(*out, val, *spec, &len);
+    break;
+  }
   // TODO: need implementation
   //  case 'u': {
   //    unsigned int u = va_arg(*args, unsigned int);

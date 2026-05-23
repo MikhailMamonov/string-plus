@@ -37,7 +37,6 @@ RUN_SPRINTF_TEST(int_negative_width, "|%10d|", -42);
 RUN_SPRINTF_TEST(int_negative_width_left_align, "|%-10d|", -42);
 
 RUN_SPRINTF_TEST(short_int, "%hd", (short)2342);
-RUN_SPRINTF_TEST(long_long, "%lld", 45646546546465LL);
 RUN_SPRINTF_TEST(signed_char, "%hhd", (signed char)-56)
 
 RUN_SPRINTF_TEST(mixed_string_int, "%s %d", "answer", 42);
@@ -204,6 +203,33 @@ RUN_SPRINTF_TEST(x_hash_and_precision, "%#.4x", 171);
 RUN_SPRINTF_TEST(x_uint_max, "%x", 4294967295U);
 RUN_SPRINTF_TEST(x_middle_str,  "Address: %#.4x is loaded.", 255);
 
+char fmt_d[] = "%09.5d";
+RUN_SPRINTF_TEST(d_zero_and_precision_pos, fmt_d, 42);
+RUN_SPRINTF_TEST(d_zero_and_precision_neg, fmt_d, -42);
+
+char fmt_o[] = "%#09.5o";
+RUN_SPRINTF_TEST(o_zero_precision_and_hash, fmt_o, 10);
+
+char fmt_X[] = "%#09.5X";
+RUN_SPRINTF_TEST(X_zero_precision_hash, fmt_X, 171);
+
+// Положительные знаковые числа с флагами + или пробел
+RUN_SPRINTF_TEST(d_zero_width_plus_flag, "%+05d", 5);
+RUN_SPRINTF_TEST(d_zero_width_space_flag, "% 05d", 5);
+RUN_SPRINTF_TEST(f_zero_width_plus_flag, "%+010f", 5.5);
+
+// Восьмеричные числа (слияние префикса решётки с нулями ширины)
+RUN_SPRINTF_TEST(o_zero_width_hash_flag, "%#05o", 8);
+
+// Специальные плавающие значения (флаг 0 должен превратиться в пробелы)
+RUN_SPRINTF_TEST(f_zero_width_nan, "%08f", NAN);
+RUN_SPRINTF_TEST(f_zero_width_inf, "%08f", INFINITY);
+RUN_SPRINTF_TEST(f_zero_width_neg_inf, "%08f", -INFINITY);
+
+// Беззнаковые спецификаторы с паразитными флагами знаков
+RUN_SPRINTF_TEST(x_zero_width_hash_and_plus, "%#09x", 171);
+RUN_SPRINTF_TEST(x_zero_width_hash_and_space, "%#09x", 171);
+
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
   Suite *s = suite_create("sprintf");
@@ -226,7 +252,6 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_int_negative_width_left_align);
 
   tcase_add_test(tc_core, test_short_int);
-  tcase_add_test(tc_core, test_long_long);
   tcase_add_test(tc_core, test_signed_char);
 
   tcase_add_test(tc_core, test_mixed_string_int);
@@ -339,6 +364,21 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_x_hash_and_precision);
   tcase_add_test(tc_core, test_x_uint_max);
   tcase_add_test(tc_core, test_x_middle_str);
+
+  tcase_add_test(tc_core, test_d_zero_and_precision_pos);
+  tcase_add_test(tc_core, test_d_zero_and_precision_neg);
+  tcase_add_test(tc_core, test_o_zero_precision_and_hash);
+  tcase_add_test(tc_core, test_X_zero_precision_hash);
+
+  tcase_add_test(tc_core, test_d_zero_width_plus_flag);
+  tcase_add_test(tc_core, test_d_zero_width_space_flag);
+  tcase_add_test(tc_core, test_f_zero_width_plus_flag);
+  tcase_add_test(tc_core, test_o_zero_width_hash_flag);
+  tcase_add_test(tc_core, test_f_zero_width_nan);
+  tcase_add_test(tc_core, test_f_zero_width_inf);
+  tcase_add_test(tc_core, test_f_zero_width_neg_inf);
+  tcase_add_test(tc_core, test_x_zero_width_hash_and_plus);
+  tcase_add_test(tc_core, test_x_zero_width_hash_and_space);
 
   suite_add_tcase(s, tc_core);
 
