@@ -15,13 +15,21 @@ char *handle_width(char *buf, int length, formatSpec spec) {
     } else{
         char *from = buf - 1;
         char *to = buf + spaces_to_add - 1;
-        
+        int minus_zero = 0;
+        if (*(buf - length) == '-' && spec.zero_padding) {
+            minus_zero = 1;
+        }
         for (int i = 0; i < length; i++) {
-            *to-- = *from--;
+            if (minus_zero && i == length - 1) *to-- = '0';
+            else *to-- = *from--;
         }
         
         for (int i = 0; i < spaces_to_add; i++) {
-            *to-- = ' ';
+            if (minus_zero && i == spaces_to_add - 1) *to-- = '-';
+            else {
+                if (spec.zero_padding) *to-- = '0';
+                else *to-- = ' ';
+            }
         }
         buf += spaces_to_add;
   }

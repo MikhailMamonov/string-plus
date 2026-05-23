@@ -1,7 +1,7 @@
 #include "sprintf_utils.h"
 
 char *int_to_str(char *buf, long long num, int *len) {
-  char tmp[12]; // Временный буфер для разворота числа
+  char tmp[64]; // Временный буфер для разворота числа
   int i = 0;
   int is_negative = 0;
 
@@ -11,15 +11,19 @@ char *int_to_str(char *buf, long long num, int *len) {
     return buf;
   }
   char *start = buf;
+  unsigned long long u_num; 
   if (num < 0) {
     is_negative = 1;
-    num = -num; // Делаем число положительным для деления
+    u_num = (unsigned long long)(-num);
+  }
+  else {
+    u_num = (unsigned long long)num;
   }
 
   // Разбираем число на цифры с конца
-  while (num > 0) {
-    tmp[i++] = (num % 10) + '0';
-    num /= 10;
+  while (u_num > 0) {
+    tmp[i++] = (u_num % 10) + '0';
+    u_num /= 10;
   }
 
   if (is_negative) {
