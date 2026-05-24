@@ -2,24 +2,92 @@
 #ifndef TEST_COMMON_H
 #define TEST_COMMON_H
 
-#define INT_MAX 2147483647
-#define INT_MIN (-2147483647 - 1)
-
-// Структура параметров теста
 typedef struct {
     const void *src;
     s21_size_t size;
     const char *test_name;
 } MemCpyTestParams;
 
-
-// Структура параметров теста
 typedef struct {
     const char *str;
     int c;
     const char *test_name;
 } StrChrTestParams;
 
+typedef struct {
+    const void *data;
+    int chr;
+    s21_size_t num;
+    s21_size_t data_size;
+} memsetParams;
+
+typedef struct {
+    const void *str;
+    int c;
+    s21_size_t n;
+} memchrParams;
+
+// Структура параметров теста
+typedef struct {
+    int errnum;
+} strerrorParams;
+
+// Структура параметров теста
+typedef struct {
+    const char *str;
+    int c;
+} strrchrParams;
+
+
+typedef struct {
+    const char *str1;
+    const char *str2;
+    const char *test_name;
+} StrCSpnTestParams;
+
+typedef struct {
+    const char *str1;
+    const char *str2;
+    const char *test_name;
+} strpbrkParams;
+
+typedef struct {
+    char *str;
+    const char *delim;
+    const char *test_name;
+} strtokParams;
+
+typedef struct {
+    const char *str1;
+    const char *str2;
+    s21_size_t n;
+} strncmpParams;
+
+typedef struct {
+    const void *str1;
+    const void *str2;
+    s21_size_t n;
+    const char *test_name;
+} memcmpParams;
+
+typedef struct {
+    const char *dest_init;
+    const char *src;
+    s21_size_t n;
+    const char *test_name;
+} strncatParams;
+
+typedef struct {
+    const char *src;
+    s21_size_t n;
+    const char *test_name;
+} strncpyParams;
+
+typedef struct {
+    const char *str;
+    s21_size_t expected;
+    const char *test_name;
+} strlenParams;
 
 // Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
@@ -36,5 +104,41 @@ typedef struct {
 
 #define STRCHR_TEST_CASES(name, ...) \
     TEST_CASES(name, StrChrTestParams, run_strchr_test, __VA_ARGS__)
+
+#define MEMSET_TEST_CASES(name, ...) \
+    TEST_CASES(name, memsetParams, run_memset_test, __VA_ARGS__)
+
+#define MEMCHR_TEST_CASES(name, ...) \
+    TEST_CASES(name, memchrParams, run_memchr_test, __VA_ARGS__)
+
+#define STRERROR_TEST_CASES(name, ...) \
+    TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
+
+#define STRRCHR_TEST_CASES(name, ...) \
+    TEST_CASES(name, strrchrParams, run_strrchr_test, __VA_ARGS__)
+
+#define STRCSPN_TEST_CASES(name, ...) \
+    TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
+
+#define STRTOK_TEST_CASES(name, ...) \
+    TEST_CASES(name, strtokParams, run_strtok_test, __VA_ARGS__)
+
+#define STRNCMP_TEST_CASES(name, ...) \
+    TEST_CASES(name, strncmpParams, run_strncmp_test, __VA_ARGS__)
+
+#define STRPBRK_TEST_CASES(name, ...) \
+    TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
+
+#define STRNCAT_TEST_CASES(name, ...) \
+    TEST_CASES(name, strncatParams, run_strncat_test, __VA_ARGS__)
+
+#define STRNCPY_TEST_CASES(name, ...) \
+    TEST_CASES(name, strncpyParams, run_strncpy_test, __VA_ARGS__)
+
+#define MEMCMP_TEST_CASES(name, ...) \
+    TEST_CASES(name, memcmpParams, run_memcmp_test, __VA_ARGS__)
+
+#define STRLEN_TEST_CASES(name, ...) \
+    TEST_CASES(name, strlenParams, run_strlen_test, __VA_ARGS__)
 
 #endif
