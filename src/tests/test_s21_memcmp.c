@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "../s21_string.h"          // здесь у вас должна быть s21_memcmp и s21_size_t
-#include "test_s21_common.h"
+#include "s21_test_common.h"
 
 /* Нормализация знака результата к -1, 0, 1, чтобы сравнения были устойчивы
  *  между разными реализациями memcmp (некоторые возвращают разницу байтов,

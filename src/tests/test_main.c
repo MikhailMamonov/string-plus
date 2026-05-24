@@ -13,11 +13,13 @@ Suite *strrchr_suite_create(void);
 Suite *strtok_suite_create(void);
 Suite *strncmp_suite_create(void);
 Suite *strpbrk_suite_create(void);
+Suite *strstr_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, memcpy_suite_create());
     srunner_add_suite(sr, strerror_suite_create());
     srunner_add_suite(sr, memcmp_suite_create());
+    srunner_add_suite(sr, strstr_suite_create());
 }
 
 int main(void) {
