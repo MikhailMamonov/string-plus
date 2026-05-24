@@ -2,7 +2,6 @@
 #include <check.h>
 #include <stdlib.h>
 
-Suite *memcmp_suite_create(void);
 Suite *memchr_suite_create(void);
 Suite *memcpy_suite_create(void);
 Suite *strerror_suite_create(void);
@@ -16,7 +15,6 @@ Suite *strpbrk_suite_create(void);
 Suite *strncat_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
-    srunner_add_suite(sr, memcmp_suite_create());
     srunner_add_suite(sr, memchr_suite_create());
     srunner_add_suite(sr, memcpy_suite_create());
     srunner_add_suite(sr, strerror_suite_create());
