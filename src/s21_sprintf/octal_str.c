@@ -3,6 +3,11 @@
 char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len) {
   if (val == 0) {
     if (spec.precision == 0) {
+      if (spec.alt_format) {
+        *buf++ = '0';
+        *len = 1;
+        return buf;
+      }
       *len = 0;
       return buf;
     }

@@ -329,6 +329,40 @@ RUN_SPRINTF_TEST(g_length_L, "%Lg", 0.000012345L);
 // Тест на совместную работу с шириной и знаками
 RUN_SPRINTF_TEST(float_L_width_flags, "%+015.4Lf", 12345.6789L);
 
+// Тесты на динамическую точность со спецификатором %Lf
+RUN_SPRINTF_TEST(float_L_asterisk_precision, "%.*Lf", 3, 123.456789L);
+RUN_SPRINTF_TEST(float_L_asterisk_zero_precision, "%.*Lf", 0, 123.456789L); // Точность 0 (остается только целая часть и точка)
+
+// Тесты на динамическую точность со спецификатором %Le / %LE
+RUN_SPRINTF_TEST(exp_L_asterisk_precision, "%.*Le", 4, 987654.321L);
+RUN_SPRINTF_TEST(exp_LE_asterisk_precision, "%.*LE", 2, 0.00123L);
+
+// Тесты на динамическую точность со спецификатором %Lg / %LG
+RUN_SPRINTF_TEST(g_L_asterisk_precision, "%.*Lg", 4, 1234.5678L);
+RUN_SPRINTF_TEST(G_L_asterisk_precision, "%.*LG", 2, 987654.0L);
+
+// Комплексный тест: динамическая ширина И динамическая точность вместе
+RUN_SPRINTF_TEST(float_L_asterisk_width_and_precision, "%*.*Lf", 12, 4, 45.678912L);
+
+RUN_SPRINTF_TEST(int_min_boundary, "%d", -2147483647 - 1); 
+RUN_SPRINTF_TEST(int_max_boundary, "%d", 2147483647);
+RUN_SPRINTF_TEST(string_precision_cut, "%.3s", "International");
+RUN_SPRINTF_TEST(string_precision_zero, "%.0s", "Don't print me");
+RUN_SPRINTF_TEST(string_precision_overflow, "%.20s", "Short"); 
+RUN_SPRINTF_TEST(asterisk_negative_width, "%*d", -10, 42); 
+RUN_SPRINTF_TEST(asterisk_negative_precision, "%.*d", -5, 99); 
+char fmt_conflict_plus_space[] = "%+ d";
+RUN_SPRINTF_TEST(flags_conflict_plus_space, fmt_conflict_plus_space, 7); 
+
+char fmt_conflict_space_plus[] = "% +d";
+RUN_SPRINTF_TEST(flags_conflict_space_plus, fmt_conflict_space_plus, 7); 
+
+char fmt_conflict_minus_zero[] = "%-010d";
+RUN_SPRINTF_TEST(flags_conflict_minus_zero, fmt_conflict_minus_zero, 42); 
+RUN_SPRINTF_TEST(int_precision_zero_val_zero, "%.0d", 0);
+RUN_SPRINTF_TEST(uint_precision_zero_val_zero, "%.0u", 0);
+RUN_SPRINTF_TEST(octal_hash_precision_zero_val_zero, "%#.0o", 0);
+
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
@@ -509,6 +543,28 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_exp_length_L);
   tcase_add_test(tc_core, test_g_length_L);
   tcase_add_test(tc_core, test_float_L_width_flags);
+
+  tcase_add_test(tc_core, test_float_L_asterisk_precision);
+  tcase_add_test(tc_core, test_float_L_asterisk_zero_precision);
+  tcase_add_test(tc_core, test_exp_L_asterisk_precision);
+  tcase_add_test(tc_core, test_exp_LE_asterisk_precision);
+  tcase_add_test(tc_core, test_g_L_asterisk_precision);
+  tcase_add_test(tc_core, test_G_L_asterisk_precision);
+  tcase_add_test(tc_core, test_float_L_asterisk_width_and_precision);
+
+  tcase_add_test(tc_core, test_int_min_boundary);
+  tcase_add_test(tc_core, test_int_max_boundary);
+  tcase_add_test(tc_core, test_string_precision_cut);
+  tcase_add_test(tc_core, test_string_precision_zero);
+  tcase_add_test(tc_core, test_string_precision_overflow);
+  tcase_add_test(tc_core, test_asterisk_negative_width);
+  tcase_add_test(tc_core, test_asterisk_negative_precision);
+  tcase_add_test(tc_core, test_flags_conflict_plus_space);
+  tcase_add_test(tc_core, test_flags_conflict_space_plus);
+  tcase_add_test(tc_core, test_flags_conflict_minus_zero);
+  tcase_add_test(tc_core, test_int_precision_zero_val_zero);
+  tcase_add_test(tc_core, test_uint_precision_zero_val_zero);
+  tcase_add_test(tc_core, test_octal_hash_precision_zero_val_zero);
 
 
   suite_add_tcase(s, tc_core);
