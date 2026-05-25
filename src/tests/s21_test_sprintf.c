@@ -321,6 +321,14 @@ START_TEST(test_n_length_l) {
 }
 END_TEST
 
+// Тесты для %Lf, %Le и %Lg с обычными и большими числами
+RUN_SPRINTF_TEST(float_length_L, "%Lf", 123.456789L);
+RUN_SPRINTF_TEST(exp_length_L, "%Le", 987654.321L);
+RUN_SPRINTF_TEST(g_length_L, "%Lg", 0.000012345L);
+
+// Тест на совместную работу с шириной и знаками
+RUN_SPRINTF_TEST(float_L_width_flags, "%+015.4Lf", 12345.6789L);
+
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
@@ -496,6 +504,11 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_mixed_string_and_int);
   tcase_add_test(tc_core, test_mixed_multiple_numbers);
   tcase_add_test(tc_core, test_mixed_complex_row);
+
+  tcase_add_test(tc_core, test_float_length_L);
+  tcase_add_test(tc_core, test_exp_length_L);
+  tcase_add_test(tc_core, test_g_length_L);
+  tcase_add_test(tc_core, test_float_L_width_flags);
 
 
   suite_add_tcase(s, tc_core);

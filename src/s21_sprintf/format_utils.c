@@ -39,18 +39,24 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
   }
   case 'e':
   case 'E': {
-    double exp = va_arg(*args, double);
+    long double exp = 0;
+    if (spec->length == 'L') exp = va_arg(*args, long double);
+    else exp = va_arg(*args, double);
     *out = double_to_exp_str(*out, exp, *spec, &len);
     break;
   }
   case 'f': {
-    double num = va_arg(*args, double);
+    long double num = 0;
+    if (spec->length == 'L') num = va_arg(*args, long double);
+    else num = va_arg(*args, double);
     *out = float_to_str(*out, num, *spec, &len);
     break;
   }
   case 'g':
   case 'G': {
-    double num = va_arg(*args, double);
+    long double num = 0;
+    if (spec->length == 'L') num = va_arg(*args, long double);
+    else num = va_arg(*args, double);
     *out = g_spec(*out, num, *spec, &len);
     break;
   }

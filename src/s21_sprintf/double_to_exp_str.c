@@ -4,7 +4,7 @@
 char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
                 int exponent, int is_negative, int *len);
 
-char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
+char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len) {
   char *next_buf = handle_special_floats(buf, val, spec, len);
 
   if (next_buf != NULL) {
@@ -12,11 +12,11 @@ char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
   }
   // 1. Сразу определяем и сохраняем знак
   int is_negative = signbit(val);
-  val = fabs(val);
+  val = fabsl(val);
 
   int exponent = 0;
   if (val != 0.0) {
-    exponent = (int)floor(log10(val));
+    exponent = (int)floorl(log10l(val));
     // Используем умножение для отрицательных степеней во избежание потери
     // точности
     val /= pow(10, exponent);
@@ -34,11 +34,11 @@ char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len) {
     exponent--;
   }
 
-  long long mantissa_int = llround(val * pow(10, spec.precision));
+  long long mantissa_int = llroundl(val * pow(10, spec.precision));
 
   // Защита от переполнения порядка (например, когда 9.999999 округлилось до
   // 10000000)
-  long long limit = llround(pow(10, spec.precision + 1));
+  long long limit = llroundl(pow(10, spec.precision + 1));
 
   if (mantissa_int >= limit) {
     mantissa_int /= 10; // Убираем лишний разряд

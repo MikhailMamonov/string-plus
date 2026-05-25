@@ -3,14 +3,14 @@
 
 char *remove_tail_zeroes(char *buf, char *buf_p);
 
-char *g_spec(char *buf, double val, formatSpec spec, int *len) {
+char *g_spec(char *buf, long double val, formatSpec spec, int *len) {
   char *next_buf = handle_special_floats(buf, val, spec, len);
   if (next_buf != NULL) {
     return next_buf;
   }
 
   char *start = buf;
-  int exponent = (val == 0.0) ? 0 : (int)floor(log10(fabs(val)));
+  int exponent = (val == 0.0) ? 0 : (int)floorl(log10l(fabsl(val)));
   if (spec.precision < 0)
     spec.precision = 6;
   if (spec.precision == 0)

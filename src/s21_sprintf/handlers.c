@@ -80,7 +80,7 @@ char *handle_width(char *buf, int length, formatSpec spec) {
 //   return buf;
 // }
 
-char *handle_special_floats(char *buf, double val, formatSpec spec, int *len) {
+char *handle_special_floats(char *buf, long double val, formatSpec spec, int *len) {
   int is_nan = isnan(val);
   int is_inf = isinf(val);
 

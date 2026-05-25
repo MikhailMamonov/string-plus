@@ -17,7 +17,7 @@ typedef struct {
 
 
 char *int_to_str(char *buf, long long num, int *len,  formatSpec spec);
-char *double_to_exp_str(char *buf, double val, formatSpec spec, int *len);
+char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len);
 int parseFlag(char input);
 const char* parseWidth(const char *input, formatSpec * spec, va_list* args);
 const char* parsePrecision(const char* input, formatSpec * spec, va_list* args);
@@ -27,9 +27,9 @@ const char* parseFormat(const char *format, formatSpec * spec, va_list* args);
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start);
 //char *handle_precision(char *buf, int length, char spec);
 char *handle_width(char *buf, int length, formatSpec spec);
-char *handle_special_floats(char *buf, double val, formatSpec spec, int *len);
-char *float_to_str(char *buf, double num, formatSpec spec, int *len);
-char *g_spec(char *buf, double val, formatSpec spec, int *len);
+char *handle_special_floats(char *buf, long double val, formatSpec spec, int *len);
+char *float_to_str(char *buf, long double num, formatSpec spec, int *len);
+char *g_spec(char *buf, long double val, formatSpec spec, int *len);
 char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 char *hex_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 char *u_spec(char *buf, unsigned long long val, formatSpec spec, int *len);

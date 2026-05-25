@@ -4,7 +4,7 @@
 
 char *simple_int_to_str(char *buf, long long num);
 
-char *float_to_str(char *buf, double num, formatSpec spec, int *len) {
+char *float_to_str(char *buf, long double num, formatSpec spec, int *len) {
   char *next_buf = handle_special_floats(buf, num, spec, len);
   if (next_buf != s21_NULL) {
     return next_buf;
