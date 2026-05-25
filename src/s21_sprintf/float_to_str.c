@@ -60,12 +60,11 @@ char *simple_int_to_str(char *buf, long long num) {
     *buf++ = '0';
     return buf;
   }
-  unsigned long long u_num; 
+  unsigned long long u_num;
   if (num < 0) {
     is_negative = 1;
     u_num = (unsigned long long)(-num);
-  }
-  else {
+  } else {
     u_num = (unsigned long long)num;
   }
   // Разбираем число на цифры с конца
@@ -75,7 +74,7 @@ char *simple_int_to_str(char *buf, long long num) {
   }
 
   if (is_negative) {
-        *buf++ = '-';
+    *buf++ = '-';
   }
 
   // Записываем цифры в правильном порядке в основной буфер
@@ -84,4 +83,3 @@ char *simple_int_to_str(char *buf, long long num) {
   }
   return buf; // Возвращаем указатель на текущую позицию в буфере
 }
-

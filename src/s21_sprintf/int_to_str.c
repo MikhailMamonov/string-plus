@@ -4,7 +4,7 @@ char *int_to_str(char *buf, long long num, int *len, formatSpec spec) {
   char tmp[64]; // Временный буфер для разворота числа
   int i = 0;
   int is_negative = 0;
-  char *start = buf; 
+  char *start = buf;
 
   if (num == 0) {
     if (spec.show_sign) {
@@ -20,8 +20,9 @@ char *int_to_str(char *buf, long long num, int *len, formatSpec spec) {
     *len = buf - start;
     return buf;
   }
-  if (spec.precision < 0) spec.precision = 1;
-  unsigned long long u_num; 
+  if (spec.precision < 0)
+    spec.precision = 1;
+  unsigned long long u_num;
   if (num < 0) {
     is_negative = 1;
     u_num = (unsigned long long)(-num);
@@ -44,7 +45,7 @@ char *int_to_str(char *buf, long long num, int *len, formatSpec spec) {
     *buf++ = ' ';
   }
   for (int i = 0; i < spec.precision - num_len; i++) {
-        *buf++ = '0';
+    *buf++ = '0';
   }
 
   // Записываем цифры в правильном порядке в основной буфер

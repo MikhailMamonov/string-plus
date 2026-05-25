@@ -1,8 +1,6 @@
 #include "sprintf_utils.h"
 #include <string.h> //for strlen()
 
-
-
 // Отдельная функция для форматирования
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   int len = 0;
@@ -26,14 +24,14 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   case 'i': {
     long long d = 0;
     if (spec->length == 'l') {
-        d = (long)va_arg(*args, long);
+      d = (long)va_arg(*args, long);
     } else if (spec->length == 'h') {
-        d = (short)va_arg(*args, int); // short в va_arg продвигается до int
+      d = (short)va_arg(*args, int); // short в va_arg продвигается до int
     } else {
-        d = va_arg(*args, int); // Обычный %o
+      d = va_arg(*args, int); // Обычный %o
     }
-        
-    *out = int_to_str(*out, d, &len, *spec);   
+
+    *out = int_to_str(*out, d, &len, *spec);
     break;
   }
   case 'e':
@@ -55,16 +53,17 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   }
   case 'o': {
     unsigned long long val = 0;
-    
+
     // Считываем и сразу приводим к нужному беззнаковому типу
     if (spec->length == 'l') {
-        val = (unsigned long)va_arg(*args, unsigned long);
+      val = (unsigned long)va_arg(*args, unsigned long);
     } else if (spec->length == 'h') {
-        val = (unsigned short)va_arg(*args, int); // short в va_arg продвигается до int
+      val = (unsigned short)va_arg(*args,
+                                   int); // short в va_arg продвигается до int
     } else if (spec->length == 'H') { // например, для ll
-        val = va_arg(*args, unsigned long long);
+      val = va_arg(*args, unsigned long long);
     } else {
-        val = va_arg(*args, unsigned int); // Обычный %o
+      val = va_arg(*args, unsigned int); // Обычный %o
     }
     *out = o_spec(*out, val, *spec, &len);
     break;
@@ -72,14 +71,15 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   case 'x':
   case 'X': {
     unsigned long long val = 0;
-    
+
     // Считываем и сразу приводим к нужному беззнаковому типу
     if (spec->length == 'l') {
-        val = (unsigned long)va_arg(*args, unsigned long);
+      val = (unsigned long)va_arg(*args, unsigned long);
     } else if (spec->length == 'h') {
-        val = (unsigned short)va_arg(*args, int); // short в va_arg продвигается до int
+      val = (unsigned short)va_arg(*args,
+                                   int); // short в va_arg продвигается до int
     } else {
-        val = va_arg(*args, unsigned int); // Обычный %o
+      val = va_arg(*args, unsigned int); // Обычный %o
     }
     *out = hex_spec(*out, val, *spec, &len);
     break;
