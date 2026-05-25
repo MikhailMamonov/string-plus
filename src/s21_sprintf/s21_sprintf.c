@@ -14,7 +14,7 @@ int s21_sprintf(char *str, const char *format, ...) {
       } else {
         formatSpec spec = {0};
         format = parseFormat(format, &spec, &args);
-        formatBySpecifier(&spec, &args, &str);
+        formatBySpecifier(&spec, &args, &str, start_str);
       }
     } else {
       *str++ = *format++;

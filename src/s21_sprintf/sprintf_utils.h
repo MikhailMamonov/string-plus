@@ -24,7 +24,7 @@ const char* parsePrecision(const char* input, formatSpec * spec, va_list* args);
 const char* parseLength(const char *format, formatSpec * spec);
 int parseSpecifier(char input, formatSpec *spec); 
 const char* parseFormat(const char *format, formatSpec * spec, va_list* args);
-void formatBySpecifier(formatSpec *spec, va_list *args, char **out);
+void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start);
 //char *handle_precision(char *buf, int length, char spec);
 char *handle_width(char *buf, int length, formatSpec spec);
 char *handle_special_floats(char *buf, double val, formatSpec spec, int *len);
@@ -32,5 +32,7 @@ char *float_to_str(char *buf, double num, formatSpec spec, int *len);
 char *g_spec(char *buf, double val, formatSpec spec, int *len);
 char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 char *hex_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
+char *u_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
+char *pointer_to_str(char *buf, void *pointer, formatSpec spec, int *len);
 
 #endif

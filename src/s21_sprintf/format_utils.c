@@ -1,8 +1,9 @@
 #include "sprintf_utils.h"
 #include <string.h> //for strlen()
+#include "../s21_string.h"
 
 // Отдельная функция для форматирования
-void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
+void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start) {
   int len = 0;
   switch (spec->specifier) {
   case 'c': {
@@ -13,9 +14,11 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
   }
   case 's': {
     char *s = va_arg(*args, char *);
+    if (s == s21_NULL) s = "(null)";
     len = strlen(s);
-
-    while (*s) {
+    if (spec->precision >= 0 && len > spec->precision) len = spec->precision;
+    char *str_end = s + len;
+    while (s < str_end) {
       *(*out)++ = *s++;
     }
     break;
@@ -84,21 +87,41 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out) {
     *out = hex_spec(*out, val, *spec, &len);
     break;
   }
-  // TODO: need implementation
-  //  case 'u': {
-  //    unsigned int u = va_arg(*args, unsigned int);
-  //    *out = uint_to_str(*out, u);
-  //    break;
-  //  }
-  // TODO: need implementation
-  //  case 'x':
-  //  case 'X': {
-  //    unsigned int hex = va_arg(*args, unsigned int);
-  //    *out = hex_to_str(*out, hex, spec->specifier == 'X');
-  //    break;
-  //  }
+  case 'u': {
+    unsigned long long val = 0;
+
+    // Считываем и сразу приводим к нужному беззнаковому типу
+    if (spec->length == 'l') {
+      val = (unsigned long)va_arg(*args, unsigned long);
+    } else if (spec->length == 'h') {
+      val = (unsigned short)va_arg(*args,
+                                   int); // short в va_arg продвигается до int
+    } else {
+      val = va_arg(*args, unsigned int); // Обычный %o
+    }
+    *out = u_spec(*out, val, *spec, &len);
+    break;
+  }
   case '%': {
     *(*out)++ = '%';
+    break;
+  }
+  case 'p': {
+    void *pointer = va_arg(*args, void*);
+    *out = pointer_to_str(*out, pointer, *spec, &len);
+    break;
+  }
+  case 'n': {
+    if (spec->length == 'l') {
+        long *pointer = (long *)va_arg(*args, long *);
+        *pointer = *out - start;
+    } else if (spec->length == 'h') {
+        short *pointer = (short *)va_arg(*args, short *); 
+        *pointer = *out - start;
+    } else {
+        int *pointer = va_arg(*args, int *); 
+        *pointer = *out - start;
+    }
     break;
   }
   default: {

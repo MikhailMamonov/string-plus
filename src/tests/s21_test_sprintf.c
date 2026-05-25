@@ -230,6 +230,97 @@ RUN_SPRINTF_TEST(f_zero_width_neg_inf, "%08f", -INFINITY);
 // Беззнаковые спецификаторы с паразитными флагами знаков
 RUN_SPRINTF_TEST(x_zero_width_hash_and_plus, "%#09x", 171);
 RUN_SPRINTF_TEST(x_zero_width_hash_and_space, "%#09x", 171);
+// Смешанный тест: строка с точностью + число с шириной
+RUN_SPRINTF_TEST(mixed_string_and_int, "User: %-8.3s | ID: %05d", "Administrator", 42);
+
+// Смешанный тест: несколько чисел с разным выравниванием и флагами в одной строке
+RUN_SPRINTF_TEST(mixed_multiple_numbers, "Hex: %#-8x Oct: %#06o Val: %+5d", 255, 8, 12);
+
+// Комплексный тест: строка, спец-число float и обычный int вместе
+RUN_SPRINTF_TEST(mixed_complex_row, "[%5.2s] status is %08f (code %X)", "OK_DONE", NAN, 15);
+// Базовые тесты %u
+RUN_SPRINTF_TEST(u_simple, "%u", 12345);
+RUN_SPRINTF_TEST(u_zero, "%u", 0);
+
+// Тесты на точность (precision)
+RUN_SPRINTF_TEST(u_precision, "%.5u", 42);
+RUN_SPRINTF_TEST(u_zero_precision_zero_val, "%.0u", 0); // Должна быть пустая строка
+
+// Переполнение отрицательными числами (превращение в беззнаковые)
+RUN_SPRINTF_TEST(u_negative, "%u", -1);
+RUN_SPRINTF_TEST(u_negative_large, "%u", -12345);
+
+char fmt_u_plus[] = "%+u";
+RUN_SPRINTF_TEST(u_plus_flag, fmt_u_plus, 100);
+
+char fmt_u_space[] = "% u";
+RUN_SPRINTF_TEST(u_space_flag, fmt_u_space, 100);
+
+char fmt_u_zero_prec[] = "%09.5u";
+RUN_SPRINTF_TEST(u_zero_and_precision, fmt_u_zero_prec, 42);
+
+// Модификаторы длины
+RUN_SPRINTF_TEST(u_length_h, "%hu", (unsigned short)-1);
+RUN_SPRINTF_TEST(u_length_l, "%lu", 4294967295L);
+// Тест на вывод обычного адреса переменной (сравниваем рантайм-вывод)
+int dummy_var = 42;
+RUN_SPRINTF_TEST(p_simple, "%p", &dummy_var);
+
+// Тесты на обработку NULL (nil)
+RUN_SPRINTF_TEST(p_zero_null, "%p", s21_NULL);
+
+// Тесты на ширину поля (width) для обычного адреса и для NULL
+RUN_SPRINTF_TEST(p_width_normal, "%20p", &dummy_var);
+RUN_SPRINTF_TEST(p_width_null, "%10p", s21_NULL);
+RUN_SPRINTF_TEST(p_width_left_align_null, "%-10p", s21_NULL); // Выравнивание по левому краю
+
+START_TEST(test_n_simple) {
+    char std_buf[100] = {0};
+    char test_buf[100] = {0};
+    int std_count = -1, test_count = -1;
+
+    // ВАЖНО: Строка формата передается строго литералом
+    int std_len = sprintf(std_buf, "Hello, %nworld!", &std_count);
+    int test_len = s21_sprintf(test_buf, "Hello, %nworld!", &test_count);
+
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(std_count, test_count); // Проверяем, совпал ли подсчет символов
+    printf("[PASS] %s: \"%s\" -> \"%d\"\n", "test_n_simple", "Hello, %nworld!", std_count);
+}
+END_TEST
+
+START_TEST(test_n_length_h) {
+    char std_buf[100] = {0};
+    char test_buf[100] = {0};
+    short std_count = -1, test_count = -1;
+
+    int std_len = sprintf(std_buf, "Short int %hn test", &std_count);
+    int test_len = s21_sprintf(test_buf, "Short int %hn test", &test_count);
+
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(std_count, test_count);
+    printf("[PASS] %s: \"%s\" -> \"%d\"\n", "test_n_length_h", "Short int %hn test", std_count);
+}
+END_TEST
+
+START_TEST(test_n_length_l) {
+    char std_buf[100] = {0};
+    char test_buf[100] = {0};
+    long std_count = -1, test_count = -1;
+
+    // Комплексный тест: %n стоит после других спецификаторов с шириной
+    int std_len = sprintf(std_buf, "Width %5d and %-8s%ln", 42, "text", &std_count);
+    int test_len = s21_sprintf(test_buf, "Width %5d and %-8s%ln", 42, "text", &test_count);
+
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(std_count, test_count);
+    printf("[PASS] %s: \"%s\" -> \"%ld\"\n", "test_n_length_l", "Width %5d and %-8s%ln", std_count);
+}
+END_TEST
+
 
 // Функция, которую вызовет Runner
 Suite *sprintf_suite_create(void) {
@@ -380,6 +471,32 @@ Suite *sprintf_suite_create(void) {
   tcase_add_test(tc_core, test_f_zero_width_neg_inf);
   tcase_add_test(tc_core, test_x_zero_width_hash_and_plus);
   tcase_add_test(tc_core, test_x_zero_width_hash_and_space);
+  tcase_add_test(tc_core, test_p_simple);
+  tcase_add_test(tc_core, test_p_zero_null);
+  tcase_add_test(tc_core, test_p_width_normal);
+  tcase_add_test(tc_core, test_p_width_null);
+  tcase_add_test(tc_core, test_p_width_left_align_null);
+
+  tcase_add_test(tc_core, test_n_simple);
+  tcase_add_test(tc_core, test_n_length_h);
+  tcase_add_test(tc_core, test_n_length_l);
+
+  tcase_add_test(tc_core, test_u_simple);
+  tcase_add_test(tc_core, test_u_zero);
+  tcase_add_test(tc_core, test_u_precision);
+  tcase_add_test(tc_core, test_u_zero_precision_zero_val);
+  tcase_add_test(tc_core, test_u_negative);
+  tcase_add_test(tc_core, test_u_negative_large);
+  tcase_add_test(tc_core, test_u_plus_flag);
+  tcase_add_test(tc_core, test_u_space_flag);
+  tcase_add_test(tc_core, test_u_zero_and_precision);
+  tcase_add_test(tc_core, test_u_length_h);
+  tcase_add_test(tc_core, test_u_length_l);
+
+  tcase_add_test(tc_core, test_mixed_string_and_int);
+  tcase_add_test(tc_core, test_mixed_multiple_numbers);
+  tcase_add_test(tc_core, test_mixed_complex_row);
+
 
   suite_add_tcase(s, tc_core);
 
