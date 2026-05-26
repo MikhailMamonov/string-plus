@@ -32,7 +32,9 @@ const char *parsePrecision(const char *input, formatSpec *spec, va_list *args) {
     if (*input == '*') {
       spec->precision = va_arg(*args, int);
       if (spec->precision < 0) {
-        spec->precision = -1; // Отрицательная точность игнорируется
+        if (spec->precision != -1) {
+          spec->precision = -1;
+    }
       }
       input++;
     } else if (isdigit(*input)) {
@@ -66,7 +68,8 @@ const char *parseLength(const char *input, formatSpec *spec) {
 }
 
 int parseSpecifier(char input, formatSpec *spec) {
-  if (input && s21_strchr("diouxXeEfgGcspn%", input) != s21_NULL) {
+  static const char *specifiers = "diouxXeEfgGcspn%";
+  if (s21_strchr(specifiers, input) != s21_NULL){
     spec->specifier = input;
     return 1;
   }

@@ -77,8 +77,8 @@ typedef struct {
 // Новый макрос для тестов sprintf с переменным количеством аргументов
 #define RUN_SPRINTF_TEST(test_name, format, ...) \
     START_TEST(test_##test_name) { \
-        char std_buf[512] = {0}; \
-        char test_buf[512] = {0}; \
+        char std_buf[8000] = {0}; \
+        char test_buf[8000] = {0}; \
         int std_len; \
         int test_len; \
         std_len = sprintf(std_buf, format, ##__VA_ARGS__); \

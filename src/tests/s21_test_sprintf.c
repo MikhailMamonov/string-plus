@@ -6,14 +6,6 @@
 #include <string.h>
 #include <math.h>
 
-#include "../s21_string.h"
-#include "s21_test_common.h"
-#include <check.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-
 static const char *fmt_d_prec = "%09.5d";
 static const char *fmt_u_zero_prec = "%.0u";
 static const char *fmt_u_simple = "%u";
@@ -157,6 +149,18 @@ RUN_SPRINTF_TEST(f_zero_width_nan, "%08f", NAN);
 RUN_SPRINTF_TEST(f_zero_width_inf, "%08f", INFINITY);
 RUN_SPRINTF_TEST(f_zero_width_neg_inf, "%08f", -INFINITY);
 
+// Тесты для округления float
+RUN_SPRINTF_TEST(round_9999_to_1000, "%.3f", 0.9999);
+RUN_SPRINTF_TEST(round_1999_to_2000, "%.3f", 1.9999);
+RUN_SPRINTF_TEST(round_9999_two_digits, "%.2f", 0.9999);
+RUN_SPRINTF_TEST(round_carry_all, "%.3f", 0.9995);
+RUN_SPRINTF_TEST(round_carry_multiple, "%.2f", 9.999);
+RUN_SPRINTF_TEST(round_carry_overflow, "%.0f", 999.9999);
+RUN_SPRINTF_TEST(round_half_up, "%.0f", 1.5);
+RUN_SPRINTF_TEST(round_half_down, "%.0f", 2.5);
+RUN_SPRINTF_TEST(round_negative, "%.1f", -0.95);
+RUN_SPRINTF_TEST(round_negative_carry, "%.0f", -1.5);
+
 // ==================== EXPONENT TESTS ====================
 RUN_SPRINTF_TEST(zero_exponent, "%e", 0.0);
 RUN_SPRINTF_TEST(positive_number_exponent, "%e", 123.456);
@@ -194,6 +198,24 @@ RUN_SPRINTF_TEST(g_hash_no_dot_originally, "%#g", 125.0);
 RUN_SPRINTF_TEST(g_hash_exp_zeros, "%#g", 1200000.0);
 RUN_SPRINTF_TEST(g_hash_exp_no_dot_originally, "%#G", 1000000.0);
 RUN_SPRINTF_TEST(g_hash_with_precision, "%#.4g", 1.24);
+
+// Тесты для %g с precision = 0
+RUN_SPRINTF_TEST(g_prec_zero_no_dot, "%.0g", 123.456);
+RUN_SPRINTF_TEST(g_prec_zero_large, "%.0g", 1234567.89);
+RUN_SPRINTF_TEST(g_prec_zero_small, "%.0g", 0.00012345);
+RUN_SPRINTF_TEST(g_prec_zero_one, "%.0g", 1.234);
+RUN_SPRINTF_TEST(g_prec_zero_round_up, "%.0g", 9.6);
+RUN_SPRINTF_TEST(g_prec_zero_round_down, "%.0g", 9.4);
+
+// Тесты для %g с precision = 0 и флагом #
+RUN_SPRINTF_TEST(g_hash_prec_zero, "%#.0g", 123.456);
+RUN_SPRINTF_TEST(g_hash_prec_zero_int, "%#.0g", 123.0);
+RUN_SPRINTF_TEST(g_hash_prec_zero_small, "%#.0g", 0.000123);
+
+// Тесты для %g с precision = 0 на граничных значениях
+RUN_SPRINTF_TEST(g_prec_zero_zero, "%.0g", 0.0);
+RUN_SPRINTF_TEST(g_prec_zero_neg_zero, "%.0g", -0.0);
+RUN_SPRINTF_TEST(g_prec_zero_one_hundred, "%.0g", 100.0);
 
 // ==================== LONG DOUBLE TESTS ====================
 RUN_SPRINTF_TEST(float_length_L, "%Lf", 123.456789L);
@@ -253,6 +275,36 @@ START_TEST(test_n_length_l) {
 }
 END_TEST
 
+START_TEST(test_n_multiple_calls) {
+    char std_buf[100] = {0};
+    char test_buf[100] = {0};
+    int std_count1 = -1, std_count2 = -1;
+    int test_count1 = -1, test_count2 = -1;
+    
+    int std_len = sprintf(std_buf, "%nHello%n", &std_count1, &std_count2);
+    int test_len = s21_sprintf(test_buf, "%nHello%n", &test_count1, &test_count2);
+    
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(std_count1, test_count1);
+    ck_assert_int_eq(std_count2, test_count2);
+}
+END_TEST
+
+START_TEST(test_n_with_width_and_precision) {
+    char std_buf[100] = {0};
+    char test_buf[100] = {0};
+    int std_count = -1, test_count = -1;
+    
+    int std_len = sprintf(std_buf, "%10.5d%n", 42, &std_count);
+    int test_len = s21_sprintf(test_buf, "%10.5d%n", 42, &test_count);
+    
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(std_count, test_count);
+}
+END_TEST
+
 // ==================== EXTRA DYNAMIC & CONFLICT TESTS ====================
 RUN_SPRINTF_TEST(asterisk_negative_width, "%*d", -10, 42);
 RUN_SPRINTF_TEST(asterisk_negative_precision, "%.*d", -5, 99);
@@ -273,6 +325,75 @@ RUN_SPRINTF_TEST(mixed_string_and_int, "User: %-8.3s | ID: %05d", "Administrator
 RUN_SPRINTF_TEST(mixed_multiple_numbers, "Hex: %#-8x Oct: %#06o Val: %+5d", 255, 8, 12);
 RUN_SPRINTF_TEST(mixed_complex_row, "(%5.2s) status is %08f (code %X)", "OK_DONE", NAN, 15);
 
+// ==================== HUGE PRECISION TESTS ====================
+RUN_SPRINTF_TEST(float_prec_2000, "%.2000f", 0.123456);
+RUN_SPRINTF_TEST(float_prec_5000, "%.5000f", 42.0);
+RUN_SPRINTF_TEST(exp_prec_1000, "%.1000e", 123.456);
+RUN_SPRINTF_TEST(exp_prec_2000, "%.2000E", 0.00123);
+RUN_SPRINTF_TEST(g_prec_1000, "%.1000g", 123.456);
+RUN_SPRINTF_TEST(g_prec_2000, "%.2000G", 0.00012345);
+
+START_TEST(test_float_huge_precision) {
+    char std_buf[5000] = {0};
+    char test_buf[5000] = {0};
+    
+    int std_len = sprintf(std_buf, "%.1000f", 1.23456789);
+    int test_len = s21_sprintf(test_buf, "%.1000f", 1.23456789);
+    
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(strlen(test_buf), 1002);
+}
+END_TEST
+
+START_TEST(test_huge_precision_performance) {
+    char format[50];
+    sprintf(format, "%%.%df", 10000);
+    char std_buf[15000] = {0};
+    char test_buf[15000] = {0};
+    
+    int std_len = sprintf(std_buf, format, 3.14159);
+    int test_len = s21_sprintf(test_buf, format, 3.14159);
+    
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_str_eq(std_buf, test_buf);
+}
+END_TEST
+
+// ==================== BUFFER OVERFLOW TESTS ====================
+START_TEST(test_buffer_overflow_protection) {
+    char small_buf[10] = {0};
+    int result = s21_sprintf(small_buf, "This is a very long string that will overflow", 0);
+    ck_assert(result <= 9);
+}
+END_TEST
+
+START_TEST(test_exact_buffer_size) {
+    char buf1[20] = {0};
+    char buf2[20] = {0};
+    char pattern[20] = "1234567890123456789";
+    
+    int len1 = sprintf(buf1, "%s", pattern);
+    int len2 = s21_sprintf(buf2, "%s", pattern);
+    
+    ck_assert_int_eq(len1, len2);
+    ck_assert_str_eq(buf1, buf2);
+}
+END_TEST
+
+START_TEST(test_buffer_boundary) {
+    char buf[5];
+    char expected[5];
+    
+    int len1 = sprintf(expected, "%d", 1234);
+    int len2 = s21_sprintf(buf, "%d", 1234);
+    
+    ck_assert_int_eq(len1, len2);
+    ck_assert_str_eq(expected, buf);
+}
+END_TEST
+
+// ==================== REGISTRATION FUNCTIONS ====================
 void register_string_tests(TCase *tc) {
     tcase_add_test(tc, test_string_basic);
     tcase_add_test(tc, test_string_with_space);
@@ -405,6 +526,16 @@ void register_float_tests(TCase *tc) {
     tcase_add_test(tc, test_f_zero_width_nan);
     tcase_add_test(tc, test_f_zero_width_inf);
     tcase_add_test(tc, test_f_zero_width_neg_inf);
+    tcase_add_test(tc, test_round_9999_to_1000);
+    tcase_add_test(tc, test_round_1999_to_2000);
+    tcase_add_test(tc, test_round_9999_two_digits);
+    tcase_add_test(tc, test_round_carry_all);
+    tcase_add_test(tc, test_round_carry_multiple);
+    tcase_add_test(tc, test_round_carry_overflow);
+    tcase_add_test(tc, test_round_half_up);
+    tcase_add_test(tc, test_round_half_down);
+    tcase_add_test(tc, test_round_negative);
+    tcase_add_test(tc, test_round_negative_carry);
 }
 
 void register_exponent_tests(TCase *tc) {
@@ -423,6 +554,7 @@ void register_exponent_tests(TCase *tc) {
 }
 
 void register_g_tests(TCase *tc) {
+    // Существующие тесты G
     tcase_add_test(tc, test_g_zero);
     tcase_add_test(tc, test_g_negative_zero);
     tcase_add_test(tc, test_g_simple_float);
@@ -445,6 +577,31 @@ void register_g_tests(TCase *tc) {
     tcase_add_test(tc, test_g_hash_exp_zeros);
     tcase_add_test(tc, test_g_hash_exp_no_dot_originally);
     tcase_add_test(tc, test_g_hash_with_precision);
+    
+    // Новые тесты для precision = 0
+    tcase_add_test(tc, test_g_prec_zero_no_dot);
+    tcase_add_test(tc, test_g_prec_zero_large);
+    tcase_add_test(tc, test_g_prec_zero_small);
+    tcase_add_test(tc, test_g_prec_zero_one);
+    tcase_add_test(tc, test_g_prec_zero_round_up);
+    tcase_add_test(tc, test_g_prec_zero_round_down);
+    tcase_add_test(tc, test_g_hash_prec_zero);
+    tcase_add_test(tc, test_g_hash_prec_zero_int);
+    tcase_add_test(tc, test_g_hash_prec_zero_small);
+    tcase_add_test(tc, test_g_prec_zero_zero);
+    tcase_add_test(tc, test_g_prec_zero_neg_zero);
+    tcase_add_test(tc, test_g_prec_zero_one_hundred);
+}
+
+void register_huge_precision_tests(TCase *tc) {
+    tcase_add_test(tc, test_float_huge_precision);
+    tcase_add_test(tc, test_huge_precision_performance);
+    tcase_add_test(tc, test_float_prec_2000);
+    tcase_add_test(tc, test_float_prec_5000);
+    tcase_add_test(tc, test_exp_prec_1000);
+    tcase_add_test(tc, test_exp_prec_2000);
+    tcase_add_test(tc, test_g_prec_1000);
+    tcase_add_test(tc, test_g_prec_2000);
 }
 
 void register_long_double_tests(TCase *tc) {
@@ -473,6 +630,8 @@ void register_n_tests(TCase *tc) {
     tcase_add_test(tc, test_n_simple);
     tcase_add_test(tc, test_n_length_h);
     tcase_add_test(tc, test_n_length_l);
+    tcase_add_test(tc, test_n_multiple_calls);
+    tcase_add_test(tc, test_n_with_width_and_precision);
 }
 
 void register_flag_tests(TCase *tc) {
@@ -495,6 +654,12 @@ void register_mixed_tests(TCase *tc) {
     tcase_add_test(tc, test_mixed_complex_row);
 }
 
+void register_buffer_overflow_tests(TCase *tc) {
+    tcase_add_test(tc, test_buffer_overflow_protection);
+    tcase_add_test(tc, test_exact_buffer_size);
+    tcase_add_test(tc, test_buffer_boundary);
+}
+
 Suite *sprintf_suite_create(void) {
     Suite *s = suite_create("sprintf");
     TCase *tc_core = tcase_create("Core");
@@ -514,6 +679,9 @@ Suite *sprintf_suite_create(void) {
     register_n_tests(tc_core);
     register_flag_tests(tc_core);
     register_mixed_tests(tc_core);
+    register_huge_precision_tests(tc_core);
+    register_buffer_overflow_tests(tc_core);
+
     suite_add_tcase(s, tc_core);
     return s;
 }

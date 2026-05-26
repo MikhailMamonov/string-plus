@@ -46,7 +46,7 @@ char *g_spec(char *buf, long double val, formatSpec spec, int *len) {
 }
 
 char *remove_tail_zeroes(char *buf, char *buf_p) {
-  while (*buf_p - '0' == 0) {
+  while (*buf_p == '0') {
     for (char *i = buf_p; i < buf; i++) {
       *i = *(i + 1);
     }
