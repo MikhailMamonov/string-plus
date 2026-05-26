@@ -64,26 +64,6 @@ typedef struct {
 } strncmpParams;
 
 typedef struct {
-    const void *str1;
-    const void *str2;
-    s21_size_t n;
-    const char *test_name;
-} memcmpParams;
-
-typedef struct {
-    const char *dest_init;
-    const char *src;
-    s21_size_t n;
-    const char *test_name;
-} strncatParams;
-
-typedef struct {
-    const char *src;
-    s21_size_t n;
-    const char *test_name;
-} strncpyParams;
-
-typedef struct {
     const char *str;
     s21_size_t expected;
     const char *test_name;
@@ -128,15 +108,6 @@ typedef struct {
 
 #define STRPBRK_TEST_CASES(name, ...) \
     TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
-
-#define STRNCAT_TEST_CASES(name, ...) \
-    TEST_CASES(name, strncatParams, run_strncat_test, __VA_ARGS__)
-
-#define STRNCPY_TEST_CASES(name, ...) \
-    TEST_CASES(name, strncpyParams, run_strncpy_test, __VA_ARGS__)
-
-#define MEMCMP_TEST_CASES(name, ...) \
-    TEST_CASES(name, memcmpParams, run_memcmp_test, __VA_ARGS__)
 
 #define STRLEN_TEST_CASES(name, ...) \
     TEST_CASES(name, strlenParams, run_strlen_test, __VA_ARGS__)
