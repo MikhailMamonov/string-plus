@@ -12,7 +12,7 @@ Suite *strrchr_suite_create(void);
 Suite *strtok_suite_create(void);
 Suite *strncmp_suite_create(void);
 Suite *strpbrk_suite_create(void);
-Suite *strncat_suite_create(void);
+Suite *strlen_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, memchr_suite_create());
@@ -25,7 +25,7 @@ void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, strtok_suite_create());
     srunner_add_suite(sr, strncmp_suite_create());
     srunner_add_suite(sr, strpbrk_suite_create());
-    srunner_add_suite(sr, strncat_suite_create());
+    srunner_add_suite(sr, strlen_suite_create());
 }
 
 int main(void) {

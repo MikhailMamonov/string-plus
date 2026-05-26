@@ -64,11 +64,10 @@ typedef struct {
 } strncmpParams;
 
 typedef struct {
-    const char *dest_init;
-    const char *src;
-    s21_size_t n;
+    const char *str;
+    s21_size_t expected;
     const char *test_name;
-} strncatParams;
+} strlenParams;
 
 // Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
@@ -110,7 +109,7 @@ typedef struct {
 #define STRPBRK_TEST_CASES(name, ...) \
     TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
 
-#define STRNCAT_TEST_CASES(name, ...) \
-    TEST_CASES(name, strncatParams, run_strncat_test, __VA_ARGS__)
+#define STRLEN_TEST_CASES(name, ...) \
+    TEST_CASES(name, strlenParams, run_strlen_test, __VA_ARGS__)
 
 #endif
