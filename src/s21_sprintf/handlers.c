@@ -3,6 +3,8 @@
 #include <math.h>
 #include <string.h> //strstr
 
+char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add);
+
 char *handle_width(char *buf, int length, formatSpec spec) {
   int spaces_to_add = 0;
   if (spec.width > length) {
@@ -15,7 +17,6 @@ char *handle_width(char *buf, int length, formatSpec spec) {
     } else {
       char *from = buf - 1;
       char *to = buf + spaces_to_add - 1;
-      char pad_char = ' ';
       if (spec.zero_padding &&
           (spec.precision < 0 ||
            s21_strchr("diouxX", spec.specifier) == s21_NULL) &&
@@ -23,24 +24,40 @@ char *handle_width(char *buf, int length, formatSpec spec) {
           strstr(buf - length, "nan") == NULL &&
           strstr(buf - length, "inf") == NULL &&
           strstr(buf - length, "INF") == NULL) {
-        pad_char = '0';
+        buf = zero_paddle(buf, length, spec, to, from, spaces_to_add);
       }
+      else {
+          for (int i = 0; i < length; i++) {
+              *to-- = *from--;
+          }
+
+          for (int i = 0; i < spaces_to_add; i++) {
+              *to-- = ' ';
+          }
+      }
+      buf += spaces_to_add;
+    }
+  }
+  return buf;
+}
+
+char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add) {
       int minus_zero = 0;
-      if (*(buf - length) == '-' && pad_char == '0') {
+      if (*(buf - length) == '-') {
         minus_zero = 1;
       }
       int plus_zero = 0;
-      if (!minus_zero && *(buf - length) == '+' && pad_char == '0' &&
+      if (!minus_zero && *(buf - length) == '+' &&
           s21_strchr("difeEgG", spec.specifier) != s21_NULL) {
         plus_zero = 1;
       }
       int space_zero = 0;
-      if (!minus_zero && !plus_zero && spec.space_sign && pad_char == '0' &&
+      if (!minus_zero && !plus_zero && spec.space_sign &&
           s21_strchr("difeEgG", spec.specifier) != s21_NULL) {
         space_zero = 1;
       }
       int hex_zero = 0;
-      if (s21_strchr("xX", spec.specifier) != s21_NULL && pad_char == '0' &&
+      if (s21_strchr("xX", spec.specifier) != s21_NULL &&
           spec.alt_format) {
         hex_zero = 1;
       }
@@ -63,13 +80,10 @@ char *handle_width(char *buf, int length, formatSpec spec) {
         else if (hex_zero && i == spaces_to_add - 2)
           *to-- = spec.specifier;
         else {
-          *to-- = pad_char;
+          *to-- = '0';
         }
       }
-      buf += spaces_to_add;
-    }
-  }
-  return buf;
+      return buf;
 }
 
 // char *handle_precision(char *buf, int length, char spec) {

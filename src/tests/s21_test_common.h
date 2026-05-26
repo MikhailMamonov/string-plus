@@ -87,7 +87,7 @@ typedef struct {
         ck_assert_int_eq(std_len, test_len); \
         printf("[PASS] %s: \"%s\" -> \"%s\"\n", #test_name, format, std_buf); \
     } \
-    END_TEST
+    END_TEST 
 
 
 #define MEMCPY_TEST_CASES(name, ...) \

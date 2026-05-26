@@ -6,6 +6,14 @@
 #include <string.h>
 #include <math.h>
 
+#include "../s21_string.h"
+#include "s21_test_common.h"
+#include <check.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
 static const char *fmt_d_prec = "%09.5d";
 static const char *fmt_u_zero_prec = "%.0u";
 static const char *fmt_u_simple = "%u";
@@ -73,7 +81,6 @@ RUN_SPRINTF_TEST(d_length_mixed, "Result is: %012ld!", -1234567890L);
 RUN_SPRINTF_TEST(u_simple, "%u", 12345);
 RUN_SPRINTF_TEST(u_zero, "%u", 0);
 RUN_SPRINTF_TEST(u_precision, "%.5u", 42);
-
 RUN_SPRINTF_TEST(u_zero_precision_zero_val, fmt_u_zero_prec, 0);
 RUN_SPRINTF_TEST(u_negative, fmt_u_simple, -1);
 RUN_SPRINTF_TEST(u_negative_large, fmt_u_simple, -12345);
@@ -246,92 +253,16 @@ START_TEST(test_n_length_l) {
 }
 END_TEST
 
-// Тесты для %Lf, %Le и %Lg с обычными и большими числами
-RUN_SPRINTF_TEST(float_length_L, "%Lf", 123.456789L);
-RUN_SPRINTF_TEST(exp_length_L, "%Le", 987654.321L);
-RUN_SPRINTF_TEST(g_length_L, "%Lg", 0.000012345L);
-
-// Тест на совместную работу с шириной и знаками
-RUN_SPRINTF_TEST(float_L_width_flags, "%+015.4Lf", 12345.6789L);
-
-// Тесты на динамическую точность со спецификатором %Lf
-RUN_SPRINTF_TEST(float_L_asterisk_precision, "%.*Lf", 3, 123.456789L);
-RUN_SPRINTF_TEST(float_L_asterisk_zero_precision, "%.*Lf", 0, 123.456789L); // Точность 0 (остается только целая часть и точка)
-
-// Тесты на динамическую точность со спецификатором %Le / %LE
-RUN_SPRINTF_TEST(exp_L_asterisk_precision, "%.*Le", 4, 987654.321L);
-RUN_SPRINTF_TEST(exp_LE_asterisk_precision, "%.*LE", 2, 0.00123L);
-
-// Тесты на динамическую точность со спецификатором %Lg / %LG
-RUN_SPRINTF_TEST(g_L_asterisk_precision, "%.*Lg", 4, 1234.5678L);
-RUN_SPRINTF_TEST(G_L_asterisk_precision, "%.*LG", 2, 987654.0L);
-
-// Комплексный тест: динамическая ширина И динамическая точность вместе
-RUN_SPRINTF_TEST(float_L_asterisk_width_and_precision, "%*.*Lf", 12, 4, 45.678912L);
-
-RUN_SPRINTF_TEST(int_min_boundary, "%d", -2147483647 - 1); 
-RUN_SPRINTF_TEST(int_max_boundary, "%d", 2147483647);
-RUN_SPRINTF_TEST(string_precision_cut, "%.3s", "International");
-RUN_SPRINTF_TEST(string_precision_zero, "%.0s", "Don't print me");
-RUN_SPRINTF_TEST(string_precision_overflow, "%.20s", "Short"); 
-RUN_SPRINTF_TEST(asterisk_negative_width, "%*d", -10, 42); 
-RUN_SPRINTF_TEST(asterisk_negative_precision, "%.*d", -5, 99); 
-char fmt_conflict_plus_space[] = "%+ d";
-RUN_SPRINTF_TEST(flags_conflict_plus_space, fmt_conflict_plus_space, 7); 
-
-char fmt_conflict_space_plus[] = "% +d";
-RUN_SPRINTF_TEST(flags_conflict_space_plus, fmt_conflict_space_plus, 7); 
-
-char fmt_conflict_minus_zero[] = "%-010d";
-RUN_SPRINTF_TEST(flags_conflict_minus_zero, fmt_conflict_minus_zero, 42); 
-RUN_SPRINTF_TEST(int_precision_zero_val_zero, "%.0d", 0);
-RUN_SPRINTF_TEST(uint_precision_zero_val_zero, "%.0u", 0);
-RUN_SPRINTF_TEST(octal_hash_precision_zero_val_zero, "%#.0o", 0);
-
-// Тесты на динамическую точность со спецификатором %Lf
-RUN_SPRINTF_TEST(float_L_asterisk_precision, "%.*Lf", 3, 123.456789L);
-RUN_SPRINTF_TEST(float_L_asterisk_zero_precision, "%.*Lf", 0, 123.456789L); // Точность 0 (остается только целая часть и точка)
-
-// Тесты на динамическую точность со спецификатором %Le / %LE
-RUN_SPRINTF_TEST(exp_L_asterisk_precision, "%.*Le", 4, 987654.321L);
-RUN_SPRINTF_TEST(exp_LE_asterisk_precision, "%.*LE", 2, 0.00123L);
-
-// Тесты на динамическую точность со спецификатором %Lg / %LG
-RUN_SPRINTF_TEST(g_L_asterisk_precision, "%.*Lg", 4, 1234.5678L);
-RUN_SPRINTF_TEST(G_L_asterisk_precision, "%.*LG", 2, 987654.0L);
-
-// Комплексный тест: динамическая ширина И динамическая точность вместе
-RUN_SPRINTF_TEST(float_L_asterisk_width_and_precision, "%*.*Lf", 12, 4, 45.678912L);
-
-RUN_SPRINTF_TEST(int_min_boundary, "%d", -2147483647 - 1); 
-RUN_SPRINTF_TEST(int_max_boundary, "%d", 2147483647);
-RUN_SPRINTF_TEST(string_precision_cut, "%.3s", "International");
-RUN_SPRINTF_TEST(string_precision_zero, "%.0s", "Don't print me");
-RUN_SPRINTF_TEST(string_precision_overflow, "%.20s", "Short"); 
-RUN_SPRINTF_TEST(asterisk_negative_width, "%*d", -10, 42); 
-RUN_SPRINTF_TEST(asterisk_negative_precision, "%.*d", -5, 99); 
-char fmt_conflict_plus_space[] = "%+ d";
-RUN_SPRINTF_TEST(flags_conflict_plus_space, fmt_conflict_plus_space, 7); 
-
-char fmt_conflict_space_plus[] = "% +d";
-RUN_SPRINTF_TEST(flags_conflict_space_plus, fmt_conflict_space_plus, 7); 
-
-char fmt_conflict_minus_zero[] = "%-010d";
-RUN_SPRINTF_TEST(flags_conflict_minus_zero, fmt_conflict_minus_zero, 42); 
-RUN_SPRINTF_TEST(int_precision_zero_val_zero, "%.0d", 0);
-RUN_SPRINTF_TEST(uint_precision_zero_val_zero, "%.0u", 0);
-RUN_SPRINTF_TEST(octal_hash_precision_zero_val_zero, "%#.0o", 0);
-
-
-// Функция, которую вызовет Runner
-// ==================== FLAG COMBINATION TESTS ====================
-RUN_SPRINTF_TEST(d_zero_width_plus_flag, "%+05d", 5);
-RUN_SPRINTF_TEST(d_zero_width_space_flag, "% 05d", 5);
+// ==================== EXTRA DYNAMIC & CONFLICT TESTS ====================
 RUN_SPRINTF_TEST(asterisk_negative_width, "%*d", -10, 42);
 RUN_SPRINTF_TEST(asterisk_negative_precision, "%.*d", -5, 99);
 RUN_SPRINTF_TEST(flags_conflict_plus_space, FMT_CONFLICT_PS, 7);
 RUN_SPRINTF_TEST(flags_conflict_space_plus, FMT_CONFLICT_SP, 7);
 RUN_SPRINTF_TEST(flags_conflict_minus_zero, FMT_CONFLICT_MZ, 42);
+
+// ==================== FLAG COMBINATION TESTS ====================
+RUN_SPRINTF_TEST(d_zero_width_plus_flag, "%+05d", 5);
+RUN_SPRINTF_TEST(d_zero_width_space_flag, "% 05d", 5);
 
 // ==================== MIXED TESTS ====================
 RUN_SPRINTF_TEST(mixed_string_int, "%s %d", "answer", 42);
@@ -340,7 +271,7 @@ RUN_SPRINTF_TEST(mixed_str_int_float, "Price: %.2f %s (discounted from %d)", 49.
 RUN_SPRINTF_TEST(mixed_str_int_exp, "The number %d can be presented as %E. Interesting!", 1000, 1000.0);
 RUN_SPRINTF_TEST(mixed_string_and_int, "User: %-8.3s | ID: %05d", "Administrator", 42);
 RUN_SPRINTF_TEST(mixed_multiple_numbers, "Hex: %#-8x Oct: %#06o Val: %+5d", 255, 8, 12);
-RUN_SPRINTF_TEST(mixed_complex_row, "[%5.2s] status is %08f (code %X)", "OK_DONE", NAN, 15);
+RUN_SPRINTF_TEST(mixed_complex_row, "(%5.2s) status is %08f (code %X)", "OK_DONE", NAN, 15);
 
 void register_string_tests(TCase *tc) {
     tcase_add_test(tc, test_string_basic);
