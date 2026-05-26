@@ -64,28 +64,8 @@ typedef struct {
 } strncmpParams;
 
 typedef struct {
-    const void *str1;
-    const void *str2;
-    s21_size_t n;
-    const char *test_name;
-} memcmpParams;
-
-typedef struct {
-    const char *dest_init;
-    const char *src;
-    s21_size_t n;
-    const char *test_name;
-} strncatParams;
-
-typedef struct {
-    const char *src;         // строка-источник
-    s21_size_t n;            // максимум байт для копирования
-    const char *test_name;
-} strncpyParams;
-
-typedef struct {
-    const char *haystack;    // строка, в которой ищем
-    const char *needle;      // подстрока, которую ищем
+    const char *haystack;
+    const char *needle;
     const char *test_name;
 } strstrParams;
 
@@ -128,16 +108,6 @@ TEST_CASES(name, strncmpParams, run_strncmp_test, __VA_ARGS__)
 
 #define STRPBRK_TEST_CASES(name, ...) \
 TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
-
-#define STRNCAT_TEST_CASES(name, ...) \
-TEST_CASES(name, strncatParams, run_strncat_test, __VA_ARGS__)
-
-#define STRNCPY_TEST_CASES(name, ...) \
-TEST_CASES(name, strncpyParams, run_strncpy_test, __VA_ARGS__)
-
-#define MEMCMP_TEST_CASES(name, ...) \
-TEST_CASES(name, memcmpParams, run_memcmp_test, __VA_ARGS__)
-
 
 #define STRSTR_TEST_CASES(name, ...) \
     TEST_CASES(name, strstrParams, run_strstr_test, __VA_ARGS__)
