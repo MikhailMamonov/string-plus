@@ -29,7 +29,7 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
 char *handle_width(char *buf, int length, formatSpec spec);
 char *handle_special_floats(char *buf, long double val, formatSpec spec, int *len);
 char *float_to_str(char *buf, long double num, formatSpec spec, int *len);
-char *g_spec(char *buf, long double val, formatSpec spec, int *len);
+char *g_spec(char *buf, long double val, formatSpec spec, int *len, char *start);
 char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 char *hex_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 char *u_spec(char *buf, unsigned long long val, formatSpec spec, int *len);

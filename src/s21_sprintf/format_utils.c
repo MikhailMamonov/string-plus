@@ -57,7 +57,7 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
     long double num = 0;
     if (spec->length == 'L') num = va_arg(*args, long double);
     else num = va_arg(*args, double);
-    *out = g_spec(*out, num, *spec, &len);
+    *out = g_spec(*out, num, *spec, &len, start);
     break;
   }
   case 'o': {

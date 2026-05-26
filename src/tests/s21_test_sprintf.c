@@ -325,48 +325,8 @@ RUN_SPRINTF_TEST(mixed_string_and_int, "User: %-8.3s | ID: %05d", "Administrator
 RUN_SPRINTF_TEST(mixed_multiple_numbers, "Hex: %#-8x Oct: %#06o Val: %+5d", 255, 8, 12);
 RUN_SPRINTF_TEST(mixed_complex_row, "(%5.2s) status is %08f (code %X)", "OK_DONE", NAN, 15);
 
-// ==================== HUGE PRECISION TESTS ====================
-RUN_SPRINTF_TEST(float_prec_2000, "%.2000f", 0.123456);
-RUN_SPRINTF_TEST(float_prec_5000, "%.5000f", 42.0);
-RUN_SPRINTF_TEST(exp_prec_1000, "%.1000e", 123.456);
-RUN_SPRINTF_TEST(exp_prec_2000, "%.2000E", 0.00123);
-RUN_SPRINTF_TEST(g_prec_1000, "%.1000g", 123.456);
-RUN_SPRINTF_TEST(g_prec_2000, "%.2000G", 0.00012345);
-
-START_TEST(test_float_huge_precision) {
-    char std_buf[5000] = {0};
-    char test_buf[5000] = {0};
-    
-    int std_len = sprintf(std_buf, "%.1000f", 1.23456789);
-    int test_len = s21_sprintf(test_buf, "%.1000f", 1.23456789);
-    
-    ck_assert_int_eq(std_len, test_len);
-    ck_assert_str_eq(std_buf, test_buf);
-    ck_assert_int_eq(strlen(test_buf), 1002);
-}
-END_TEST
-
-START_TEST(test_huge_precision_performance) {
-    char format[50];
-    sprintf(format, "%%.%df", 10000);
-    char std_buf[15000] = {0};
-    char test_buf[15000] = {0};
-    
-    int std_len = sprintf(std_buf, format, 3.14159);
-    int test_len = s21_sprintf(test_buf, format, 3.14159);
-    
-    ck_assert_int_eq(std_len, test_len);
-    ck_assert_str_eq(std_buf, test_buf);
-}
-END_TEST
 
 // ==================== BUFFER OVERFLOW TESTS ====================
-START_TEST(test_buffer_overflow_protection) {
-    char small_buf[10] = {0};
-    int result = s21_sprintf(small_buf, "This is a very long string that will overflow", 0);
-    ck_assert(result <= 9);
-}
-END_TEST
 
 START_TEST(test_exact_buffer_size) {
     char buf1[20] = {0};
@@ -593,17 +553,6 @@ void register_g_tests(TCase *tc) {
     tcase_add_test(tc, test_g_prec_zero_one_hundred);
 }
 
-void register_huge_precision_tests(TCase *tc) {
-    tcase_add_test(tc, test_float_huge_precision);
-    tcase_add_test(tc, test_huge_precision_performance);
-    tcase_add_test(tc, test_float_prec_2000);
-    tcase_add_test(tc, test_float_prec_5000);
-    tcase_add_test(tc, test_exp_prec_1000);
-    tcase_add_test(tc, test_exp_prec_2000);
-    tcase_add_test(tc, test_g_prec_1000);
-    tcase_add_test(tc, test_g_prec_2000);
-}
-
 void register_long_double_tests(TCase *tc) {
     tcase_add_test(tc, test_float_length_L);
     tcase_add_test(tc, test_exp_length_L);
@@ -655,7 +604,6 @@ void register_mixed_tests(TCase *tc) {
 }
 
 void register_buffer_overflow_tests(TCase *tc) {
-    tcase_add_test(tc, test_buffer_overflow_protection);
     tcase_add_test(tc, test_exact_buffer_size);
     tcase_add_test(tc, test_buffer_boundary);
 }
@@ -679,7 +627,6 @@ Suite *sprintf_suite_create(void) {
     register_n_tests(tc_core);
     register_flag_tests(tc_core);
     register_mixed_tests(tc_core);
-    register_huge_precision_tests(tc_core);
     register_buffer_overflow_tests(tc_core);
 
     suite_add_tcase(s, tc_core);

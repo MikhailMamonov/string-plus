@@ -56,7 +56,7 @@ char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
     *buf++ = '-';
 
   // 1. Создаем буфер для цифр и гарантированно заполняем его символами '0'
-  char digits[64];
+  char digits[8192];
   for (int i = 0; i < 64; i++) {
     digits[i] = '0';
   }
