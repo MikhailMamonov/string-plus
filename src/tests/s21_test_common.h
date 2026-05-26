@@ -112,4 +112,7 @@ TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
 #define STRSTR_TEST_CASES(name, ...) \
     TEST_CASES(name, strstrParams, run_strstr_test, __VA_ARGS__)
 
+#define STRNCAT_TEST_CASES(name, ...) \
+    TEST_CASES(name, strncatParams, run_strncat_test, __VA_ARGS__)
+
 #endif
