@@ -8,20 +8,16 @@ static void run_strlen_test(const strlenParams *p) {
     s21_size_t len_std = strlen(p->str);
     s21_size_t len_s21 = s21_strlen(p->str);
 
-    /* Сравнение с эталонной реализацией */
     ck_assert_msg(len_std == len_s21,
                   "FAIL [%s]: s21_strlen=%zu, strlen=%zu",
                   p->test_name,
-                  (size_t)len_s21, (size_t)len_std);
+                  (s21_size_t)len_s21, (s21_size_t)len_std);
 
-    /* Сравнение с явно ожидаемым значением */
     ck_assert_msg(len_s21 == p->expected,
                   "FAIL [%s]: s21_strlen=%zu, expected=%zu",
                   p->test_name,
-                  (size_t)len_s21, (size_t)p->expected);
+                  (s21_size_t)len_s21, (s21_size_t)p->expected);
 }
-
-/* === Наборы тестов === */
 
 STRLEN_TEST_CASES(strlen_basic,
                   {"Hello, World!", 13, "hello_world"},
@@ -62,13 +58,9 @@ STRLEN_TEST_CASES(strlen_long_strings,
 )
 
 STRLEN_TEST_CASES(strlen_terminator_only_counts_before_null,
-                  /* C-строка обрывается на первом '\0'.
-                   *      "abc\0def" в литерале → длина 3. */
                   {"abc\0def", 3, "null_in_middle"},
                   {"\0abc",    0, "null_at_start"}
 )
-
-/* === Сборка suite === */
 
 Suite *strlen_suite_create(void) {
     Suite *s = suite_create("strlen");
