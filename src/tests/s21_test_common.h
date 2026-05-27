@@ -27,17 +27,14 @@ typedef struct {
     s21_size_t n;
 } memchrParams;
 
-// Структура параметров теста
 typedef struct {
     int errnum;
 } strerrorParams;
 
-// Структура параметров теста
 typedef struct {
     const char *str;
     int c;
 } strrchrParams;
-
 
 typedef struct {
     const char *str1;
@@ -64,6 +61,15 @@ typedef struct {
 } strncmpParams;
 
 typedef struct {
+    const char *haystack;
+    const char *needle;
+    const char *test_name;
+} strstrParams;
+
+typedef struct {
+    const char *dest_init;
+    const char *src;
+    s21_size_t n;
     const char *test_name;
     const char *format;
     const char *expected; 
@@ -75,15 +81,14 @@ typedef struct {
     const char *test_name;
 } strlenParams;
 
-// Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
-    static param_type name[] = {__VA_ARGS__}; \
-    START_TEST(test_##name) { \
-        for (s21_size_t i = 0; i < sizeof(name)/sizeof(param_type); i++) { \
-            run_func(&name[i]); \
-        } \
+static param_type name[] = {__VA_ARGS__}; \
+START_TEST(test_##name) { \
+    for (s21_size_t i = 0; i < sizeof(name)/sizeof(param_type); i++) { \
+        run_func(&name[i]); \
     } \
-    END_TEST
+} \
+END_TEST
 
 
 // Новый макрос для тестов sprintf с переменным количеством аргументов
@@ -135,7 +140,10 @@ typedef struct {
 #define STRPBRK_TEST_CASES(name, ...) \
     TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
 
-#define STRLEN_TEST_CASES(name, ...) \
-    TEST_CASES(name, strlenParams, run_strlen_test, __VA_ARGS__)
+#define STRSTR_TEST_CASES(name, ...) \
+    TEST_CASES(name, strstrParams, run_strstr_test, __VA_ARGS__)
+
+#define STRNCAT_TEST_CASES(name, ...) \
+    TEST_CASES(name, strncatParams, run_strncat_test, __VA_ARGS__)
 
 #endif
