@@ -11,6 +11,9 @@ Suite *strcspn_suite_create(void);
 Suite *strrchr_suite_create(void);
 Suite *strtok_suite_create(void);
 Suite *strncmp_suite_create(void);
+Suite *strpbrk_suite_create(void);
+Suite *strlen_suite_create(void);
+
 // extended functions
 Suite *sprintf_suite_create(void);
 
@@ -24,6 +27,8 @@ void assemble_srunner(SRunner *sr) {
   srunner_add_suite(sr, strrchr_suite_create());
   srunner_add_suite(sr, strtok_suite_create());
   srunner_add_suite(sr, strncmp_suite_create());
+  srunner_add_suite(sr, strpbrk_suite_create());
+  srunner_add_suite(sr, strlen_suite_create());
 
   // extended functions
   srunner_add_suite(sr, sprintf_suite_create());

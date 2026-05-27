@@ -46,6 +46,12 @@ typedef struct {
 } StrCSpnTestParams;
 
 typedef struct {
+    const char *str1;
+    const char *str2;
+    const char *test_name;
+} strpbrkParams;
+
+typedef struct {
     char *str;
     const char *delim;
     const char *test_name;
@@ -62,6 +68,12 @@ typedef struct {
     const char *format;
     const char *expected; 
 } sprintfParams;
+
+typedef struct {
+    const char *str;
+    s21_size_t expected;
+    const char *test_name;
+} strlenParams;
 
 // Макрос для создания тестовых наборов
 #define TEST_CASES(name,param_type ,run_func, ...) \
@@ -119,4 +131,11 @@ typedef struct {
 
 #define SPRINTF_TEST_CASES(name, ...) \
     TEST_CASES(name, sprintfParams, run_sprintf_test, __VA_ARGS__)
+
+#define STRPBRK_TEST_CASES(name, ...) \
+    TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
+
+#define STRLEN_TEST_CASES(name, ...) \
+    TEST_CASES(name, strlenParams, run_strlen_test, __VA_ARGS__)
+
 #endif

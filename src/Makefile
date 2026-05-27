@@ -63,6 +63,7 @@ fclean: clean
 
 re: fclean all
 
+
 # Проверка стиля (опционально)
 check-style:
 	clang-format -n $(SRCS) $(TEST_SRCS)
