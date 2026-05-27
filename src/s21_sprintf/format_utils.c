@@ -1,9 +1,8 @@
 #include "s21_sprintf.h"
-#include <string.h> //for strlen()
-
 
 // Отдельная функция для форматирования
-void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start) {
+void formatBySpecifier(formatSpec *spec, va_list *args, char **out,
+                       char *start) {
   int len = 0;
   switch (spec->specifier) {
   case 'c': {
@@ -14,9 +13,13 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
   }
   case 's': {
     char *s = va_arg(*args, char *);
-    if (s == s21_NULL) s = "(null)";
-    len = strlen(s);
-    if (spec->precision >= 0 && len > spec->precision) len = spec->precision;
+    if (s == s21_NULL) {
+      s = "(null)";
+    }
+    len = s21_strlen(s);
+    if (spec->precision >= 0 && len > spec->precision) {
+      len = spec->precision;
+    }
     char *str_end = s + len;
     while (s < str_end) {
       *(*out)++ = *s++;
@@ -40,23 +43,29 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
   case 'e':
   case 'E': {
     long double exp = 0;
-    if (spec->length == 'L') exp = va_arg(*args, long double);
-    else exp = va_arg(*args, double);
+    if (spec->length == 'L')
+      exp = va_arg(*args, long double);
+    else
+      exp = va_arg(*args, double);
     *out = double_to_exp_str(*out, exp, *spec, &len);
     break;
   }
   case 'f': {
     long double num = 0;
-    if (spec->length == 'L') num = va_arg(*args, long double);
-    else num = va_arg(*args, double);
+    if (spec->length == 'L')
+      num = va_arg(*args, long double);
+    else
+      num = va_arg(*args, double);
     *out = float_to_str(*out, num, *spec, &len);
     break;
   }
   case 'g':
   case 'G': {
     long double num = 0;
-    if (spec->length == 'L') num = va_arg(*args, long double);
-    else num = va_arg(*args, double);
+    if (spec->length == 'L')
+      num = va_arg(*args, long double);
+    else
+      num = va_arg(*args, double);
     *out = g_spec(*out, num, *spec, &len, start);
     break;
   }
@@ -113,20 +122,20 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
     break;
   }
   case 'p': {
-    void *pointer = va_arg(*args, void*);
+    void *pointer = va_arg(*args, void *);
     *out = pointer_to_str(*out, pointer, *spec, &len);
     break;
   }
   case 'n': {
     if (spec->length == 'l') {
-        long *pointer = (long *)va_arg(*args, long *);
-        *pointer = *out - start;
+      long *pointer = (long *)va_arg(*args, long *);
+      *pointer = *out - start;
     } else if (spec->length == 'h') {
-        short *pointer = (short *)va_arg(*args, short *); 
-        *pointer = *out - start;
+      short *pointer = (short *)va_arg(*args, short *);
+      *pointer = *out - start;
     } else {
-        int *pointer = va_arg(*args, int *); 
-        *pointer = *out - start;
+      int *pointer = va_arg(*args, int *);
+      *pointer = *out - start;
     }
     break;
   }

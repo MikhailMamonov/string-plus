@@ -10,6 +10,7 @@ NAME = s21_string.a
 
 # Исходники тестов (например, ваш тестовый main с использованием библиотеки check)
 TEST_LIB = tests
+SPRINTF_LIB = s21_sprintf
 TEST_SRCS = $(wildcard $(TEST_LIB)/*.c)
 # Флаги линковки для библиотеки check
 # На Linux обычно достаточно -lcheck -lsubunit -lm -lrt -lpthread
@@ -66,10 +67,10 @@ re: fclean all
 
 # Проверка стиля (опционально)
 check-style:
-	clang-format -n $(SRCS) $(TEST_SRCS)
+	clang-format -n $(SRCS) $(TEST_SRCS) *.h $(TEST_LIB)/*.h $(SPRINTF_LIB)/*.h
 
 fix-style:
-	clang-format -i $(SRCS) $(TEST_SRCS)
+	clang-format -i $(SRCS) $(TEST_SRCS) *.h $(TEST_LIB)/*.h $(SPRINTF_LIB)/*.h
 
 .PHONY: all clean fclean re gcov_report
 
