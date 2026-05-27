@@ -14,9 +14,12 @@ Suite *strncmp_suite_create(void);
 Suite *strpbrk_suite_create(void);
 Suite *strstr_suite_create(void);
 Suite *strncat_suite_create(void);
+Suite *strlen_suite_create(void);
+Suite *memcmp_suite_create(void);
+Suite *sprintf_suite_create(void);
+
 
 void assemble_srunner(SRunner *sr) {
-    srunner_add_suite(sr, memchr_suite_create());
     srunner_add_suite(sr, memcpy_suite_create());
     srunner_add_suite(sr, strerror_suite_create());
     srunner_add_suite(sr, strstr_suite_create());
@@ -28,6 +31,9 @@ void assemble_srunner(SRunner *sr) {
     srunner_add_suite(sr, strncmp_suite_create());
     srunner_add_suite(sr, strpbrk_suite_create());
     srunner_add_suite(sr, strncat_suite_create());
+    srunner_add_suite(sr, strlen_suite_create());
+    srunner_add_suite(sr, memcmp_suite_create());
+    srunner_add_suite(sr, sprintf_suite_create());
 }
 
 int main(void) {
