@@ -1,5 +1,4 @@
 #include "s21_sprintf.h"
-#include <string.h> //for strlen()
 
 
 // Отдельная функция для форматирования
@@ -15,7 +14,7 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
   case 's': {
     char *s = va_arg(*args, char *);
     if (s == s21_NULL) s = "(null)";
-    len = strlen(s);
+    len = s21_strlen(s);
     if (spec->precision >= 0 && len > spec->precision) len = spec->precision;
     char *str_end = s + len;
     while (s < str_end) {

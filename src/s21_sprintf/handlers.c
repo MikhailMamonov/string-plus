@@ -1,6 +1,5 @@
 #include "s21_sprintf.h"
 #include <math.h>
-#include <string.h> //for strstr()
 
 
 char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add);
@@ -20,10 +19,10 @@ char *handle_width(char *buf, int length, formatSpec spec) {
       if (spec.zero_padding &&
           (spec.precision < 0 ||
            s21_strchr("diouxX", spec.specifier) == s21_NULL) &&
-          strstr(buf - length, "NAN") == s21_NULL &&
-          strstr(buf - length, "nan") == NULL &&
-          strstr(buf - length, "inf") == NULL &&
-          strstr(buf - length, "INF") == NULL) {
+          s21_strstr(buf - length, "NAN") == s21_NULL &&
+          s21_strstr(buf - length, "nan") == NULL &&
+          s21_strstr(buf - length, "inf") == NULL &&
+          s21_strstr(buf - length, "INF") == NULL) {
         buf = zero_paddle(buf, length, spec, to, from, spaces_to_add);
       }
       else {
