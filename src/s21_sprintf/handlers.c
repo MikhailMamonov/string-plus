@@ -1,7 +1,7 @@
-#include "../s21_string.h"
-#include "sprintf_utils.h"
+#include "s21_sprintf.h"
 #include <math.h>
-#include <string.h> //strstr
+#include <string.h> //for strstr()
+
 
 char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add);
 

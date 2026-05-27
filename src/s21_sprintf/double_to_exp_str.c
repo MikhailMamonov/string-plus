@@ -1,5 +1,7 @@
-#include "sprintf_utils.h"
+#include "s21_sprintf.h"
 #include <math.h>
+
+static char exp_digits[MAX_EXP_DIGITS];
 
 char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
                 int exponent, int is_negative, int *len);
@@ -55,32 +57,28 @@ char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
   if (is_negative)
     *buf++ = '-';
 
-  // 1. Создаем буфер для цифр и гарантированно заполняем его символами '0'
-  char digits[8192];
-  for (int i = 0; i < 64; i++) {
-    digits[i] = '0';
-  }
+  s21_memset(exp_digits, '0', sizeof(exp_digits));
 
   // 2. Считаем, сколько всего цифр нам нужно получить (1 целая + precision
   // дробных)
-  int num_digits = 1 + spec.precision;
+  int num_exp_digits = 1 + spec.precision;
 
   // 3. Заполняем массив цифрами СПРАВА НАЛЕВО, начиная с конца нужной точности
   long long temp_mantissa = mantissa_int;
-  for (int i = num_digits - 1; i >= 0; i--) {
-    digits[i] = (temp_mantissa % 10) + '0';
+  for (int i = num_exp_digits - 1; i >= 0; i--) {
+    exp_digits[i] = (temp_mantissa % 10) + '0';
     temp_mantissa /= 10;
   }
 
   int current_digit = 0;
 
-  *buf++ = digits[current_digit++];
+  *buf++ = exp_digits[current_digit++];
 
   // Запись дробной части
   if (spec.precision > 0 || spec.alt_format) {
     *buf++ = '.';
     for (int i = 0; i < spec.precision; i++) {
-      *buf++ = digits[current_digit++];
+      *buf++ = exp_digits[current_digit++];
     }
   }
 

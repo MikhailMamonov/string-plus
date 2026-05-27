@@ -1,6 +1,6 @@
-#include "sprintf_utils.h"
+#include "s21_sprintf.h"
 #include <string.h> //for strlen()
-#include "../s21_string.h"
+
 
 // Отдельная функция для форматирования
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start) {

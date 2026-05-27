@@ -1,5 +1,4 @@
-#include "sprintf_utils.h"
-#include "../s21_string.h"
+#include "s21_sprintf.h"
 #include <math.h>
 
 char *remove_tail_zeroes(char *buf, char *buf_p, char *start);
