@@ -8,7 +8,7 @@ static void run_strstr_test(const strstrParams *p) {
     char *res_std = strstr(p->haystack, p->needle);
     char *res_s21 = s21_strstr(p->haystack, p->needle);
 
-    /* Оба указателя должны быть либо NULL, либо указывать на одну позицию */
+
     ck_assert_msg(res_std == res_s21,
                   "FAIL [%s]: strstr=%p, s21_strstr=%p (haystack=\"%s\", needle=\"%s\")",
                   p->test_name,
@@ -16,7 +16,6 @@ static void run_strstr_test(const strstrParams *p) {
                   p->haystack, p->needle);
 }
 
-/* === Наборы тестов === */
 
 STRSTR_TEST_CASES(strstr_basic_found,
                   {"Hello, World!", "World",  "find_world"},
@@ -35,7 +34,6 @@ STRSTR_TEST_CASES(strstr_not_found,
 )
 
 STRSTR_TEST_CASES(strstr_empty_needle,
-                  /* По стандарту: если needle == "", возвращается haystack */
                   {"Hello", "",  "empty_needle_normal"},
                   {"",      "",  "both_empty"},
                   {"abc",   "",  "empty_needle_abc"}
@@ -53,7 +51,6 @@ STRSTR_TEST_CASES(strstr_full_match,
 )
 
 STRSTR_TEST_CASES(strstr_multiple_occurrences,
-                  /* Должен возвращаться указатель на ПЕРВОЕ вхождение */
                   {"ababab",         "ab",  "first_of_three"},
                   {"aaaa",           "aa",  "overlapping"},
                   {"banana",         "na",  "first_na"},
@@ -69,7 +66,6 @@ STRSTR_TEST_CASES(strstr_special_chars,
 )
 
 STRSTR_TEST_CASES(strstr_partial_prefix,
-                  /* needle совпадает с началом haystack, но не полностью */
                   {"abcdef",  "abcx",  "wrong_after_prefix"},
                   {"abcabd",  "abcd",  "almost_full"},
                   {"aaab",    "aab",   "shifted_match"}
@@ -81,8 +77,6 @@ STRSTR_TEST_CASES(strstr_long_strings,
                   {"The quick brown fox jumps over the lazy dog", "The quick",  "long_start"},
                   {"aaaaaaaaaaaaaaaaaaab",                        "aaab",       "tail_in_long"}
 )
-
-/* === Сборка suite === */
 
 Suite *strstr_suite_create(void) {
     Suite *s = suite_create("strstr");
