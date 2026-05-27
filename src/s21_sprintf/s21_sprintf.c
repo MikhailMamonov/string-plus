@@ -7,14 +7,9 @@ int s21_sprintf(char *str, const char *format, ...) {
   while (*format != '\0') {
     if (*format == '%') {
       format++;
-      if (*format == '%') {
-        *str++ = *format;
-        format++;
-      } else {
-        formatSpec spec = {0};
-        format = parseFormat(format, &spec, &args);
-        formatBySpecifier(&spec, &args, &str, start_str);
-      }
+      formatSpec spec = {0};
+      format = parseFormat(format, &spec, &args);
+      formatBySpecifier(&spec, &args, &str, start_str);
     } else {
       *str++ = *format++;
     }
