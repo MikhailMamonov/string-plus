@@ -4,5 +4,4 @@
 #include "../s21_string.h"
 #include "sprintf_utils.h"
 
-
 #endif

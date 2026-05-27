@@ -2,22 +2,32 @@
 #include <ctype.h>
 
 int parseFlag(char input) {
-    static const char *flags = "+- #0";
-    return (s21_strchr(flags, input) != s21_NULL);
+  static const char *flags = "+- #0";
+  return (s21_strchr(flags, input) != s21_NULL);
 }
 
-const char* parseFlags(const char *format, formatSpec *spec) {
-    while (*format && parseFlag(*format)) {
-        switch (*format) {
-            case '-': spec->left_align = 1; break;
-            case '+': spec->show_sign = 1; break;
-            case ' ': spec->space_sign = 1; break;
-            case '#': spec->alt_format = 1; break;
-            case '0': spec->zero_padding = 1; break;
-        }
-        format++;
+const char *parseFlags(const char *format, formatSpec *spec) {
+  while (*format && parseFlag(*format)) {
+    switch (*format) {
+    case '-':
+      spec->left_align = 1;
+      break;
+    case '+':
+      spec->show_sign = 1;
+      break;
+    case ' ':
+      spec->space_sign = 1;
+      break;
+    case '#':
+      spec->alt_format = 1;
+      break;
+    case '0':
+      spec->zero_padding = 1;
+      break;
     }
-    return format;
+    format++;
+  }
+  return format;
 }
 
 const char *parseWidth(const char *input, formatSpec *spec, va_list *args) {
@@ -45,8 +55,8 @@ const char *parsePrecision(const char *input, formatSpec *spec, va_list *args) {
     if (*input == '*') {
       spec->precision = va_arg(*args, int);
       if (spec->precision < 0) {
-            spec->precision = -1;
-        }
+        spec->precision = -1;
+      }
       input++;
     } else if (isdigit(*input)) {
       spec->precision = 0;
@@ -78,25 +88,25 @@ const char *parseLength(const char *input, formatSpec *spec) {
   return input;
 }
 
-const char* parseSpecifier(const char *format, formatSpec *spec) {
-   static const char *specifiers = "diouxXeEfgGcspn%";
-    
-    if (format && s21_strchr(specifiers, *format)) {
-        spec->specifier = *format;
-        return format + 1;
-    }
-    return format;
+const char *parseSpecifier(const char *format, formatSpec *spec) {
+  static const char *specifiers = "diouxXeEfgGcspn%";
+
+  if (format && s21_strchr(specifiers, *format)) {
+    spec->specifier = *format;
+    return format + 1;
+  }
+  return format;
 }
 
 const char *parseFormat(const char *format, formatSpec *spec, va_list *args) {
   s21_memset(spec, 0, sizeof(formatSpec));
-  spec->precision = -1;  
+  spec->precision = -1;
 
   format = parseFlags(format, spec);
   format = parseWidth(format, spec, args);
   format = parsePrecision(format, spec, args);
   format = parseLength(format, spec);
   format = parseSpecifier(format, spec);
-    
+
   return format;
 }
