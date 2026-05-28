@@ -12,7 +12,11 @@ int s21_sscanf(char *str, const char *format, ...) {
         format++;
       } else {
         formatSpec spec = {0};
-        format = parseFormat(format, &spec, &args);
+        format = parseFormat(format, &spec);
+        if (!format) {
+                // Ошибка в формате - прерываем
+                break;
+            }
         formatBySpecifier(&spec, &args, &str, start_str);
       }
     } else {
