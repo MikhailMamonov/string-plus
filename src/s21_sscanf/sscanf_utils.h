@@ -22,6 +22,7 @@ const char *pass_spaces(const char *source);
 int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count);
 const char *parseScanfFormat(const char *format, formatSpec *spec);
 int process_char(const char **source, char *res, formatSpec spec);
+int process_str(const char **source, char *res, formatSpec spec);
 /*char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len);
 int parseFlag(char input);
 const char* parseFlags(const char *format, formatSpec *spec);

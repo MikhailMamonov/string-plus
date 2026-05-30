@@ -2,7 +2,7 @@
 #include <ctype.h>
 
 int process_str(const char **source, char *res, formatSpec spec) {
-    char *curr = *source;
+    const char *curr = *source;
     char c = *curr;
     int width = 0;
     int width_set = 0;

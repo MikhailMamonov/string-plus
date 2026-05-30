@@ -1,7 +1,7 @@
 #include "s21_sscanf.h"
 
 int process_char(const char **source, char *res, formatSpec spec) {
-    char *curr = *source;
+    const char *curr = *source;
     char c = *curr;
     int width = 0;
     if (spec.width > 0) {
