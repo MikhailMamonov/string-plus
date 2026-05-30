@@ -3,10 +3,10 @@
 
 
 // Отдельная функция для форматирования
-void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start) {
-  int len = 0;
+int formatBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count) {
+  int ret = 0;
   switch (spec->specifier) {
-  case 'c': {
+  /*case 'c': {
     char c = (char)va_arg(*args, int);
     *(*out)++ = c;
     len = 1;
@@ -22,22 +22,32 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
       *(*out)++ = *s++;
     }
     break;
-  }
-  case 'd':
-  case 'i': {
-    long long d = 0;
-    if (spec->length == 'l') {
-      d = (long)va_arg(*args, long);
-    } else if (spec->length == 'h') {
-      d = (short)va_arg(*args, int); // short в va_arg продвигается до int
-    } else {
-      d = va_arg(*args, int); // Обычный %o
+  }*/
+  case 'd': {
+    long long res = 0;
+    *source = pass_spaces(*source);
+    if (str_to_int(source, &res, *spec)) {
+      ret = 1;
+      if (!spec->use_suppress) {
+        *count = *count + 1;
+        if (spec->length == 'l') {
+            long *pointer = (long *)va_arg(*args, long *);
+            *pointer = (long)res;
+        } else if (spec->length == 'h') {
+            short *pointer = (short *)va_arg(*args, short *);
+            *pointer = (short)res;
+        } else {
+            int *pointer = (int *)va_arg(*args, int *); 
+            *pointer = (int)res;
+        }
+      }
     }
-
-    *out = int_to_str(*out, d, &len, *spec);
+    else {
+      ret = 0;
+    }
     break;
   }
-  case 'e':
+ /* case 'e':
   case 'E': {
     long double exp = 0;
     if (spec->length == 'L') exp = va_arg(*args, long double);
@@ -107,11 +117,17 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
     }
     *out = u_spec(*out, val, *spec, &len);
     break;
-  }
+  }*/
   case '%': {
-    *(*out)++ = '%';
+    *source = pass_spaces(*source);
+    if (**source == '%') {
+      (*source)++;
+      ret = 1;
+    } else {
+      ret = 0;
+    }
     break;
-  }
+  }/*
   case 'p': {
     void *pointer = va_arg(*args, void*);
     *out = pointer_to_str(*out, pointer, *spec, &len);
@@ -136,7 +152,7 @@ void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start)
       *(*out)++ = spec->specifier;
     }
     break;
+  }*/
   }
-  }
-  *out = handle_width(*out, len, *spec);
+  return ret;
 }
