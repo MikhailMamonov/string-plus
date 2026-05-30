@@ -37,7 +37,8 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
     }
     break;
   }
-  case 'd': {
+  case 'd':
+  case 'i': {
     long long res = 0;
     *source = pass_spaces(*source);
     if (str_to_int(source, &res, *spec)) {
@@ -53,6 +54,32 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
         } else {
             int *pointer = (int *)va_arg(*args, int *); 
             *pointer = (int)res;
+        }
+      }
+    }
+    else {
+      ret = 0;
+    }
+    break;
+  }
+  case 'x':
+  case 'X':
+  case 'o': {
+    long long res = 0;
+    *source = pass_spaces(*source);
+    if (str_to_int(source, &res, *spec)) {
+      ret = 1;
+      if (!spec->use_suppress) {
+        (*count)++;
+        if (spec->length == 'l') {
+            unsigned long *pointer = (unsigned long *)va_arg(*args, unsigned long *);
+            *pointer = (unsigned long)res;
+        } else if (spec->length == 'h') {
+            unsigned short *pointer = (unsigned short *)va_arg(*args, unsigned short *);
+            *pointer = (unsigned short)res;
+        } else {
+            unsigned int *pointer = (unsigned int *)va_arg(*args, unsigned int *); 
+            *pointer = (unsigned int)res;
         }
       }
     }

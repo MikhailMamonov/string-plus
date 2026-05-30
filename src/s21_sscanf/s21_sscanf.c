@@ -15,7 +15,7 @@ int s21_sscanf(const char *str, const char *format, ...) {
       format++;
       formatSpec spec = {0};
       format = parseScanfFormat(format, &spec);
-      if (!format) {
+      if (!format || spec.width == 0) {
          break;
       }
       if (!formatScanfBySpecifier(&spec, &args, &str, &count)) {
