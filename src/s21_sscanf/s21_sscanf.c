@@ -10,7 +10,7 @@ int s21_sscanf(const char *str, const char *format, ...) {
     return -1;
   }
   int count = 0;
-  while (*format != '\0') {
+  while (*format != '\0') { 
     if (*format == '%') {
       format++;
       formatSpec spec = {0};
@@ -33,5 +33,5 @@ int s21_sscanf(const char *str, const char *format, ...) {
       }
     }
   }
-    return count;
+  return count;
 }

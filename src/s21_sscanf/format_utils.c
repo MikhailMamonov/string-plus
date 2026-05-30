@@ -1,35 +1,49 @@
 #include "s21_sscanf.h"
-#include <string.h> //for strlen()
+#include <stdlib.h>
 
 
 // Отдельная функция для форматирования
 int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count) {
   int ret = 0;
   switch (spec->specifier) {
-  /*case 'c': {
-    char c = (char)va_arg(*args, int);
-    *(*out)++ = c;
-    len = 1;
+  case 'c': {
+    char *pointer = s21_NULL;
+    if (!spec->use_suppress) {
+        pointer = va_arg(*args, char *);
+    }
+    if (process_char(source, pointer, *spec)) {
+      if (!spec->use_suppress) {
+        (*count)++;
+      }
+      ret = 1;
+    } else {
+      ret = 0;
+    }
     break;
   }
   case 's': {
-    char *s = va_arg(*args, char *);
-    if (s == s21_NULL) s = "(null)";
-    len = strlen(s);
-    if (spec->precision >= 0 && len > spec->precision) len = spec->precision;
-    char *str_end = s + len;
-    while (s < str_end) {
-      *(*out)++ = *s++;
+    char *pointer = s21_NULL;
+    if (!spec->use_suppress) {
+        pointer = va_arg(*args, char *);
+    }
+    *source = pass_spaces(*source);
+    if (process_str(source, pointer, *spec)) {
+      if (!spec->use_suppress) {
+        (*count)++;
+      }
+      ret = 1;
+    } else {
+      ret = 0;
     }
     break;
-  }*/
+  }
   case 'd': {
     long long res = 0;
     *source = pass_spaces(*source);
     if (str_to_int(source, &res, *spec)) {
       ret = 1;
       if (!spec->use_suppress) {
-        *count = *count + 1;
+        (*count)++;
         if (spec->length == 'l') {
             long *pointer = (long *)va_arg(*args, long *);
             *pointer = (long)res;
