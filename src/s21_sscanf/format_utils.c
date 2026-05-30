@@ -64,7 +64,8 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
   }
   case 'x':
   case 'X':
-  case 'o': {
+  case 'o': 
+  case 'u': {
     long long res = 0;
     *source = pass_spaces(*source);
     if (str_to_int(source, &res, *spec)) {
@@ -109,39 +110,6 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
     if (spec->length == 'L') num = va_arg(*args, long double);
     else num = va_arg(*args, double);
     *out = g_spec(*out, num, *spec, &len, start);
-    break;
-  }
-  case 'o': {
-    unsigned long long val = 0;
-
-    // Считываем и сразу приводим к нужному беззнаковому типу
-    if (spec->length == 'l') {
-      val = (unsigned long)va_arg(*args, unsigned long);
-    } else if (spec->length == 'h') {
-      val = (unsigned short)va_arg(*args,
-                                   int); // short в va_arg продвигается до int
-    } else if (spec->length == 'H') { // например, для ll
-      val = va_arg(*args, unsigned long long);
-    } else {
-      val = va_arg(*args, unsigned int); // Обычный %o
-    }
-    *out = o_spec(*out, val, *spec, &len);
-    break;
-  }
-  case 'x':
-  case 'X': {
-    unsigned long long val = 0;
-
-    // Считываем и сразу приводим к нужному беззнаковому типу
-    if (spec->length == 'l') {
-      val = (unsigned long)va_arg(*args, unsigned long);
-    } else if (spec->length == 'h') {
-      val = (unsigned short)va_arg(*args,
-                                   int); // short в va_arg продвигается до int
-    } else {
-      val = va_arg(*args, unsigned int); // Обычный %o
-    }
-    *out = hex_spec(*out, val, *spec, &len);
     break;
   }
   case 'u': {

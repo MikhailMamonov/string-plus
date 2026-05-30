@@ -69,7 +69,7 @@ int str_to_int(const char **source, long long *res, formatSpec spec) {
 int base_determinator(formatSpec spec, const char **curr, int *width_counter, int *is_hex_prefix) {
     int base = 0;
     int remaining_width = spec.width - *width_counter;
-    if (spec.specifier == 'd') {
+    if (spec.specifier == 'd' || spec.specifier == 'u') {
         base = 10;
     }
     if (spec.specifier == 'x' || spec.specifier == 'X') {
