@@ -14,11 +14,11 @@ int s21_sscanf(const char *str, const char *format, ...) {
     if (*format == '%') {
       format++;
       formatSpec spec = {0};
-      format = parseFormat(format, &spec);
+      format = parseScanfFormat(format, &spec);
       if (!format) {
          break;
       }
-      if (!formatBySpecifier(&spec, &args, &str, &count)) {
+      if (!formatScanfBySpecifier(&spec, &args, &str, &count)) {
         break;
       }
     } else {

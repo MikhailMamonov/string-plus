@@ -19,8 +19,8 @@ typedef struct {
 
 int str_to_int(const char **source, long long *res, formatSpec spec);
 const char *pass_spaces(const char *source);
-int formatBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count);
-const char *parseFormat(const char *format, formatSpec *spec);
+int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count);
+const char *parseScanfFormat(const char *format, formatSpec *spec);
 /*char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len);
 int parseFlag(char input);
 const char* parseFlags(const char *format, formatSpec *spec);

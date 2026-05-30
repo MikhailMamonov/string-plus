@@ -3,7 +3,7 @@
 
 
 // Отдельная функция для форматирования
-int formatBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count) {
+int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count) {
   int ret = 0;
   switch (spec->specifier) {
   /*case 'c': {
