@@ -29,4 +29,7 @@ int s21_memcmp(const void *str1, const void *str2, s21_size_t n);
 // Функции форматирования
 int s21_sprintf(char *str, const char *format, ...);
 
+// Функции, вдохновлённые C#
+void *s21_to_upper(const char *str);
+
 #endif
