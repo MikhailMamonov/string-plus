@@ -29,4 +29,6 @@ int s21_memcmp(const void *str1, const void *str2, s21_size_t n);
 // Функции форматирования
 int s21_sprintf(char *str, const char *format, ...);
 
+void *s21_insert(const char *src, const char *str, s21_size_t start_index);
+
 #endif
