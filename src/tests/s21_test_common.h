@@ -101,7 +101,6 @@ typedef struct {
   const char *test_name;
 } strncpyParams;
 
-
 #define TEST_CASES(name, param_type, run_func, ...)                            \
   static param_type name[] = {__VA_ARGS__};                                    \
   START_TEST(test_##name) {                                                    \
@@ -173,6 +172,5 @@ typedef struct {
 
 #define STRNCPY_TEST_CASES(name, ...)                                          \
   TEST_CASES(name, strncpyParams, run_strncpy_test, __VA_ARGS__)
-
 
 #endif

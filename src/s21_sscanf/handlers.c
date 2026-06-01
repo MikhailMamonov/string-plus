@@ -1,7 +1,8 @@
 #include "s21_sscanf.h"
 #include <ctype.h>
 
-/*char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add);
+/*char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char
+*from, int spaces_to_add);
 
 char *handle_width(char *buf, int length, formatSpec spec) {
   int spaces_to_add = 0;
@@ -39,9 +40,8 @@ char *handle_width(char *buf, int length, formatSpec spec) {
   return buf;
 }
 
-char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add) {
-      int minus_zero = 0;
-      if (*(buf - length) == '-') {
+char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from,
+int spaces_to_add) { int minus_zero = 0; if (*(buf - length) == '-') {
         minus_zero = 1;
       }
       int plus_zero = 0;
@@ -92,9 +92,8 @@ char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, 
 //   return buf;
 // }
 
-char *handle_special_floats(char *buf, long double val, formatSpec spec, int *len) {
-  int is_nan = isnan(val);
-  int is_inf = isinf(val);
+char *handle_special_floats(char *buf, long double val, formatSpec spec, int
+*len) { int is_nan = isnan(val); int is_inf = isinf(val);
 
   // Если число обычное — выходим, управление передается основному коду %f / %e
   if (!is_nan && !is_inf) {
@@ -131,8 +130,7 @@ char *handle_special_floats(char *buf, long double val, formatSpec spec, int *le
   return buf; // Возвращаем позицию для дальнейшей работы sprintf
 }*/
 const char *pass_spaces(const char *source) {
-  while (isspace((unsigned char)*source))
-  {
+  while (isspace((unsigned char)*source)) {
     source++;
   }
   return source;

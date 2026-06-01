@@ -10,13 +10,13 @@ int s21_sscanf(const char *str, const char *format, ...) {
     return -1;
   }
   int count = 0;
-  while (*format != '\0') { 
+  while (*format != '\0') {
     if (*format == '%') {
       format++;
       formatSpec spec = {0};
       format = parseScanfFormat(format, &spec);
       if (!format || spec.width == 0) {
-         break;
+        break;
       }
       if (!formatScanfBySpecifier(&spec, &args, &str, &count)) {
         break;
