@@ -17,7 +17,7 @@ typedef struct {
 } formatSpec;
 
 
-int str_to_int(const char **source, long long *res, formatSpec spec);
+int process_int(const char **source, long long *res, formatSpec spec);
 const char *pass_spaces(const char *source);
 int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count);
 const char *parseScanfFormat(const char *format, formatSpec *spec);

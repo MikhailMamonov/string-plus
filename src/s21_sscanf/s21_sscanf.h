@@ -3,6 +3,6 @@
 
 #include "../s21_string.h"
 #include "sscanf_utils.h"
-
+#define MAX_INTEGER 9223372036854775807
 
 #endif

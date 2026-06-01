@@ -1,10 +1,13 @@
 #include "s21_sscanf.h"
 #include <stdlib.h>
 
+#define SUCCESS 1
+#define FAIL 0
+
 
 // Отдельная функция для форматирования
 int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count) {
-  int ret = 0;
+  int ret = FAIL;
   switch (spec->specifier) {
   case 'c': {
     char *pointer = s21_NULL;
@@ -12,12 +15,9 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
         pointer = va_arg(*args, char *);
     }
     if (process_char(source, pointer, *spec)) {
-      if (!spec->use_suppress) {
-        (*count)++;
-      }
-      ret = 1;
+      ret = SUCCESS;
     } else {
-      ret = 0;
+      ret = FAIL;
     }
     break;
   }
@@ -28,12 +28,9 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
     }
     *source = pass_spaces(*source);
     if (process_str(source, pointer, *spec)) {
-      if (!spec->use_suppress) {
-        (*count)++;
-      }
-      ret = 1;
+      ret = SUCCESS;
     } else {
-      ret = 0;
+      ret = FAIL;
     }
     break;
   }
@@ -41,10 +38,9 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
   case 'i': {
     long long res = 0;
     *source = pass_spaces(*source);
-    if (str_to_int(source, &res, *spec)) {
-      ret = 1;
+    if (process_int(source, &res, *spec)) {
+      ret = SUCCESS;
       if (!spec->use_suppress) {
-        (*count)++;
         if (spec->length == 'l') {
             long *pointer = (long *)va_arg(*args, long *);
             *pointer = (long)res;
@@ -58,7 +54,7 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
       }
     }
     else {
-      ret = 0;
+      ret = FAIL;
     }
     break;
   }
@@ -68,10 +64,9 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
   case 'u': {
     long long res = 0;
     *source = pass_spaces(*source);
-    if (str_to_int(source, &res, *spec)) {
-      ret = 1;
+    if (process_int(source, &res, *spec)) {
+      ret = SUCCESS;
       if (!spec->use_suppress) {
-        (*count)++;
         if (spec->length == 'l') {
             unsigned long *pointer = (unsigned long *)va_arg(*args, unsigned long *);
             *pointer = (unsigned long)res;
@@ -85,7 +80,7 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
       }
     }
     else {
-      ret = 0;
+      ret = FAIL;
     }
     break;
   }
@@ -131,9 +126,9 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
     *source = pass_spaces(*source);
     if (**source == '%') {
       (*source)++;
-      ret = 1;
+      ret = SUCCESS;
     } else {
-      ret = 0;
+      ret = FAIL;
     }
     break;
   }/*
@@ -163,5 +158,8 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
     break;
   }*/
   }
+  if (ret == SUCCESS && !spec->use_suppress && spec->specifier != '%') {
+    (*count)++;
+  } 
   return ret;
 }

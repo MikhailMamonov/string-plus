@@ -1,12 +1,11 @@
 #include "s21_sscanf.h"
 #include <math.h>
-#define MAX 9223372036854775807
 
 int base_determinator(formatSpec spec, const char **curr, int *width_counter, int *is_hex_prefix);
 void sign_parser(const char **curr, int *width_counter, int *is_negative);
 int get_digit(char c);
 
-int str_to_int(const char **source, long long *res, formatSpec spec) {
+int process_int(const char **source, long long *res, formatSpec spec) {
     int len = 0;
     int is_negative = 0;
     int width_defined = 0;
@@ -15,32 +14,31 @@ int str_to_int(const char **source, long long *res, formatSpec spec) {
     }
     int width_counter = 0;
     const char *curr = *source;
-    unsigned long long max = MAX;
+    unsigned long long max = MAX_INTEGER;
     sign_parser(&curr, &width_counter, &is_negative);
     if (is_negative) {
         max++;
     }
     int is_hex_prefix = 0;
     int base = base_determinator(spec, &curr, &width_counter, &is_hex_prefix);
-    unsigned long long res_l = 0;
+    unsigned long long unsigned_res = 0;
     int digit = get_digit(*curr);
     while (digit != -1 && digit < base && (!width_defined || width_counter < spec.width)) {
-        if (res_l != max) {
-            if (res_l == 0 || max / res_l > (unsigned int)base) {
-                // Гарантированный успех: мы еще очень далеко от предела
-                res_l = res_l * base + digit;
+        if (unsigned_res != max) {
+            if (unsigned_res == 0 || max / unsigned_res > (unsigned int)base) {
+                // no overflow
+                unsigned_res = unsigned_res * base + digit;
             } 
-            else if (max / res_l == (unsigned int)base) {
-                // Мы на критической черте: нужно точечно проверить последнюю цифру
+            else if (max / unsigned_res == (unsigned int)base) {
+                // possible overflow
                 if ((unsigned int)digit <= max % base) {
-                    res_l = res_l * base + digit;
+                    unsigned_res = unsigned_res * base + digit;
                 } else {
-                    res_l = max; // Переполнение на последней цифре
+                    unsigned_res = max; 
                 }
             } 
             else {
-                // Гарантированное переполнение: max / res_l < base
-                res_l = max;
+                unsigned_res = max;
             }
             len++;
         }
@@ -51,16 +49,16 @@ int str_to_int(const char **source, long long *res, formatSpec spec) {
     if (len == 0) {
         if (is_hex_prefix) {
             curr--;
-            res_l = 0;
+            unsigned_res = 0;
         } else {
             return 0;
         }
     }
     if (is_negative) {
-        *res = (long long)(-res_l);
+        *res = (long long)(-unsigned_res);
     }
     else {
-        *res = res_l;
+        *res = unsigned_res;
     }
     *source = curr;
     return 1;
