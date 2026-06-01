@@ -2,7 +2,6 @@
 #include <math.h>
 
 int base_determinator(formatSpec spec, const char **curr, int *width_counter, int *is_hex_prefix);
-void sign_parser(const char **curr, int *width_counter, int *is_negative);
 int get_digit(char c);
 
 int process_int(const char **source, long long *res, formatSpec spec) {
@@ -96,18 +95,6 @@ int base_determinator(formatSpec spec, const char **curr, int *width_counter, in
         }
     }
     return base;
-}
-
-void sign_parser(const char **curr, int *width_counter, int *is_negative) {
-    if (**curr == '-') {
-        *is_negative = 1;
-        (*curr)++;
-        (*width_counter)++;
-    } else if (**curr == '+')
-    {
-        (*curr)++;
-        (*width_counter)++;
-    }
 }
 
 int get_digit(char c) {

@@ -23,6 +23,9 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
 const char *parseScanfFormat(const char *format, formatSpec *spec);
 int process_char(const char **source, char *res, formatSpec spec);
 int process_str(const char **source, char *res, formatSpec spec);
+void sign_parser(const char **curr, int *width_counter, int *is_negative);
+void handle_scanf_special_floats(const char **curr, int *width_counter, formatSpec spec, long double *res);
+int process_float(const char **source, long double *res, formatSpec spec);
 /*char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len);
 int parseFlag(char input);
 const char* parseFlags(const char *format, formatSpec *spec);

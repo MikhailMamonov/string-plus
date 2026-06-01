@@ -82,44 +82,33 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
     }
     break;
   }
- /* case 'e':
-  case 'E': {
-    long double exp = 0;
-    if (spec->length == 'L') exp = va_arg(*args, long double);
-    else exp = va_arg(*args, double);
-    *out = double_to_exp_str(*out, exp, *spec, &len);
-    break;
-  }
-  case 'f': {
-    long double num = 0;
-    if (spec->length == 'L') num = va_arg(*args, long double);
-    else num = va_arg(*args, double);
-    *out = float_to_str(*out, num, *spec, &len);
-    break;
-  }
+  case 'f':
+  case 'e':
+  case 'E':
   case 'g':
   case 'G': {
-    long double num = 0;
-    if (spec->length == 'L') num = va_arg(*args, long double);
-    else num = va_arg(*args, double);
-    *out = g_spec(*out, num, *spec, &len, start);
+    long double res = 0;
+    *source = pass_spaces(*source);
+    if (process_float(source, &res, *spec)) {
+      ret = SUCCESS;
+      if (!spec->use_suppress) {
+        if (spec->length == 'L') {
+            long double *pointer = (long double *)va_arg(*args, long double *);
+            *pointer = res;
+        } else if (spec->length == 'l') {
+            double *pointer = (double *)va_arg(*args, double *); 
+            *pointer = (double)res;
+        } else {
+            float *pointer = (float *)va_arg(*args, float *); 
+            *pointer = (float)res;
+        }
+      }
+    }
+    else {
+      ret = FAIL;
+    }
     break;
   }
-  case 'u': {
-    unsigned long long val = 0;
-
-    // Считываем и сразу приводим к нужному беззнаковому типу
-    if (spec->length == 'l') {
-      val = (unsigned long)va_arg(*args, unsigned long);
-    } else if (spec->length == 'h') {
-      val = (unsigned short)va_arg(*args,
-                                   int); // short в va_arg продвигается до int
-    } else {
-      val = va_arg(*args, unsigned int); // Обычный %o
-    }
-    *out = u_spec(*out, val, *spec, &len);
-    break;
-  }*/
   case '%': {
     *source = pass_spaces(*source);
     if (**source == '%') {

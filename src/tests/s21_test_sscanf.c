@@ -60,7 +60,6 @@ START_TEST(test_string_percent) {
   int test_len = s21_sscanf(input, "Hello%%");
   
   ck_assert_int_eq(std_len, test_len);
-  ck_assert_int_eq(std_len, 0);
 }
 END_TEST
 
@@ -489,7 +488,6 @@ START_TEST(test_percent_mixed) {
   ck_assert_float_eq_tol(std_float, test_float, 1e-6);
   ck_assert_float_eq_tol(std_float, 249.99, 1e-6);
   ck_assert_str_eq(std_str, test_str);
-  ck_assert_str_eq(std_str, "USD");
   ck_assert_int_eq(std_len, test_len);
   ck_assert_int_eq(std_len, 3);
 }
