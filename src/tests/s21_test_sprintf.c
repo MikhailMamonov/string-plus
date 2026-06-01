@@ -232,7 +232,7 @@ RUN_SPRINTF_TEST(float_L_asterisk_width_and_precision, "%*.*Lf", 12, 4,
                  45.678912L);
 
 // ==================== POINTER TESTS ====================
-int dummy_var = 42;
+static int dummy_var = 42;
 RUN_SPRINTF_TEST(p_simple, "%p", &dummy_var);
 RUN_SPRINTF_TEST(p_zero_null, "%p", NULL);
 RUN_SPRINTF_TEST(p_width_normal, "%20p", &dummy_var);
