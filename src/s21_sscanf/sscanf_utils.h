@@ -27,22 +27,4 @@ void sign_parser(const char **curr, int *width_counter, int *is_negative);
 void handle_scanf_special_floats(const char **curr, int *width_counter, formatSpec spec, long double *res);
 int process_float(const char **source, long double *res, formatSpec spec);
 int handle_null_pointer(const char **curr, formatSpec spec);
-/*char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len);
-int parseFlag(char input);
-const char* parseFlags(const char *format, formatSpec *spec);
-const char* parseWidth(const char *input, formatSpec * spec);
-const char* parseLength(const char *format, formatSpec * spec);
-const char* parseSpecifier(const char *format, formatSpec *spec); 
-const char* parseFormat(const char *format, formatSpec * spec);
-void formatBySpecifier(formatSpec *spec, va_list *args, char **out, char *start);
-//char *handle_precision(char *buf, int length, char spec);
-char *handle_width(char *buf, int length, formatSpec spec);
-char *handle_special_floats(char *buf, long double val, formatSpec spec, int *len);
-char *float_to_str(char *buf, long double num, formatSpec spec, int *len);
-char *g_spec(char *buf, long double val, formatSpec spec, int *len, char *start);
-char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
-char *hex_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
-char *u_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
-char *pointer_to_str(char *buf, void *pointer, formatSpec spec, int *len);*/
-
 #endif

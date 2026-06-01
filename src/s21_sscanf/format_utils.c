@@ -1,8 +1,6 @@
 #include "s21_sscanf.h"
 #include <stdlib.h>
 
-
-
 // Отдельная функция для форматирования
 int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count) {
   int ret = FAIL;

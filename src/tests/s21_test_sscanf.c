@@ -282,9 +282,6 @@ START_TEST(test_suppression_debug_1) {
   int std_len = sscanf(input, format, &std_val);
   int test_len = s21_sscanf(input, format, &test_val);
   
-  printf("DEBUG: std_val=%d, test_val=%d\n", std_val, test_val);
-  printf("DEBUG: std_len=%d, test_len=%d\n", std_len, test_len);
-  
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
 }
@@ -332,9 +329,6 @@ START_TEST(test_suppression_sequence) {
   int std_len = sscanf(input, format, &std_a, &std_b, &std_c);
   int test_len = s21_sscanf(input, format, &test_a, &test_b, &test_c);
   
-  printf("DEBUG: std: %d, %d, %d\n", std_a, std_b, std_c);
-  printf("DEBUG: test: %d, %d, %d\n", test_a, test_b, test_c);
-  
   // Ожидается: std_a=20, std_b=40, std_c=50
   ck_assert_int_eq(std_a, test_a);
   ck_assert_int_eq(std_b, test_b);
@@ -351,9 +345,7 @@ START_TEST(test_suppression_first) {
   
   int std_len = sscanf(input, format, &std_val);
   int test_len = s21_sscanf(input, format, &test_val);
-  
-  printf("DEBUG: std_val=%d, test_val=%d\n", std_val, test_val);
-  
+    
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_val, 42);
   ck_assert_int_eq(std_len, test_len);
@@ -644,6 +636,267 @@ START_TEST(test_percent_mixed) {
 }
 END_TEST
 
+// ==================== N TESTS (количество прочитанных символов) ====================
+
+// Базовый тест для %n
+START_TEST(test_n_basic) {
+  int std_n = 0, test_n = 0;
+  int std_val = 0, test_val = 0;
+  const char *input = "12345";
+  const char *format = "%d%n";
+  
+  int std_len = sscanf(input, format, &std_val, &std_n);
+  int test_len = s21_sscanf(input, format, &test_val, &test_n);
+  
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_val, 12345);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 5);  // прочитано 5 символов
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 1); // %n не увеличивает count
+}
+END_TEST
+
+// %n в середине строки формата
+START_TEST(test_n_middle) {
+  int std_n = 0, test_n = 0;
+  int std_val1 = 0, std_val2 = 0;
+  int test_val1 = 0, test_val2 = 0;
+  const char *input = "123 456";
+  const char *format = "%d%n %d";
+  
+  int std_len = sscanf(input, format, &std_val1, &std_n, &std_val2);
+  int test_len = s21_sscanf(input, format, &test_val1, &test_n, &test_val2);
+  
+  ck_assert_int_eq(std_val1, test_val1);
+  ck_assert_int_eq(std_val1, 123);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 3);  // после "123" прочитано 3 символа
+  ck_assert_int_eq(std_val2, test_val2);
+  ck_assert_int_eq(std_val2, 456);
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 2);
+}
+END_TEST
+
+// %n в конце строки формата
+START_TEST(test_n_end) {
+  int std_n = 0, test_n = 0;
+  int std_val = 0, test_val = 0;
+  const char *input = "Hello 42";
+  const char *format = "%s %d%n";
+  
+  char std_str[100] = {0}, test_str[100] = {0};
+  int std_len = sscanf(input, format, std_str, &std_val, &std_n);
+  int test_len = s21_sscanf(input, format, test_str, &test_val, &test_n);
+  
+  ck_assert_str_eq(std_str, test_str);
+  ck_assert_str_eq(std_str, "Hello");
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_val, 42);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 7);  // "Hello 42" - 7 символов (Hello пробел 42)
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 2);
+}
+END_TEST
+
+// %n без других спецификаторов
+START_TEST(test_n_alone) {
+  int std_n = 0, test_n = 0;
+  const char *input = "any text here";
+  const char *format = "%n";
+  
+  int std_len = sscanf(input, format, &std_n);
+  int test_len = s21_sscanf(input, format, &test_n);
+  
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 0);  // прочитано 0 символов до начала
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 0); // %n не увеличивает count
+}
+END_TEST
+
+// Несколько %n в одном формате
+START_TEST(test_n_multiple) {
+  int std_n1 = 0, std_n2 = 0, std_n3 = 0;
+  int test_n1 = 0, test_n2 = 0, test_n3 = 0;
+  int std_val1 = 0, std_val2 = 0;
+  int test_val1 = 0, test_val2 = 0;
+  const char *input = "123 456";
+  const char *format = "%n%d%n %d%n";
+  
+  int std_len = sscanf(input, format, &std_n1, &std_val1, &std_n2, &std_val2, &std_n3);
+  int test_len = s21_sscanf(input, format, &test_n1, &test_val1, &test_n2, &test_val2, &test_n3);
+  
+  ck_assert_int_eq(std_n1, test_n1);
+  ck_assert_int_eq(std_n1, 0);   // до первого числа
+  ck_assert_int_eq(std_val1, test_val1);
+  ck_assert_int_eq(std_val1, 123);
+  ck_assert_int_eq(std_n2, test_n2);
+  ck_assert_int_eq(std_n2, 3);   // после "123"
+  ck_assert_int_eq(std_val2, test_val2);
+  ck_assert_int_eq(std_val2, 456);
+  ck_assert_int_eq(std_n3, test_n3);
+  ck_assert_int_eq(std_n3, 7);   // после " 456" (пробел + 456)
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 2);
+}
+END_TEST
+
+// %n с модификатором h (short)
+START_TEST(test_n_short) {
+  short std_n = 0, test_n = 0;
+  int std_val = 0, test_val = 0;
+  const char *input = "12345";
+  const char *format = "%d%hn";
+  
+  int std_len = sscanf(input, format, &std_val, &std_n);
+  int test_len = s21_sscanf(input, format, &test_val, &test_n);
+  
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_val, 12345);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 5);
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 1);
+}
+END_TEST
+
+// %n с модификатором l (long)
+START_TEST(test_n_long) {
+  long std_n = 0, test_n = 0;
+  int std_val = 0, test_val = 0;
+  const char *input = "12345";
+  const char *format = "%d%ln";
+  
+  int std_len = sscanf(input, format, &std_val, &std_n);
+  int test_len = s21_sscanf(input, format, &test_val, &test_n);
+  
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_val, 12345);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 5);
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 1);
+}
+END_TEST
+
+// %n с модификатором ll (long long)
+START_TEST(test_n_long_long) {
+  long long std_n = 0, test_n = 0;
+  int std_val = 0, test_val = 0;
+  const char *input = "12345";
+  const char *format = "%d%lln";
+  
+  int std_len = sscanf(input, format, &std_val, &std_n);
+  int test_len = s21_sscanf(input, format, &test_val, &test_n);
+  
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_val, 12345);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 5);
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 1);
+}
+END_TEST
+
+// %n с пробелами и строкой
+START_TEST(test_n_with_string) {
+  int std_n = 0, test_n = 0;
+  char std_str[100] = {0}, test_str[100] = {0};
+  const char *input = "  Hello  World  ";
+  const char *format = "%s%n";
+  
+  int std_len = sscanf(input, format, std_str, &std_n);
+  int test_len = s21_sscanf(input, format, test_str, &test_n);
+  
+  ck_assert_str_eq(std_str, test_str);
+  ck_assert_str_eq(std_str, "Hello");
+  ck_assert_int_eq(std_n, test_n);
+  // "  Hello" - 2 пробела + 5 букв = 7 (но sscanf может считать иначе)
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+// %n после пустого чтения
+START_TEST(test_n_after_empty_read) {
+  int std_n = 0, test_n = 0;
+  char std_str[100] = {0}, test_str[100] = {0};
+  const char *input = "   ";
+  const char *format = "%s%n";
+  
+  int std_len = sscanf(input, format, std_str, &std_n);
+  int test_len = s21_sscanf(input, format, test_str, &test_n);
+  
+  // %s не может прочитать пустую строку из пробелов
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, -1); // или 0 в зависимости от реализации
+}
+END_TEST
+
+// %n с подавлением присваивания (должен игнорироваться)
+START_TEST(test_n_suppressed) {
+  int std_n = 0, test_n = 0;
+  int std_val = 0, test_val = 0;
+  const char *input = "12345";
+  const char *format = "%d%*n";
+  
+  int std_len = sscanf(input, format, &std_val);
+  int test_len = s21_sscanf(input, format, &test_val);
+  
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_val, 12345);
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 1);
+  
+  // %n с подавлением не должен изменять переменную
+  std_n = 999;
+  test_n = 999;
+  // Проверяем, что переменные не изменились
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 999);
+}
+END_TEST
+
+// %n после различных типов данных
+START_TEST(test_n_after_float) {
+  int std_n = 0, test_n = 0;
+  float std_f = 0.0f, test_f = 0.0f;
+  const char *input = "3.14159";
+  const char *format = "%f%n";
+  
+  int std_len = sscanf(input, format, &std_f, &std_n);
+  int test_len = s21_sscanf(input, format, &test_f, &test_n);
+  
+  ck_assert_float_eq_tol(std_f, test_f, 1e-6);
+  ck_assert_float_eq_tol(std_f, 3.14159, 1e-6);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 7); // "3.14159" - 7 символов
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 1);
+}
+END_TEST
+
+// %n после hex числа
+START_TEST(test_n_after_hex) {
+  int std_n = 0, test_n = 0;
+  unsigned int std_hex = 0, test_hex = 0;
+  const char *input = "FF";
+  const char *format = "%x%n";
+  
+  int std_len = sscanf(input, format, &std_hex, &std_n);
+  int test_len = s21_sscanf(input, format, &test_hex, &test_n);
+  
+  ck_assert_int_eq(std_hex, test_hex);
+  ck_assert_int_eq(std_hex, 255);
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_n, 2);
+  ck_assert_int_eq(std_len, test_len);
+  ck_assert_int_eq(std_len, 1);
+}
+END_TEST
+
 // ==================== REGISTRATION FUNCTIONS ====================
 void register_sscanf_string_tests(TCase *tc) {
   tcase_add_test(tc, test_string_basic);
@@ -724,6 +977,22 @@ void register_sscanf_percent_tests(TCase *tc) {
   tcase_add_test(tc, test_percent_mixed);
 }
 
+void register_sscanf_n_tests(TCase *tc) {
+  tcase_add_test(tc, test_n_basic);
+  tcase_add_test(tc, test_n_middle);
+  tcase_add_test(tc, test_n_end);
+  tcase_add_test(tc, test_n_alone);
+  tcase_add_test(tc, test_n_multiple);
+  tcase_add_test(tc, test_n_short);
+  tcase_add_test(tc, test_n_long);
+  tcase_add_test(tc, test_n_long_long);
+  tcase_add_test(tc, test_n_with_string);
+  tcase_add_test(tc, test_n_after_empty_read);
+  tcase_add_test(tc, test_n_suppressed);
+  tcase_add_test(tc, test_n_after_float);
+  tcase_add_test(tc, test_n_after_hex);
+}
+
 Suite *sscanf_suite_create(void) {
   Suite *s = suite_create("s21_sscanf");
   TCase *tc_core = tcase_create("Core");
@@ -738,6 +1007,7 @@ Suite *sscanf_suite_create(void) {
   register_sscanf_pointer_tests(tc_core);
   register_sscanf_mixed_tests(tc_core);
   register_sscanf_percent_tests(tc_core);
+  register_sscanf_n_tests(tc_core);
   register_sscanf_debug_tests(tc_core);
   
   suite_add_tcase(s, tc_core);

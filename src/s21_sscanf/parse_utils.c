@@ -1,44 +1,6 @@
 #include "s21_sscanf.h"
 #include <ctype.h>
 
-const char *parseScanSet(const char *input, formatSpec *spec) {
-  input++;
-
-  // Обработка инвертированного набора %[^...]
-  if (*input == '^') {
-    spec->inverted = 1;
-    input++;
-  }
-
-  // Чтение паттерна до ']'
-  s21_size_t pos = 0;
-
-  if (*input == ']') {
-    if (pos < MAX_PATTERN_LEN - 1) {
-      spec->scan_set[pos++] = ']';
-      input++;
-    } else {
-      return s21_NULL; // Буфер слишком мал
-    }
-  }
-
-  while (*input && *input != ']' && pos < MAX_PATTERN_LEN - 1) {
-    spec->scan_set[pos++] = *input;
-    input++;
-  }
-
-  if (*input == ']') {
-    spec->scan_set[pos] = '\0';
-    input++;
-  } else {
-    // Ошибка: нет закрывающей ']'
-    spec->scan_set[0] = '\0';
-    return s21_NULL;
-  }
-
-  return input;
-}
-
 const char *parseScanfWidth(const char *input, formatSpec *spec) {
   if (isdigit(*input)) {
     while (isdigit(*input)) {
@@ -91,7 +53,7 @@ const char *parseScanfLength(const char *input, formatSpec *spec) {
 }
 
 const char *parseScanfSpecifier(const char *format, formatSpec *spec) {
-  static const char *specifiers = "diouxXeEfgGcspn%[";
+  static const char *specifiers = "diouxXeEfgGcspn%";
 
   if (format && s21_strchr(specifiers, *format)) {
     spec->specifier = *format;
@@ -107,15 +69,8 @@ const char *parseScanfFormat(const char *format, formatSpec *spec) {
   format = parseScanfWidth(format, spec);
   if (!format) {
     return s21_NULL;
-  }
-  if (*format == '[') {
-    spec->specifier = '[';
-    format = parseScanSet(format, spec);
-    if (!format) {
-      return s21_NULL;
-    }
-  } else {
-    format = parseScanfLength(format, spec);
+  } 
+  format = parseScanfLength(format, spec);
     if (!format) {
       return s21_NULL;
     }
@@ -123,7 +78,6 @@ const char *parseScanfFormat(const char *format, formatSpec *spec) {
     format = parseScanfSpecifier(format, spec);
     if (!format) {
       return s21_NULL;
-    }
   }
 
   if (!spec->specifier && !spec->use_suppress) {
