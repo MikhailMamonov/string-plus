@@ -7,7 +7,7 @@ int s21_sscanf(const char *str, const char *format, ...) {
   const char *check = str;
   check = pass_spaces(check);
   if (*check == '\0') {
-    return -1;
+    return EOF;
   }
   int count = 0;
   while (*format != '\0') {
