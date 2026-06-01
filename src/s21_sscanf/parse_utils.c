@@ -99,7 +99,7 @@ const char *parseScanfSpecifier(const char *format, formatSpec *spec) {
 
 const char *parseScanfFormat(const char *format, formatSpec *spec) {
   s21_memset(spec, 0, sizeof(formatSpec));
-
+  spec->width= -1;
   format = parseScanfWidth(format, spec);
   if (!format) {
     return s21_NULL;
