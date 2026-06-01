@@ -15,5 +15,6 @@ int s21_sprintf(char *str, const char *format, ...) {
     }
   }
   *str = '\0';
+  va_end(args); 
   return str - start_str;
 }

@@ -19,23 +19,22 @@ int s21_sscanf(const char *str, const char *format, ...) {
         }
         break;
       }
-    } else {
-      if (isspace((unsigned char)*format)) {
-        str = pass_spaces(str);
-        format = pass_spaces(format);
+    } else if (isspace((unsigned char)*format)) {
+          str = pass_spaces(str);
+          format = pass_spaces(format);
+        } 
+      else if (*str == '\0') {
+          if (count == 0) {
+            count = EOF;
+          }
+          break;
       } else if (*str != *format) {
-        break;
-      } else {
-        if (*str == '\0' && count == 0) {
-          count = EOF;
+          break;
+        } else {
+          format++;
+          str++;
         }
-        format++;
-        str++;
-      }
-    }
   }
-  /*if (*str == '\0' && *format != '\0' && count == 0) {
-    return EOF;
-  }*/
+  va_end(args); 
   return count;
 }
