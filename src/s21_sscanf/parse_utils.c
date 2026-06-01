@@ -45,7 +45,7 @@ const char *parseScanSet(const char *input, formatSpec *spec)
   return input;
 }
 
-const char *parseWidth(const char *input, formatSpec *spec)
+const char *parseScanfWidth(const char *input, formatSpec *spec)
 {
   // Сброс состояния
   spec->use_suppress = 0;
@@ -97,7 +97,7 @@ const char *parseWidth(const char *input, formatSpec *spec)
   return input;
 }
 
-const char *parseLength(const char *input, formatSpec *spec)
+const char *parseScanfLength(const char *input, formatSpec *spec)
 {
   if (*input == 'l' || *input == 'L' || *input == 'h')
   {
@@ -119,7 +119,7 @@ const char *parseLength(const char *input, formatSpec *spec)
   return input;
 }
 
-const char *parseSpecifier(const char *format, formatSpec *spec)
+const char *parseScanfSpecifier(const char *format, formatSpec *spec)
 {
   static const char *specifiers = "diouxXeEfgGcspn%";
 
@@ -131,22 +131,22 @@ const char *parseSpecifier(const char *format, formatSpec *spec)
   return format;
 }
 
-const char *parseFormat(const char *format, formatSpec *spec)
+const char *parseScanfFormat(const char *format, formatSpec *spec)
 {
   s21_memset(spec, 0, sizeof(formatSpec));
 
-  format = parseWidth(format, spec);
+  format = parseScanfWidth(format, spec);
   if (!format)
   {
     return s21_NULL;
   }
-  format = parseLength(format, spec);
+  format = parseScanfLength(format, spec);
 
   if (!format)
   {
     return s21_NULL;
   }
-  format = parseSpecifier(format, spec);
+  format = parseScanfSpecifier(format, spec);
   if (!format)
   {
     return s21_NULL;

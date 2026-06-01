@@ -17,8 +17,13 @@ typedef struct {
 } formatSpec;
 
 
-char *int_to_str(char *buf, long long num, int *len, formatSpec spec);
-char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len);
+int str_to_int(const char **source, long long *res, formatSpec spec);
+const char *pass_spaces(const char *source);
+int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count);
+const char *parseScanfFormat(const char *format, formatSpec *spec);
+int process_char(const char **source, char *res, formatSpec spec);
+int process_str(const char **source, char *res, formatSpec spec);
+/*char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len);
 int parseFlag(char input);
 const char* parseFlags(const char *format, formatSpec *spec);
 const char* parseWidth(const char *input, formatSpec * spec);
@@ -34,6 +39,6 @@ char *g_spec(char *buf, long double val, formatSpec spec, int *len, char *start)
 char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 char *hex_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
 char *u_spec(char *buf, unsigned long long val, formatSpec spec, int *len);
-char *pointer_to_str(char *buf, void *pointer, formatSpec spec, int *len);
+char *pointer_to_str(char *buf, void *pointer, formatSpec spec, int *len);*/
 
 #endif

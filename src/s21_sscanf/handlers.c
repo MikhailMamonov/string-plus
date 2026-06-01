@@ -1,8 +1,7 @@
-#include "s21_sprintf.h"
-#include <math.h>
-#include <string.h> //strstr
+#include "s21_sscanf.h"
+#include <ctype.h>
 
-char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add);
+/*char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from, int spaces_to_add);
 
 char *handle_width(char *buf, int length, formatSpec spec) {
   int spaces_to_add = 0;
@@ -130,4 +129,11 @@ char *handle_special_floats(char *buf, long double val, formatSpec spec, int *le
   *len = buf -
          start; // Записываем точную длину напечатанного (нужно для ширины поля)
   return buf; // Возвращаем позицию для дальнейшей работы sprintf
+}*/
+const char *pass_spaces(const char *source) {
+  while (isspace((unsigned char)*source))
+  {
+    source++;
+  }
+  return source;
 }
