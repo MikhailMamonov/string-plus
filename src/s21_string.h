@@ -31,5 +31,6 @@ int s21_sprintf(char *str, const char *format, ...);
 
 // Функции, вдохновлённые C#
 void *s21_to_upper(const char *str);
+void *s21_insert(const char *src, const char *str, s21_size_t start_index);
 
 #endif
