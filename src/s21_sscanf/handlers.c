@@ -185,6 +185,30 @@ void handle_scanf_special_floats(const char **curr, int *width_counter, formatSp
   return;                                                                                                                 
 }
 
+int handle_null_pointer(const char **curr, formatSpec spec) {
+  if (spec.width > 0 && spec.width < 5) {
+    return FAIL;
+  }
+  const char *probe = *curr;
+  if (*probe != '\0' && *probe == '(') {
+    probe++;
+    if (*probe != '\0' && *probe == 'n') {
+      probe++;
+      if (*probe != '\0' && *probe == 'i') {
+        probe++;
+        if (*probe != '\0' && *probe == 'l') {
+          probe++;
+           if (*probe != '\0' && *probe == ')') {
+            *curr += 5;
+            return SUCCESS;
+          }
+        }
+      }
+    } 
+  }
+  return FAIL;
+}
+
 char to_lower(char ch) {
   if (isupper(ch)) {
     ch = ch + ('a' - 'A');

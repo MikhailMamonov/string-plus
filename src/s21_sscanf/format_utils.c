@@ -118,12 +118,31 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
       ret = FAIL;
     }
     break;
-  }/*
+  }
   case 'p': {
-    void *pointer = va_arg(*args, void*);
-    *out = pointer_to_str(*out, pointer, *spec, &len);
+    *source = pass_spaces(*source);
+    if (handle_null_pointer(source, *spec)) {
+      ret = SUCCESS;
+      if (!spec->use_suppress) {
+        void **pointer = va_arg(*args, void **); 
+        *pointer = s21_NULL;
+      }
+    } else {
+      long long res = 0;
+      spec->specifier = 'x';
+      if (process_int(source, &res, *spec)) {
+        ret = SUCCESS;
+        if (!spec->use_suppress) {
+          void **pointer = va_arg(*args, void **); 
+          *pointer = (void *)res;
+        }
+      } else {
+        ret = FAIL;
+      }
+    }
     break;
   }
+  /*
   case 'n': {
     if (spec->length == 'l') {
         long *pointer = (long *)va_arg(*args, long *);

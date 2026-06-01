@@ -57,6 +57,9 @@ const char *parseScanfWidth(const char *input, formatSpec *spec) {
         spec->width = spec->width * 10 + (*input - '0');
         input++;
       }
+      if (spec->width == 0) {
+        spec->width = -1;
+      }
     } else {
       // Ширина уже есть до *, пропускаем цифры после * (нестандартно)
       // Лучше считать это ошибкой формата
