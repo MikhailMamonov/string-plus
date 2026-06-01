@@ -51,7 +51,8 @@ const char *parseScanfWidth(const char *input, formatSpec *spec) {
     spec->use_suppress = 1;
     input++;
     // Если ширина еще не установлена, устанавливаем ее
-    if (spec->width == 0) {
+    if (spec->width == -1) {
+      spec->width = 0;
       while (isdigit(*input)) {
         spec->width = spec->width * 10 + (*input - '0');
         input++;
