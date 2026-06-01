@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 // Отдельная функция для форматирования
-int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count) {
+int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source, int *count, const char *start) {
   int ret = FAIL;
   switch (spec->specifier) {
   case 'c': {
@@ -140,29 +140,28 @@ int formatScanfBySpecifier(formatSpec *spec, va_list *args, const char **source,
     }
     break;
   }
-  /*
   case 'n': {
-    if (spec->length == 'l') {
-        long *pointer = (long *)va_arg(*args, long *);
-        *pointer = *out - start;
-    } else if (spec->length == 'h') {
-        short *pointer = (short *)va_arg(*args, short *); 
-        *pointer = *out - start;
-    } else {
-        int *pointer = va_arg(*args, int *); 
-        *pointer = *out - start;
+    ret = SUCCESS;
+    if (!spec->use_suppress) {
+      if (spec->length == 'l') {
+          long *pointer = (long *)va_arg(*args, long *);
+          *pointer = *source - start;
+      } else if (spec->length == 'h') {
+          short *pointer = (short *)va_arg(*args, short *); 
+          *pointer = *source - start;
+      } else {
+          int *pointer = va_arg(*args, int *); 
+          *pointer = *source - start;
+      }
     }
     break;
   }
   default: {
-    *(*out)++ = '%';
-    if (spec->specifier) {
-      *(*out)++ = spec->specifier;
-    }
+    ret = FAIL;
     break;
-  }*/
   }
-  if (ret == SUCCESS && !spec->use_suppress && spec->specifier != '%') {
+  }
+  if (ret == SUCCESS && !spec->use_suppress && spec->specifier != '%' && spec->specifier != 'n') {
     (*count)++;
   } 
   return ret;

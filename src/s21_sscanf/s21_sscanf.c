@@ -5,6 +5,7 @@ int s21_sscanf(const char *str, const char *format, ...) {
   va_list args;
   va_start(args, format);
   int count = 0;
+  const char *start = str;
   while (*format != '\0') {
     if (*format == '%') {
       format++;
@@ -13,7 +14,7 @@ int s21_sscanf(const char *str, const char *format, ...) {
       if (!format || spec.width == 0) {
         break;
       }
-      if (!formatScanfBySpecifier(&spec, &args, &str, &count)) {
+      if (!formatScanfBySpecifier(&spec, &args, &str, &count, start)) {
         if (*str == '\0' && count == 0) {
           count = EOF;
         }
