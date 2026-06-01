@@ -9,8 +9,6 @@
 
 typedef struct {
     unsigned int use_suppress : 1; //используется подавление 
-    char scan_set[MAX_PATTERN_LEN]; // для  %*[...] 
-    int inverted; //будем ли инвертировать набор 
     int width; // ширина '-'
     char length;// длина
     char specifier; // спецификатор

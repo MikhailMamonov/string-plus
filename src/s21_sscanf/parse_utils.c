@@ -39,12 +39,12 @@ const char *parseScanfLength(const char *input, formatSpec *spec) {
     spec->length = *input;
     input++;
     if (spec->length == 'l' && *input == 'l') {
-      spec->length = 'L'; // или введите отдельный флаг
+      spec->length = 'L'; 
       input++;
     }
     // Поддержка short short (hh)
     if (spec->length == 'h' && *input == 'h') {
-      spec->length = 'H'; // или введите отдельный флаг
+      spec->length = 'H'; 
       input++;
     }
   }
