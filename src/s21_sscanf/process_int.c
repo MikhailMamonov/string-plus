@@ -51,7 +51,7 @@ int process_int(const char **source, long long *res, formatSpec spec) {
             curr--;
             unsigned_res = 0;
         } else {
-            return 0;
+            return FAIL;
         }
     }
     if (is_negative) {
@@ -61,7 +61,7 @@ int process_int(const char **source, long long *res, formatSpec spec) {
         *res = unsigned_res;
     }
     *source = curr;
-    return 1;
+    return SUCCESS;
 }
 
 int base_determinator(formatSpec spec, const char **curr, int *width_counter, int *is_hex_prefix) {

@@ -1,8 +1,6 @@
 #include "s21_sscanf.h"
 #include <stdlib.h>
 
-#define SUCCESS 1
-#define FAIL 0
 
 
 // Отдельная функция для форматирования

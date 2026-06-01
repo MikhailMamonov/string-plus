@@ -18,9 +18,9 @@ int process_char(const char **source, char *res, formatSpec spec) {
       width--;
     }
     if (width != 0) {
-      return 0;
+      return FAIL;
     } else {
       *source = curr;
-      return 1;
+      return SUCCESS;
     }
 }

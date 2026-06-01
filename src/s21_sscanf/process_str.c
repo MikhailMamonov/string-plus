@@ -19,12 +19,12 @@ int process_str(const char **source, char *res, formatSpec spec) {
       width--;
     }
     if (curr == *source) {
-      return 0;
+      return FAIL;
     } else {
       *source = curr;
       if (!spec.use_suppress) {
         *res = '\0';
       }
-      return 1;
+      return SUCCESS;
     }
 }
