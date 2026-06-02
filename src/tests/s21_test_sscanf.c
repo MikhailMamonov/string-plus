@@ -416,6 +416,32 @@ START_TEST(test_u_zero) {
 }
 END_TEST
 
+START_TEST(test_long_unsigned) {
+    unsigned long std_val = 0, test_val = 0;
+    const char *input = "4294967295";
+    const char *format = "%lu";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_short_unsigned) {
+    unsigned short std_val = 0, test_val = 0;
+    const char *input = "65535";
+    const char *format = "%hu";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
 // ==================== OCTAL TESTS ====================
 START_TEST(test_o_simple) {
   unsigned int std_val = 0, test_val = 0;
@@ -520,6 +546,58 @@ START_TEST(test_width_zero_float) {
   
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_double_simple) {
+    double std_val = 0.0, test_val = 0.0;
+    const char *input = "123.456";
+    const char *format = "%lf";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_double_eq_tol(std_val, test_val, 1e-9);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_long_double) {
+    long double std_val = 0.0L, test_val = 0.0L;
+    const char *input = "123.456";
+    const char *format = "%Lf";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_ldouble_eq_tol(std_val, test_val, 1e-9);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_float_scientific) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "1.23e-4";
+    const char *format = "%e";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_float_eq_tol(std_val, test_val, 1e-6);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_float_g_format) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "123.456";
+    const char *format = "%g";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_float_eq_tol(std_val, test_val, 1e-6);
+    ck_assert_int_eq(std_len, test_len);
 }
 END_TEST
 
@@ -898,6 +976,49 @@ START_TEST(test_i_octal) {
 }
 END_TEST
 
+// ==================== EXCEPTIONS TESTS ====================
+START_TEST(test_no_match) {
+    int std_val = 42, test_val = 42;
+    const char *input = "abc";
+    const char *format = "%d";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val); // значения не должны измениться
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_partial_match) {
+    int std_val = 0, test_val = 0;
+    char std_str[100] = {0}, test_str[100] = {0};
+    const char *input = "123abc";
+    const char *format = "%d%s";
+    
+    int std_len = sscanf(input, format, &std_val, std_str);
+    int test_len = s21_sscanf(input, format, &test_val, test_str);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_str_eq(std_str, test_str);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_whitespace_handling) {
+    int std_val1 = 0, std_val2 = 0;
+    int test_val1 = 0, test_val2 = 0;
+    const char *input = "  42\t\n  100  ";
+    const char *format = "%d%d";
+    
+    int std_len = sscanf(input, format, &std_val1, &std_val2);
+    int test_len = s21_sscanf(input, format, &test_val1, &test_val2);
+    
+    ck_assert_int_eq(std_val1, test_val1);
+    ck_assert_int_eq(std_val2, test_val2);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
 
 
 // ==================== REGISTRATION FUNCTIONS ====================
@@ -949,7 +1070,10 @@ void register_sscanf_debug_tests(TCase *tc) {
 void register_sscanf_unsigned_tests(TCase *tc) {
   tcase_add_test(tc, test_u_simple);
   tcase_add_test(tc, test_u_zero);
+  tcase_add_test(tc, test_long_unsigned);
+  tcase_add_test(tc, test_short_unsigned);
 }
+
 
 void register_sscanf_octal_tests(TCase *tc) {
   tcase_add_test(tc, test_o_simple);
@@ -966,6 +1090,10 @@ void register_sscanf_float_tests(TCase *tc) {
   tcase_add_test(tc, test_positive_number_float);
   tcase_add_test(tc, test_negative_number_float);
   tcase_add_test(tc, test_width_zero_float);
+  tcase_add_test(tc, test_double_simple);
+  tcase_add_test(tc, test_long_double);
+  tcase_add_test(tc, test_float_scientific);
+  tcase_add_test(tc, test_float_g_format);
 }
 
 void register_sscanf_pointer_tests(TCase *tc) {
@@ -1002,6 +1130,13 @@ void register_sscanf_n_tests(TCase *tc) {
   tcase_add_test(tc, test_n_after_hex);
 }
 
+void register_sscanf_exceptions_tests(TCase *tc) {
+  tcase_add_test(tc, test_no_match);
+  tcase_add_test(tc, test_partial_match);
+  tcase_add_test(tc, test_whitespace_handling);
+
+}
+
 Suite *sscanf_suite_create(void) {
   Suite *s = suite_create("s21_sscanf");
   TCase *tc_core = tcase_create("Core");
@@ -1018,6 +1153,7 @@ Suite *sscanf_suite_create(void) {
   register_sscanf_percent_tests(tc_core);
   register_sscanf_n_tests(tc_core);
   register_sscanf_debug_tests(tc_core);
+  register_sscanf_exceptions_tests(tc_core);
   
   suite_add_tcase(s, tc_core);
   return s;
