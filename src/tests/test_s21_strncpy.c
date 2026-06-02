@@ -21,7 +21,7 @@ static void run_strncpy_test(const strncpyParams *p) {
   ck_assert_msg(ret_s21 == buf_s21, "FAIL [%s]: s21_strncpy вернул не buf_s21",
                 p->test_name);
 
-  ck_assert_msg(memcmp(buf_std, buf_s21, p->n) == 0,
+  ck_assert_msg(s21_memcmp(buf_std, buf_s21, p->n) == 0,
                 "FAIL [%s]: первые %zu байт отличаются", p->test_name,
                 (size_t)p->n);
 
