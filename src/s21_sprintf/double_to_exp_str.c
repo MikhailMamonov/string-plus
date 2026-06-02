@@ -19,8 +19,6 @@ char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len) {
   int exponent = 0;
   if (val != 0.0) {
     exponent = (int)floorl(log10l(val));
-    // Используем умножение для отрицательных степеней во избежание потери
-    // точности
     val /= pow(10, exponent);
   }
 

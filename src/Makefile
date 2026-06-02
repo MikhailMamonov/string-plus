@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 
 # Исходники библиотеки
-SRCS = $(wildcard *.c) $(wildcard s21_sprintf/*.c)
+SRCS = $(wildcard *.c) $(wildcard core/*.c)  $(wildcard s21_sprintf/*.c) $(wildcard s21_sscanf/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = s21_string.a
 
@@ -42,7 +42,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Цель для генерации GCOV отчета
-gcov_report: clean
+gcov_report: clean_gcov
 	# 1. Компилируем исходники вместе с тестами и флагами покрытия
 	$(CC) $(CFLAGS) $(GCOV_FLAGS) $(SRCS) $(TEST_SRCS) $(TEST_FLAGS) -o test_exec
 	# 2. Запускаем тесты, чтобы собралась статистика (.gcda файлы)
@@ -58,6 +58,15 @@ gcov_report: clean
 clean:
 	rm -f $(OBJS) *.gcno *.gcda *.info
 	rm -rf report test_exec
+
+clean_gcov:
+	rm -f test_exec
+	rm -f *.gcda *.gcno *.gcov
+	rm -f coverage.info
+	rm -rf report
+	find . -name "*.gcda" -type f -delete
+	find . -name "*.gcno" -type f -delete
+	find . -name "*.gcov" -type f -delete
 
 fclean: clean
 	rm -f $(NAME)
