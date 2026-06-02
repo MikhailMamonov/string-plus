@@ -1,5 +1,4 @@
 #include "s21_sscanf.h"
-#include <ctype.h>
 
 const char *parseScanfWidth(const char *input, formatSpec *spec) {
   if (*input == '*') {

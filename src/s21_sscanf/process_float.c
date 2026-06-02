@@ -1,5 +1,4 @@
 #include "s21_sscanf.h"
-#include <math.h>
 
 int process_float(const char **source, long double *res, formatSpec spec) {
   const char *curr = *source;

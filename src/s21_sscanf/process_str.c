@@ -1,5 +1,4 @@
 #include "s21_sscanf.h"
-#include <ctype.h>
 
 int process_str(const char **source, char *res, formatSpec spec) {
   const char *curr = *source;

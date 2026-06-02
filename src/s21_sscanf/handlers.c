@@ -1,6 +1,4 @@
 #include "s21_sscanf.h"
-#include <ctype.h>
-#include <math.h>
 
 char to_lower(char ch);
 

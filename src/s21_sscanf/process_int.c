@@ -1,5 +1,4 @@
 #include "s21_sscanf.h"
-#include <math.h>
 
 int base_determinator(formatSpec spec, const char **curr, int *width_counter,
                       int *is_hex_prefix);
