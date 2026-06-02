@@ -78,11 +78,6 @@ const char *parseLength(const char *input, formatSpec *spec) {
       spec->length = 'L'; // или введите отдельный флаг
       input++;
     }
-    // Поддержка short short (hh)
-    if (spec->length == 'h' && *input == 'h') {
-      spec->length = 'H'; // или введите отдельный флаг
-      input++;
-    }
   }
 
   return input;

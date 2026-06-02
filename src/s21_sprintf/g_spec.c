@@ -26,7 +26,7 @@ char *g_spec(char *buf, long double val, formatSpec spec, int *len,
   long double abs_val = is_negative ? -val : val;
   int temp_exponent = (abs_val == 0.0l) ? 0 : (int)floorl(log10l(abs_val));
 
-  // 3. КРИТИЧЕСКИЙ ФИКС: Округляем число ДО расчета финальной экспоненты
+  // 3. Округляем число ДО расчета финальной экспоненты
   // Если число уйдет в %e, округляем до (prec - 1) знака относительно
   // экспоненты. Если в %f, то до (prec - 1 - temp_exponent) знаков.
   int round_prec = prec - 1 - temp_exponent;

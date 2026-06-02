@@ -18,19 +18,19 @@ void run_strtok_test(strtokParams *params) {
   char *result = s21_strtok(str_test, params->delim);
 
   while (1) {
-    if (expected == NULL) {
-      ck_assert_ptr_eq(result, NULL);
+    if (expected == s21_NULL) {
+      ck_assert_ptr_eq(result, s21_NULL);
       break;
     }
-    ck_assert_ptr_ne(result, NULL);
+    ck_assert_ptr_ne(result, s21_NULL);
     ck_assert_str_eq(result, expected);
 
-    expected = strtok(NULL, params->delim);
-    result = s21_strtok(NULL, params->delim);
+    expected = strtok(s21_NULL, params->delim);
+    result = s21_strtok(s21_NULL, params->delim);
   }
 
-  ck_assert_ptr_eq(expected, NULL);
-  ck_assert_ptr_eq(result, NULL);
+  ck_assert_ptr_eq(expected, s21_NULL);
+  ck_assert_ptr_eq(result, s21_NULL);
 }
 
 STRTOK_TEST_CASES(strtok_string_basic_tests,

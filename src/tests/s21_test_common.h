@@ -95,6 +95,19 @@ typedef struct {
   const char *test_name;
 } memcmpParams;
 
+typedef struct {
+  const char *src;
+  s21_size_t n;
+  const char *test_name;
+} strncpyParams;
+typedef struct {
+  const char *src;
+  const char *str;
+  s21_size_t start_index;
+  const char *expected;
+  const char *test_name;
+} insertParams;
+
 #define TEST_CASES(name, param_type, run_func, ...)                            \
   static param_type name[] = {__VA_ARGS__};                                    \
   START_TEST(test_##name) {                                                    \
@@ -164,4 +177,9 @@ typedef struct {
 #define MEMCMP_TEST_CASES(name, ...)                                           \
   TEST_CASES(name, memcmpParams, run_memcmp_test, __VA_ARGS__)
 
+#define STRNCPY_TEST_CASES(name, ...)                                          \
+  TEST_CASES(name, strncpyParams, run_strncpy_test, __VA_ARGS__)
+
+#define INSERT_TEST_CASES(name, ...)                                           \
+  TEST_CASES(name, insertParams, run_insert_test, __VA_ARGS__)
 #endif
