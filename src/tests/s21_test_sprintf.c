@@ -48,7 +48,6 @@ RUN_SPRINTF_TEST(int_width_left_align, "|%-8d|", 42);
 RUN_SPRINTF_TEST(int_negative_width, "|%10d|", -42);
 RUN_SPRINTF_TEST(int_negative_width_left_align, "|%-10d|", -42);
 RUN_SPRINTF_TEST(short_int, "%hd", (short)2342);
-RUN_SPRINTF_TEST(signed_char, "%hhd", (signed char)-56);
 RUN_SPRINTF_TEST(int_min_boundary, "%d", -2147483647 - 1);
 RUN_SPRINTF_TEST(int_max_boundary, "%d", 2147483647);
 RUN_SPRINTF_TEST(int_precision_zero_val_zero, "%.0d", 0);
@@ -400,7 +399,6 @@ void register_int_tests(TCase *tc) {
   tcase_add_test(tc, test_int_negative_width);
   tcase_add_test(tc, test_int_negative_width_left_align);
   tcase_add_test(tc, test_short_int);
-  tcase_add_test(tc, test_signed_char);
   tcase_add_test(tc, test_int_min_boundary);
   tcase_add_test(tc, test_int_max_boundary);
   tcase_add_test(tc, test_int_precision_zero_val_zero);

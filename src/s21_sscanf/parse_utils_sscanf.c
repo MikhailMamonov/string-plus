@@ -30,11 +30,6 @@ const char *parseScanfLength(const char *input, formatSpec *spec) {
       spec->length = 'L';
       input++;
     }
-    // Поддержка short short (hh)
-    if (spec->length == 'h' && *input == 'h') {
-      spec->length = 'H';
-      input++;
-    }
   }
 
   return input;

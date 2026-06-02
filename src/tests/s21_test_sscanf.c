@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Макрос для вывода информации о тесте (только при успешном прохождении)
+#define TEST_PRINT(test_name, format, input) \
+    printf("[PASS] %s: \"%s\" -> \"%s\"\n", test_name, format, (const char*)(input))
+
 // ==================== STRING TESTS ====================
 START_TEST(test_string_basic) {
   char std_buf[1024] = {0}, test_buf[1024] = {0};
@@ -17,6 +21,7 @@ START_TEST(test_string_basic) {
 
   ck_assert_str_eq(std_buf, test_buf);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_string_basic", format, input);
 }
 END_TEST
 
@@ -32,6 +37,7 @@ START_TEST(test_string_with_space) {
   ck_assert_str_eq(std_buf1, test_buf1);
   ck_assert_str_eq(std_buf2, test_buf2);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_string_with_space", format, input);
 }
 END_TEST
 
@@ -44,6 +50,7 @@ START_TEST(test_string_empty) {
   int test_len = s21_sscanf(input, format, test_buf);
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_string_empty", format, input);
 }
 END_TEST
 
@@ -54,6 +61,7 @@ START_TEST(test_string_percent) {
   int test_len = s21_sscanf(input, "Hello%%");
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_string_percent", "Hello%%", input);
 }
 END_TEST
 
@@ -64,6 +72,7 @@ START_TEST(test_string_percent_start) {
   int test_len = s21_sscanf(input, "%%Hello");
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_string_percent_start", "%%Hello", input);
 }
 END_TEST
 
@@ -77,6 +86,7 @@ START_TEST(test_width_zero_string) {
 
   ck_assert_str_eq(std_buf, test_buf);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_width_zero_string", format, input);
 }
 END_TEST
 
@@ -90,6 +100,7 @@ START_TEST(test_suppression_string) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_string", format, input);
 }
 END_TEST
 
@@ -103,6 +114,7 @@ START_TEST(test_width_string) {
 
   ck_assert_str_eq(std_buf, test_buf);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_width_string", format, input);
 }
 END_TEST
 
@@ -115,6 +127,7 @@ START_TEST(test_empty_format) {
   int test_len = s21_sscanf(input, format, test_buf);
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_format", format, input);
 }
 END_TEST
 
@@ -129,6 +142,7 @@ START_TEST(test_char_basic) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_char_basic", format, input);
 }
 END_TEST
 
@@ -142,6 +156,7 @@ START_TEST(test_char_digit) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_char_digit", format, input);
 }
 END_TEST
 
@@ -155,6 +170,7 @@ START_TEST(test_char_special) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_char_special", format, input);
 }
 END_TEST
 
@@ -168,6 +184,7 @@ START_TEST(test_width_zero_char) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_width_zero_char", format, input);
 }
 END_TEST
 
@@ -182,6 +199,7 @@ START_TEST(test_int_positive) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_int_positive", format, input);
 }
 END_TEST
 
@@ -195,6 +213,7 @@ START_TEST(test_int_negative) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_int_negative", format, input);
 }
 END_TEST
 
@@ -208,6 +227,7 @@ START_TEST(test_int_zero) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_int_zero", format, input);
 }
 END_TEST
 
@@ -222,6 +242,7 @@ START_TEST(test_int_two) {
   ck_assert_int_eq(std_a, test_a);
   ck_assert_int_eq(std_b, test_b);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_int_two", format, input);
 }
 END_TEST
 
@@ -238,6 +259,7 @@ START_TEST(test_int_three) {
   ck_assert_int_eq(std_b, test_b);
   ck_assert_int_eq(std_c, test_c);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_int_three", format, input);
 }
 END_TEST
 
@@ -251,6 +273,7 @@ START_TEST(test_int_min_boundary) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_int_min_boundary", format, input);
 }
 END_TEST
 
@@ -264,6 +287,7 @@ START_TEST(test_int_max_boundary) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_int_max_boundary", format, input);
 }
 END_TEST
 
@@ -277,6 +301,7 @@ START_TEST(test_width_zero_int) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_width_zero_int", format, input);
 }
 END_TEST
 
@@ -290,6 +315,7 @@ START_TEST(test_suppression_int) {
 
   ck_assert_int_eq(std_val2, test_val2);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_int", format, input);
 }
 END_TEST
 
@@ -303,6 +329,7 @@ START_TEST(test_suppression_debug_1) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_debug_1", format, input);
 }
 END_TEST
 
@@ -316,6 +343,7 @@ START_TEST(test_suppression_debug_2) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_debug_2", format, input);
 }
 END_TEST
 
@@ -330,6 +358,7 @@ START_TEST(test_suppression_pointer_check) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_pointer_check", format, input);
 }
 END_TEST
 
@@ -346,6 +375,7 @@ START_TEST(test_suppression_sequence) {
   ck_assert_int_eq(std_b, test_b);
   ck_assert_int_eq(std_c, test_c);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_sequence", format, input);
 }
 END_TEST
 
@@ -359,6 +389,7 @@ START_TEST(test_suppression_first) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_first", format, input);
 }
 END_TEST
 
@@ -372,6 +403,7 @@ START_TEST(test_short_int) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_short_int", format, input);
 }
 END_TEST
 
@@ -385,6 +417,7 @@ START_TEST(test_long_int) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_long_int", format, input);
 }
 END_TEST
 
@@ -398,6 +431,7 @@ START_TEST(test_width_int) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_width_int", format, input);
 }
 END_TEST
 
@@ -412,6 +446,7 @@ START_TEST(test_u_simple) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_u_simple", format, input);
 }
 END_TEST
 
@@ -425,6 +460,7 @@ START_TEST(test_u_zero) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_u_zero", format, input);
 }
 END_TEST
 
@@ -438,6 +474,7 @@ START_TEST(test_long_unsigned) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_long_unsigned", format, input);
 }
 END_TEST
 
@@ -451,6 +488,7 @@ START_TEST(test_short_unsigned) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_short_unsigned", format, input);
 }
 END_TEST
 
@@ -465,6 +503,7 @@ START_TEST(test_o_simple) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_o_simple", format, input);
 }
 END_TEST
 
@@ -479,6 +518,7 @@ START_TEST(test_x_simple) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_x_simple", format, input);
 }
 END_TEST
 
@@ -492,6 +532,7 @@ START_TEST(test_x_zero) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_x_zero", format, input);
 }
 END_TEST
 
@@ -505,6 +546,7 @@ START_TEST(test_width_hex) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_width_hex", format, input);
 }
 END_TEST
 
@@ -519,6 +561,7 @@ START_TEST(test_zero_float) {
 
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_zero_float", format, input);
 }
 END_TEST
 
@@ -532,6 +575,7 @@ START_TEST(test_positive_number_float) {
 
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_positive_number_float", format, input);
 }
 END_TEST
 
@@ -545,6 +589,7 @@ START_TEST(test_negative_number_float) {
 
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_negative_number_float", format, input);
 }
 END_TEST
 
@@ -558,6 +603,7 @@ START_TEST(test_width_zero_float) {
 
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_width_zero_float", format, input);
 }
 END_TEST
 
@@ -571,6 +617,7 @@ START_TEST(test_double_simple) {
 
   ck_assert_double_eq_tol(std_val, test_val, 1e-9);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_double_simple", format, input);
 }
 END_TEST
 
@@ -584,6 +631,7 @@ START_TEST(test_long_double) {
 
   ck_assert_ldouble_eq_tol(std_val, test_val, 1e-9);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_long_double", format, input);
 }
 END_TEST
 
@@ -597,6 +645,7 @@ START_TEST(test_float_scientific) {
 
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_float_scientific", format, input);
 }
 END_TEST
 
@@ -610,6 +659,254 @@ START_TEST(test_float_g_format) {
 
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_float_g_format", format, input);
+}
+END_TEST
+
+// ==================== SPECIAL FLOAT TESTS ====================
+
+START_TEST(test_float_nan_upper) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "NAN";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isnan(std_val));
+    ck_assert(isnan(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_nan_upper", format, input);
+}
+END_TEST
+
+START_TEST(test_float_nan_lower) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "nan";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isnan(std_val));
+    ck_assert(isnan(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_nan_lower", format, input);
+}
+END_TEST
+
+START_TEST(test_float_nan_mixed_case) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "NaN";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isnan(std_val));
+    ck_assert(isnan(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_nan_mixed_case", format, input);
+}
+END_TEST
+
+START_TEST(test_float_inf_upper) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "INF";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_inf_upper", format, input);
+}
+END_TEST
+
+START_TEST(test_float_inf_lower) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "inf";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_inf_lower", format, input);
+}
+END_TEST
+
+START_TEST(test_float_inf_mixed_case) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "Inf";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_inf_mixed_case", format, input);
+}
+END_TEST
+
+START_TEST(test_float_infinity_upper) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "INFINITY";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_infinity_upper", format, input);
+}
+END_TEST
+
+START_TEST(test_float_infinity_lower) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "infinity";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_infinity_lower", format, input);
+}
+END_TEST
+
+START_TEST(test_float_infinity_mixed_case) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "Infinity";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_infinity_mixed_case", format, input);
+}
+END_TEST
+
+START_TEST(test_float_negative_inf) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "-inf";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert(std_val < 0);
+    ck_assert(test_val < 0);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_negative_inf", format, input);
+}
+END_TEST
+
+START_TEST(test_float_positive_inf_with_plus) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "+inf";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert(std_val > 0);
+    ck_assert(test_val > 0);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_positive_inf_with_plus", format, input);
+}
+END_TEST
+
+START_TEST(test_float_nan_with_sign) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "+nan";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isnan(std_val));
+    ck_assert(isnan(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_nan_with_sign", format, input);
+}
+END_TEST
+
+START_TEST(test_float_with_width_nan) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "NAN123";
+    const char *format = "%3f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    // Должен прочитать только "NAN"
+    ck_assert(isnan(std_val));
+    ck_assert(isnan(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_with_width_nan", format, input);
+}
+END_TEST
+
+START_TEST(test_float_with_width_inf) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "INF123";
+    const char *format = "%3f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert(isinf(std_val));
+    ck_assert(isinf(test_val));
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_with_width_inf", format, input);
+}
+END_TEST
+
+START_TEST(test_float_width_less_than_nan) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "NAN";
+    const char *format = "%2f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    // Ширина 2 недостаточна для "NAN" - чтение должно провалиться
+    // Значения не должны измениться
+    ck_assert_float_eq_tol(std_val, test_val, 1e-6);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_width_less_than_nan", format, input);
+}
+END_TEST
+
+START_TEST(test_float_width_less_than_inf) {
+    float std_val = 123.0f, test_val = 123.0f;
+    const char *input = "INF";
+    const char *format = "%2f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_float_eq_tol(std_val, test_val, 1e-6);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_float_width_less_than_inf", format, input);
 }
 END_TEST
 
@@ -627,6 +924,7 @@ START_TEST(test_p_simple) {
 
   ck_assert_ptr_eq(std_ptr, test_ptr);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_p_simple", format, input);
 }
 END_TEST
 
@@ -640,6 +938,7 @@ START_TEST(test_p_zero_null) {
 
   ck_assert_ptr_eq(std_ptr, test_ptr);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_p_zero_null", format, input);
 }
 END_TEST
 
@@ -656,6 +955,7 @@ START_TEST(test_mixed_string_int) {
   ck_assert_str_eq(std_str, test_str);
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_mixed_string_int", format, input);
 }
 END_TEST
 
@@ -673,6 +973,7 @@ START_TEST(test_mixed_int_string) {
   ck_assert_str_eq(std_str1, test_str1);
   ck_assert_str_eq(std_str2, test_str2);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_mixed_int_string", format, input);
 }
 END_TEST
 
@@ -686,6 +987,7 @@ START_TEST(test_multiple_suppressions) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_multiple_suppressions", format, input);
 }
 END_TEST
 
@@ -699,6 +1001,7 @@ START_TEST(test_suppression_with_width) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_suppression_with_width", format, input);
 }
 END_TEST
 
@@ -712,6 +1015,7 @@ START_TEST(test_all_suppressed) {
   test_len = s21_sscanf(input, format, &dummy);
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_all_suppressed", format, input);
 }
 END_TEST
 
@@ -723,6 +1027,7 @@ START_TEST(test_percent_simple) {
   int test_len = s21_sscanf(input, "%%");
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_percent_simple", "%%", input);
 }
 END_TEST
 
@@ -742,6 +1047,7 @@ START_TEST(test_percent_mixed) {
   ck_assert_float_eq_tol(std_float, test_float, 1e-6);
   ck_assert_str_eq(std_str, test_str);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_percent_mixed", format, input);
 }
 END_TEST
 
@@ -758,6 +1064,7 @@ START_TEST(test_n_basic) {
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_basic", format, input);
 }
 END_TEST
 
@@ -775,6 +1082,7 @@ START_TEST(test_n_middle) {
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_val2, test_val2);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_middle", format, input);
 }
 END_TEST
 
@@ -792,6 +1100,7 @@ START_TEST(test_n_end) {
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_end", format, input);
 }
 END_TEST
 
@@ -805,6 +1114,7 @@ START_TEST(test_n_alone) {
 
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_alone", format, input);
 }
 END_TEST
 
@@ -827,6 +1137,7 @@ START_TEST(test_n_multiple) {
   ck_assert_int_eq(std_val2, test_val2);
   ck_assert_int_eq(std_n3, test_n3);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_multiple", format, input);
 }
 END_TEST
 
@@ -842,6 +1153,7 @@ START_TEST(test_n_short) {
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_short", format, input);
 }
 END_TEST
 
@@ -857,6 +1169,7 @@ START_TEST(test_n_long) {
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_long", format, input);
 }
 END_TEST
 
@@ -872,6 +1185,7 @@ START_TEST(test_n_long_long) {
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_long_long", format, input);
 }
 END_TEST
 
@@ -887,6 +1201,7 @@ START_TEST(test_n_with_string) {
   ck_assert_str_eq(std_str, test_str);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_with_string", format, input);
 }
 END_TEST
 
@@ -900,6 +1215,7 @@ START_TEST(test_n_after_empty_read) {
   int test_len = s21_sscanf(input, format, test_str, &test_n);
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_after_empty_read", format, input);
 }
 END_TEST
 
@@ -918,6 +1234,7 @@ START_TEST(test_n_suppressed) {
   std_n = 999;
   test_n = 999;
   ck_assert_int_eq(std_n, test_n);
+  TEST_PRINT("test_n_suppressed", format, input);
 }
 END_TEST
 
@@ -933,6 +1250,7 @@ START_TEST(test_n_after_float) {
   ck_assert_float_eq_tol(std_f, test_f, 1e-6);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_after_float", format, input);
 }
 END_TEST
 
@@ -948,11 +1266,11 @@ START_TEST(test_n_after_hex) {
   ck_assert_int_eq(std_hex, test_hex);
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_n_after_hex", format, input);
 }
 END_TEST
 
 // ==================== I TESTS ====================
-
 START_TEST(test_i_decimal) {
   int std_val = 0, test_val = 0;
   const char *input = "123";
@@ -963,6 +1281,7 @@ START_TEST(test_i_decimal) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_i_decimal", format, input);
 }
 END_TEST
 
@@ -976,6 +1295,7 @@ START_TEST(test_i_hex) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_i_hex", format, input);
 }
 END_TEST
 
@@ -989,6 +1309,7 @@ START_TEST(test_i_octal) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_i_octal", format, input);
 }
 END_TEST
 
@@ -1003,6 +1324,7 @@ START_TEST(test_no_match) {
 
   ck_assert_int_eq(std_val, test_val); // значения не должны измениться
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_no_match", format, input);
 }
 END_TEST
 
@@ -1018,6 +1340,7 @@ START_TEST(test_partial_match) {
   ck_assert_int_eq(std_val, test_val);
   ck_assert_str_eq(std_str, test_str);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_partial_match", format, input);
 }
 END_TEST
 
@@ -1033,6 +1356,7 @@ START_TEST(test_whitespace_handling) {
   ck_assert_int_eq(std_val1, test_val1);
   ck_assert_int_eq(std_val2, test_val2);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_whitespace_handling", format, input);
 }
 END_TEST
 
@@ -1048,6 +1372,7 @@ START_TEST(test_empty_input_string) {
   ck_assert_int_eq(std_len, test_len);
   // При неудачном чтении буфер не должен изменяться
   ck_assert_str_eq(std_buf, test_buf);
+  TEST_PRINT("test_empty_input_string", format, input);
 }
 END_TEST
 
@@ -1061,6 +1386,7 @@ START_TEST(test_empty_input_int) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_input_int", format, input);
 }
 END_TEST
 
@@ -1074,6 +1400,7 @@ START_TEST(test_empty_input_float) {
 
   ck_assert_float_eq_tol(std_val, test_val, 1e-6);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_input_float", format, input);
 }
 END_TEST
 
@@ -1087,6 +1414,7 @@ START_TEST(test_empty_input_char) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_input_char", format, input);
 }
 END_TEST
 
@@ -1101,6 +1429,7 @@ START_TEST(test_empty_input_multiple) {
   ck_assert_int_eq(std_a, test_a);
   ck_assert_int_eq(std_b, test_b);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_input_multiple", format, input);
 }
 END_TEST
 
@@ -1115,6 +1444,7 @@ START_TEST(test_empty_input_with_n) {
   // %n всегда должен срабатывать, даже на пустой строке
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_input_with_n", format, input);
 }
 END_TEST
 
@@ -1128,6 +1458,7 @@ START_TEST(test_empty_format_string) {
   int test_len = s21_sscanf(input, format, test_buf);
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_format_string", format, input);
 }
 END_TEST
 
@@ -1140,6 +1471,7 @@ START_TEST(test_empty_format_no_input) {
   int test_len = s21_sscanf(input, format, test_buf);
 
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_empty_format_no_input", format, input);
 }
 END_TEST
 
@@ -1157,6 +1489,7 @@ START_TEST(test_whitespace_only_string) {
   if (std_len == 0) {
     ck_assert_str_eq(std_buf, test_buf);
   }
+  TEST_PRINT("test_whitespace_only_string", format, input);
 }
 END_TEST
 
@@ -1170,6 +1503,7 @@ START_TEST(test_whitespace_only_int) {
 
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_whitespace_only_int", format, input);
 }
 END_TEST
 
@@ -1184,8 +1518,270 @@ START_TEST(test_whitespace_only_n) {
   // %n должен записать количество обработанных символов (включая пробелы)
   ck_assert_int_eq(std_n, test_n);
   ck_assert_int_eq(std_len, test_len);
+  TEST_PRINT("test_whitespace_only_n", format, input);
 }
 END_TEST
+
+// ==================== INVALID SPECIFIER TESTS ====================
+
+START_TEST(test_invalid_specifier_single) {
+    char std_buf[100] = {0}, test_buf[100] = {0};
+    const char *input = "test";
+    const char *format = "%q";  // Невалидный спецификатор
+    
+    int std_len = sscanf(input, format, std_buf);
+    int test_len = s21_sscanf(input, format, test_buf);
+    
+    // Ожидаем, что спецификатор проигнорируется или вернется 0
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_single", format, input);
+}
+END_TEST
+
+START_TEST(test_invalid_specifier_with_width) {
+    char std_buf[100] = {0}, test_buf[100] = {0};
+    const char *input = "hello";
+    const char *format = "%10q";
+    
+    int std_len = sscanf(input, format, std_buf);
+    int test_len = s21_sscanf(input, format, test_buf);
+    
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_with_width", format, input);
+}
+END_TEST
+
+START_TEST(test_invalid_specifier_with_length) {
+    char std_buf[100] = {0}, test_buf[100] = {0};
+    const char *input = "world";
+    const char *format = "%lq";
+    
+    int std_len = sscanf(input, format, std_buf);
+    int test_len = s21_sscanf(input, format, test_buf);
+    
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_with_length", format, input);
+}
+END_TEST
+
+START_TEST(test_invalid_specifier_with_all_modifiers) {
+    char std_buf[100] = {0}, test_buf[100] = {0};
+    const char *input = "test123";
+    const char *format = "%10lq";
+    
+    int std_len = sscanf(input, format, std_buf);
+    int test_len = s21_sscanf(input, format, test_buf);
+    
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_with_all_modifiers", format, input);
+}
+END_TEST
+
+START_TEST(test_invalid_specifier_multiple) {
+    int std_val = 0, test_val = 0;
+    char std_str[100] = {0}, test_str[100] = {0};
+    const char *input = "42 hello";
+    const char *format = "%d %q";
+    
+    int std_len = sscanf(input, format, &std_val, std_str);
+    int test_len = s21_sscanf(input, format, &test_val, test_str);
+    
+    // Первый спецификатор валидный, второй - нет
+    // Должен прочитать только первый
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_multiple", format, input);
+}
+END_TEST
+
+START_TEST(test_invalid_specifier_only) {
+    int std_val = 42, test_val = 42;
+    const char *input = "123";
+    const char *format = "%";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    // Только % без спецификатора
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_only", format, input);
+}
+END_TEST
+
+START_TEST(test_invalid_specifier_percent_only) {
+  char std_str[100] = {0}, test_str[100] = {0};
+    const char *input = "test";
+    const char *format = "%";
+    
+    int std_len = sscanf(input, format, std_str);
+    int test_len = s21_sscanf(input, format, test_str);
+    
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_percent_only", format, input);
+}
+END_TEST
+
+START_TEST(test_invalid_specifier_empty_format) {
+    char std_buf[100] = {0}, test_buf[100] = {0};
+    const char *input = "test";
+    const char *format = "";
+    
+    int std_len = sscanf(input, format, std_buf);
+    int test_len = s21_sscanf(input, format, test_buf);
+    
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_invalid_specifier_empty_format", format, input);
+}
+END_TEST
+
+// ==================== FAILED SPECIFIER TESTS ====================
+
+START_TEST(test_failed_specifier_eof_count_zero) {
+    // Случай: *str == '\0' && count == 0 -> count = EOF
+    int std_val = 0, test_val = 0;
+    const char *input = "";
+    const char *format = "%d";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_len, test_len);
+    ck_assert_int_eq(std_len, EOF);
+    TEST_PRINT("test_failed_specifier_eof_count_zero", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_type_mismatch) {
+    // Несоответствие типа - чтение не удалось
+    int std_val = 0, test_val = 0;
+    const char *input = "abc";
+    const char *format = "%d";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_type_mismatch", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_no_match_string) {
+    char std_buf[100] = "original", test_buf[100] = "original";
+    const char *input = "123";
+    const char *format = "%s";
+    
+    int std_len = sscanf(input, format, std_buf);
+    int test_len = s21_sscanf(input, format, test_buf);
+    
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_no_match_string", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_float_no_match) {
+    float std_val = 0.0f, test_val = 0.0f;
+    const char *input = "abc";
+    const char *format = "%f";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_float_eq_tol(std_val, test_val, 1e-6);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_float_no_match", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_unsigned_no_match) {
+    unsigned int std_val = 0, test_val = 0;
+    const char *input = "-123";  // Отрицательное число для unsigned
+    const char *format = "%u";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_unsigned_no_match", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_hex_no_match) {
+    unsigned int std_val = 0, test_val = 0;
+    const char *input = "xyz";
+    const char *format = "%x";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_hex_no_match", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_octal_no_match) {
+    unsigned int std_val = 0, test_val = 0;
+    const char *input = "89";  // 8 и 9 недопустимы в восьмеричной системе
+    const char *format = "%o";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_octal_no_match", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_char_no_match) {
+    char std_val = 'X', test_val = 'X';
+    const char *input = "";
+    const char *format = "%c";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_char_no_match", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_pointer_no_match) {
+    void *std_ptr = (void*)0xDEADBEEF, *test_ptr = (void*)0xDEADBEEF;
+    const char *input = "not a pointer";
+    const char *format = "%p";
+    
+    int std_len = sscanf(input, format, &std_ptr);
+    int test_len = s21_sscanf(input, format, &test_ptr);
+    
+    ck_assert_ptr_eq(std_ptr, test_ptr);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_pointer_no_match", format, input);
+}
+END_TEST
+
+START_TEST(test_failed_specifier_n_percent) {
+    int std_n = 0, test_n = 0;
+    const char *input = "";
+    const char *format = "%n";
+    
+    // %n всегда успешен, даже на пустой строке
+    // Это не вызовет ошибку
+    
+    int std_len = sscanf(input, format, &std_n);
+    int test_len = s21_sscanf(input, format, &test_n);
+    
+    ck_assert_int_eq(std_n, test_n);
+    ck_assert_int_eq(std_len, test_len);
+    TEST_PRINT("test_failed_specifier_n_percent", format, input);
+}
+END_TEST
+
 
 // ==================== REGISTRATION FUNCTIONS ====================
 void register_sscanf_string_tests(TCase *tc) {
@@ -1260,6 +1856,23 @@ void register_sscanf_float_tests(TCase *tc) {
   tcase_add_test(tc, test_long_double);
   tcase_add_test(tc, test_float_scientific);
   tcase_add_test(tc, test_float_g_format);
+
+  tcase_add_test(tc, test_float_nan_upper);
+  tcase_add_test(tc, test_float_nan_lower);
+  tcase_add_test(tc, test_float_nan_mixed_case);
+  tcase_add_test(tc, test_float_inf_upper);
+  tcase_add_test(tc, test_float_inf_lower);
+  tcase_add_test(tc, test_float_inf_mixed_case);
+  tcase_add_test(tc, test_float_infinity_upper);
+  tcase_add_test(tc, test_float_infinity_lower);
+  tcase_add_test(tc, test_float_infinity_mixed_case);
+  tcase_add_test(tc, test_float_negative_inf);
+  tcase_add_test(tc, test_float_positive_inf_with_plus);
+  tcase_add_test(tc, test_float_nan_with_sign);
+  tcase_add_test(tc, test_float_with_width_nan);
+  tcase_add_test(tc, test_float_with_width_inf);
+  tcase_add_test(tc, test_float_width_less_than_nan);
+  tcase_add_test(tc, test_float_width_less_than_inf);
 }
 
 void register_sscanf_pointer_tests(TCase *tc) {
@@ -1300,6 +1913,27 @@ void register_sscanf_exceptions_tests(TCase *tc) {
   tcase_add_test(tc, test_no_match);
   tcase_add_test(tc, test_partial_match);
   tcase_add_test(tc, test_whitespace_handling);
+  tcase_add_test(tc, test_invalid_specifier_single);
+
+  tcase_add_test(tc, test_invalid_specifier_with_width);
+  tcase_add_test(tc, test_invalid_specifier_with_length);
+  tcase_add_test(tc, test_invalid_specifier_with_all_modifiers);
+  tcase_add_test(tc, test_invalid_specifier_multiple);
+  tcase_add_test(tc, test_invalid_specifier_only);
+  tcase_add_test(tc, test_invalid_specifier_percent_only);
+  tcase_add_test(tc, test_invalid_specifier_empty_format);
+
+  tcase_add_test(tc, test_failed_specifier_eof_count_zero);
+  tcase_add_test(tc, test_failed_specifier_type_mismatch);
+  tcase_add_test(tc, test_failed_specifier_no_match_string);
+  tcase_add_test(tc, test_failed_specifier_float_no_match);
+  tcase_add_test(tc, test_failed_specifier_unsigned_no_match);
+  tcase_add_test(tc, test_failed_specifier_hex_no_match);
+  tcase_add_test(tc, test_failed_specifier_octal_no_match);
+
+  tcase_add_test(tc, test_failed_specifier_pointer_no_match);
+  tcase_add_test(tc, test_failed_specifier_n_percent);
+  tcase_add_test(tc, test_failed_specifier_char_no_match);
 }
 
 void register_sscanf_empty_tests(TCase *tc) {
