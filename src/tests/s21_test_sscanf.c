@@ -93,6 +93,19 @@ START_TEST(test_suppression_string) {
 }
 END_TEST
 
+START_TEST(test_width_string) {
+    char std_buf[100] = {0}, test_buf[100] = {0};
+    const char *input = "HelloWorld";
+    const char *format = "%5s";
+    
+    int std_len = sscanf(input, format, std_buf);
+    int test_len = s21_sscanf(input, format, test_buf);
+    
+    ck_assert_str_eq(std_buf, test_buf);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
 // ==================== CHAR TESTS ====================
 START_TEST(test_char_basic) {
   char std_val = 0, test_val = 0;
@@ -363,6 +376,19 @@ START_TEST(test_long_int) {
 }
 END_TEST
 
+START_TEST(test_width_int) {
+    int std_val = 0, test_val = 0;
+    const char *input = "12345";
+    const char *format = "%3d";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
 // ==================== UNSIGNED TESTS ====================
 START_TEST(test_u_simple) {
   unsigned int std_val = 0, test_val = 0;
@@ -428,6 +454,19 @@ START_TEST(test_x_zero) {
   
   ck_assert_int_eq(std_val, test_val);
   ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_width_hex) {
+    unsigned int std_val = 0, test_val = 0;
+    const char *input = "ABCDEF";
+    const char *format = "%3x";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
 }
 END_TEST
 
@@ -818,6 +857,49 @@ START_TEST(test_n_after_hex) {
 }
 END_TEST
 
+// ==================== I TESTS ====================
+
+START_TEST(test_i_decimal) {
+    int std_val = 0, test_val = 0;
+    const char *input = "123";
+    const char *format = "%i";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_i_hex) {
+    int std_val = 0, test_val = 0;
+    const char *input = "0xFF";
+    const char *format = "%i";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_i_octal) {
+    int std_val = 0, test_val = 0;
+    const char *input = "0777";
+    const char *format = "%i";
+    
+    int std_len = sscanf(input, format, &std_val);
+    int test_len = s21_sscanf(input, format, &test_val);
+    
+    ck_assert_int_eq(std_val, test_val);
+    ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+
+
 // ==================== REGISTRATION FUNCTIONS ====================
 void register_sscanf_string_tests(TCase *tc) {
   tcase_add_test(tc, test_string_basic);
@@ -827,6 +909,7 @@ void register_sscanf_string_tests(TCase *tc) {
   tcase_add_test(tc, test_string_percent_start);
   tcase_add_test(tc, test_width_zero_string);
   tcase_add_test(tc, test_suppression_string);
+  tcase_add_test(tc, test_width_string);
 }
 
 void register_sscanf_char_tests(TCase *tc) {
@@ -848,6 +931,10 @@ void register_sscanf_int_tests(TCase *tc) {
   tcase_add_test(tc, test_long_int);
   tcase_add_test(tc, test_width_zero_int);
   tcase_add_test(tc, test_suppression_int);
+  tcase_add_test(tc, test_i_decimal);
+  tcase_add_test(tc, test_i_hex);
+  tcase_add_test(tc, test_i_octal);
+  tcase_add_test(tc, test_width_int);
 }
 
 // Диагностические тесты (раскомментировать при необходимости)
@@ -871,6 +958,7 @@ void register_sscanf_octal_tests(TCase *tc) {
 void register_sscanf_hex_tests(TCase *tc) {
   tcase_add_test(tc, test_x_simple);
   tcase_add_test(tc, test_x_zero);
+  tcase_add_test(tc, test_width_hex);
 }
 
 void register_sscanf_float_tests(TCase *tc) {

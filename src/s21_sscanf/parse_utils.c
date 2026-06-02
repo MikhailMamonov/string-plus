@@ -2,35 +2,24 @@
 #include <ctype.h>
 
 const char *parseScanfWidth(const char *input, formatSpec *spec) {
-  if (isdigit(*input)) {
-    while (isdigit(*input)) {
-      spec->width = spec->width * 10 + (*input - '0');
-      input++;
-    }
-  }
-
   if (*input == '*') {
     spec->use_suppress = 1;
     input++;
-    // Если ширина еще не установлена, устанавливаем ее
-    if (spec->width == -1) {
-      spec->width = 0;
-      while (isdigit(*input)) {
-        spec->width = spec->width * 10 + (*input - '0');
-        input++;
-      }
-      if (spec->width == 0) {
-        spec->width = -1;
-      }
-    } else {
-      // Ширина уже есть до *, пропускаем цифры после * (нестандартно)
-      // Лучше считать это ошибкой формата
-      while (isdigit(*input)) {
-        input++;
-      }
-    }
   }
 
+  if (isdigit((unsigned char)*input)) {
+    int parsed_width = 0;
+    while (isdigit((unsigned char)*input)) {
+      parsed_width = parsed_width * 10 + (*input - '0');
+      input++;
+    }
+
+    if (parsed_width > 0) {
+      spec->width = parsed_width;
+    } else {
+      spec->width = -1; 
+    }
+  }
   return input;
 }
 
