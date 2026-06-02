@@ -1,4 +1,4 @@
-#include "s21_string.h"
+#include "../s21_string.h"
 #include <stdio.h>
 
 #if defined(__APPLE__)
