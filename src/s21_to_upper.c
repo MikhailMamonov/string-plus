@@ -8,11 +8,11 @@ void *s21_to_upper(const char *str){
     s21_size_t len = s21_strlen(str);
     char *result = malloc(len + 1);
     if (result == s21_NULL) return s21_NULL;
-
+    s21_size_t CASE = 'a' - 'A';
     for(s21_size_t i = 0; i < len; i++)
     {
         if(str[i] >= 'a' && str[i] <= 'z')
-            result[i] = str[i] - 32;
+            result[i] = str[i] - CASE;
         else result[i] = str[i];
     }
     result[len] = '\0';
