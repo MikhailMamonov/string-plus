@@ -32,7 +32,7 @@ STRCSPN_TEST_CASES(strcspn_string_tests,
 START_TEST(test_strcspn_long_string) {
   // Длинная строка
   char str1[1000];
-  memset(str1, 'a', 999);
+  s21_memset(str1, 'a', 999);
   str1[999] = '\0';
   char str2[] = "b";
   s21_size_t result = s21_strcspn(str1, str2);

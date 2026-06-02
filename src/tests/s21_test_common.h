@@ -100,7 +100,6 @@ typedef struct {
   s21_size_t n;
   const char *test_name;
 } strncpyParams;
-
 typedef struct {
   const char *str;
   const char *expected;
@@ -193,5 +192,4 @@ typedef struct {
 
 #define INSERT_TEST_CASES(name, ...)                                           \
   TEST_CASES(name, insertParams, run_insert_test, __VA_ARGS__)
-
 #endif

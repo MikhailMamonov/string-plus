@@ -1,4 +1,4 @@
-#include "s21_string.h"
+#include "../s21_string.h"
 
 #define NEGATIVE_VALUE -1
 #define POSITIVE_VALUE 1

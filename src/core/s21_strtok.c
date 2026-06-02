@@ -1,4 +1,4 @@
-#include "s21_string.h"
+#include "../s21_string.h"
 
 static char *saved_ptr = s21_NULL;
 

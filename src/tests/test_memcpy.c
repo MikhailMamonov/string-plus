@@ -14,8 +14,8 @@ void run_memcpy_test(MemCpyTestParams *params) {
   ck_assert_ptr_nonnull(dest_std);
   ck_assert_ptr_nonnull(dest_test);
 
-  memset(dest_std, 0xAA, buf_size); // Паттерн для отладки
-  memset(dest_test, 0xAA, buf_size);
+  s21_memset(dest_std, 0xAA, buf_size); // Паттерн для отладки
+  s21_memset(dest_test, 0xAA, buf_size);
 
   // Тестируем только валидное поведение, как требует стандарт
   s21_memcpy(dest_test, params->src, params->size);
