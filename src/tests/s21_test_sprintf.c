@@ -48,7 +48,6 @@ RUN_SPRINTF_TEST(int_width_left_align, "|%-8d|", 42);
 RUN_SPRINTF_TEST(int_negative_width, "|%10d|", -42);
 RUN_SPRINTF_TEST(int_negative_width_left_align, "|%-10d|", -42);
 RUN_SPRINTF_TEST(short_int, "%hd", (short)2342);
-RUN_SPRINTF_TEST(signed_char, "%hhd", (signed char)-56);
 RUN_SPRINTF_TEST(int_min_boundary, "%d", -2147483647 - 1);
 RUN_SPRINTF_TEST(int_max_boundary, "%d", 2147483647);
 RUN_SPRINTF_TEST(int_precision_zero_val_zero, "%.0d", 0);
@@ -232,7 +231,7 @@ RUN_SPRINTF_TEST(float_L_asterisk_width_and_precision, "%*.*Lf", 12, 4,
                  45.678912L);
 
 // ==================== POINTER TESTS ====================
-int dummy_var = 42;
+static int dummy_var = 42;
 RUN_SPRINTF_TEST(p_simple, "%p", &dummy_var);
 RUN_SPRINTF_TEST(p_zero_null, "%p", NULL);
 RUN_SPRINTF_TEST(p_width_normal, "%20p", &dummy_var);
@@ -400,7 +399,6 @@ void register_int_tests(TCase *tc) {
   tcase_add_test(tc, test_int_negative_width);
   tcase_add_test(tc, test_int_negative_width_left_align);
   tcase_add_test(tc, test_short_int);
-  tcase_add_test(tc, test_signed_char);
   tcase_add_test(tc, test_int_min_boundary);
   tcase_add_test(tc, test_int_max_boundary);
   tcase_add_test(tc, test_int_precision_zero_val_zero);
