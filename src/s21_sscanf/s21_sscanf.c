@@ -21,21 +21,20 @@ int s21_sscanf(const char *str, const char *format, ...) {
         break;
       }
     } else if (isspace((unsigned char)*format)) {
-          str = pass_spaces(str);
-          format = pass_spaces(format);
-        } 
-      else if (*str == '\0') {
-          if (count == 0) {
-            count = EOF;
-          }
-          break;
-      } else if (*str != *format) {
-          break;
-        } else {
-          format++;
-          str++;
-        }
+      str = pass_spaces(str);
+      format = pass_spaces(format);
+    } else if (*str == '\0') {
+      if (count == 0) {
+        count = EOF;
+      }
+      break;
+    } else if (*str != *format) {
+      break;
+    } else {
+      format++;
+      str++;
+    }
   }
-  va_end(args); 
+  va_end(args);
   return count;
 }

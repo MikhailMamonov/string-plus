@@ -37,7 +37,6 @@ void assemble_srunner(SRunner *sr) {
   srunner_add_suite(sr, strncpy_suite_create());
   srunner_add_suite(sr, sprintf_suite_create());
   srunner_add_suite(sr, sscanf_suite_create());
-  
 }
 
 int main(void) {

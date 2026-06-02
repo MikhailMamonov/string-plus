@@ -12,27 +12,29 @@ const char *pass_spaces(const char *source) {
 }
 
 void sign_parser(const char **curr, int *width_counter, int *is_negative) {
-    if (**curr == '-') {
-        *is_negative = 1;
-        (*curr)++;
-        (*width_counter)++;
-    } else if (**curr == '+')
-    {
-        (*curr)++;
-        (*width_counter)++;
-    }
+  if (**curr == '-') {
+    *is_negative = 1;
+    (*curr)++;
+    (*width_counter)++;
+  } else if (**curr == '+') {
+    (*curr)++;
+    (*width_counter)++;
+  }
 }
 
-void handle_scanf_special_floats(const char **curr, int *width_counter, formatSpec spec, long double *res) {
+void handle_scanf_special_floats(const char **curr, int *width_counter,
+                                 formatSpec spec, long double *res) {
   int remaining_width = spec.width - *width_counter;
   if (remaining_width < 3 && spec.width > 0) {
     return;
   }
-  if (to_lower(**curr) == 'n' && to_lower(*(*curr + 1)) == 'a' && to_lower(*(*curr + 2)) == 'n') {
+  if (to_lower(**curr) == 'n' && to_lower(*(*curr + 1)) == 'a' &&
+      to_lower(*(*curr + 2)) == 'n') {
     *curr += 3;
     *res = NAN;
-  }      
-  if (to_lower(**curr) == 'i' && to_lower(*(*curr + 1)) == 'n' && to_lower(*(*curr + 2)) == 'f') {
+  }
+  if (to_lower(**curr) == 'i' && to_lower(*(*curr + 1)) == 'n' &&
+      to_lower(*(*curr + 2)) == 'f') {
     *curr += 3;
     *res = INFINITY;
     if (remaining_width >= 8 || spec.width < 0) {
@@ -50,11 +52,11 @@ void handle_scanf_special_floats(const char **curr, int *width_counter, formatSp
               }
             }
           }
-        } 
+        }
       }
     }
   }
-  return;                                                                                                                 
+  return;
 }
 
 int handle_null_pointer(const char **curr, formatSpec spec) {
@@ -70,13 +72,13 @@ int handle_null_pointer(const char **curr, formatSpec spec) {
         probe++;
         if (*probe != '\0' && *probe == 'l') {
           probe++;
-           if (*probe != '\0' && *probe == ')') {
+          if (*probe != '\0' && *probe == ')') {
             *curr += 5;
             return SUCCESS;
           }
         }
       }
-    } 
+    }
   }
   return FAIL;
 }

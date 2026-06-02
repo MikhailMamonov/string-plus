@@ -17,7 +17,7 @@ const char *parseScanfWidth(const char *input, formatSpec *spec) {
     if (parsed_width > 0) {
       spec->width = parsed_width;
     } else {
-      spec->width = -1; 
+      spec->width = -1;
     }
   }
   return input;
@@ -28,12 +28,12 @@ const char *parseScanfLength(const char *input, formatSpec *spec) {
     spec->length = *input;
     input++;
     if (spec->length == 'l' && *input == 'l') {
-      spec->length = 'L'; 
+      spec->length = 'L';
       input++;
     }
     // Поддержка short short (hh)
     if (spec->length == 'h' && *input == 'h') {
-      spec->length = 'H'; 
+      spec->length = 'H';
       input++;
     }
   }
@@ -54,19 +54,19 @@ const char *parseScanfSpecifier(const char *format, formatSpec *spec) {
 
 const char *parseScanfFormat(const char *format, formatSpec *spec) {
   s21_memset(spec, 0, sizeof(formatSpec));
-  spec->width= -1;
+  spec->width = -1;
   format = parseScanfWidth(format, spec);
   if (!format) {
     return s21_NULL;
-  } 
+  }
   format = parseScanfLength(format, spec);
-    if (!format) {
-      return s21_NULL;
-    }
+  if (!format) {
+    return s21_NULL;
+  }
 
-    format = parseScanfSpecifier(format, spec);
-    if (!format) {
-      return s21_NULL;
+  format = parseScanfSpecifier(format, spec);
+  if (!format) {
+    return s21_NULL;
   }
 
   if (!spec->specifier && !spec->use_suppress) {
