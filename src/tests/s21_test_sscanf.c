@@ -106,6 +106,18 @@ START_TEST(test_width_string) {
 }
 END_TEST
 
+START_TEST(test_empty_format) {
+  char std_buf[100] = {0}, test_buf[100] = {0};
+  const char *input = "test";
+  const char *format = "";
+
+  int std_len = sscanf(input, format, std_buf);
+  int test_len = s21_sscanf(input, format, test_buf);
+
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
 // ==================== CHAR TESTS ====================
 START_TEST(test_char_basic) {
   char std_val = 0, test_val = 0;
@@ -1024,6 +1036,157 @@ START_TEST(test_whitespace_handling) {
 }
 END_TEST
 
+// ==================== EMPTY INPUT TESTS ====================
+START_TEST(test_empty_input_string) {
+  char std_buf[1024] = "default", test_buf[1024] = "default";
+  const char *input = "";
+  const char *format = "%s";
+
+  int std_len = sscanf(input, format, std_buf);
+  int test_len = s21_sscanf(input, format, test_buf);
+
+  ck_assert_int_eq(std_len, test_len);
+  // При неудачном чтении буфер не должен изменяться
+  ck_assert_str_eq(std_buf, test_buf);
+}
+END_TEST
+
+START_TEST(test_empty_input_int) {
+  int std_val = 42, test_val = 42;
+  const char *input = "";
+  const char *format = "%d";
+
+  int std_len = sscanf(input, format, &std_val);
+  int test_len = s21_sscanf(input, format, &test_val);
+
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_empty_input_float) {
+  float std_val = 3.14f, test_val = 3.14f;
+  const char *input = "";
+  const char *format = "%f";
+
+  int std_len = sscanf(input, format, &std_val);
+  int test_len = s21_sscanf(input, format, &test_val);
+
+  ck_assert_float_eq_tol(std_val, test_val, 1e-6);
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_empty_input_char) {
+  char std_val = 'X', test_val = 'X';
+  const char *input = "";
+  const char *format = "%c";
+
+  int std_len = sscanf(input, format, &std_val);
+  int test_len = s21_sscanf(input, format, &test_val);
+
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_empty_input_multiple) {
+  int std_a = 10, std_b = 20, test_a = 10, test_b = 20;
+  const char *input = "";
+  const char *format = "%d %d";
+
+  int std_len = sscanf(input, format, &std_a, &std_b);
+  int test_len = s21_sscanf(input, format, &test_a, &test_b);
+
+  ck_assert_int_eq(std_a, test_a);
+  ck_assert_int_eq(std_b, test_b);
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_empty_input_with_n) {
+  int std_n = 0, test_n = 0;
+  const char *input = "";
+  const char *format = "%n";
+
+  int std_len = sscanf(input, format, &std_n);
+  int test_len = s21_sscanf(input, format, &test_n);
+
+  // %n всегда должен срабатывать, даже на пустой строке
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+// ==================== EMPTY FORMAT TESTS ====================
+START_TEST(test_empty_format_string) {
+  char std_buf[100] = {0}, test_buf[100] = {0};
+  const char *input = "Hello";
+  const char *format = "";
+
+  int std_len = sscanf(input, format, std_buf);
+  int test_len = s21_sscanf(input, format, test_buf);
+
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_empty_format_no_input) {
+  char std_buf[100] = {0}, test_buf[100] = {0};
+  const char *input = "";
+  const char *format = "";
+
+  int std_len = sscanf(input, format, std_buf);
+  int test_len = s21_sscanf(input, format, test_buf);
+
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+// ==================== WHITESPACE ONLY INPUT TESTS ====================
+START_TEST(test_whitespace_only_string) {
+  char std_buf[1024] = "default", test_buf[1024] = "default";
+  const char *input = "   \t\n  ";
+  const char *format = "%s";
+
+  int std_len = sscanf(input, format, std_buf);
+  int test_len = s21_sscanf(input, format, test_buf);
+
+  ck_assert_int_eq(std_len, test_len);
+  // При неудаче буфер не должен измениться
+  if (std_len == 0) {
+    ck_assert_str_eq(std_buf, test_buf);
+  }
+}
+END_TEST
+
+START_TEST(test_whitespace_only_int) {
+  int std_val = 42, test_val = 42;
+  const char *input = "   \t\n  ";
+  const char *format = "%d";
+
+  int std_len = sscanf(input, format, &std_val);
+  int test_len = s21_sscanf(input, format, &test_val);
+
+  ck_assert_int_eq(std_val, test_val);
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
+START_TEST(test_whitespace_only_n) {
+  int std_n = 0, test_n = 0;
+  const char *input = "   \t\n  ";
+  const char *format = "%n";
+
+  int std_len = sscanf(input, format, &std_n);
+  int test_len = s21_sscanf(input, format, &test_n);
+
+  // %n должен записать количество обработанных символов (включая пробелы)
+  ck_assert_int_eq(std_n, test_n);
+  ck_assert_int_eq(std_len, test_len);
+}
+END_TEST
+
 // ==================== REGISTRATION FUNCTIONS ====================
 void register_sscanf_string_tests(TCase *tc) {
   tcase_add_test(tc, test_string_basic);
@@ -1034,6 +1197,7 @@ void register_sscanf_string_tests(TCase *tc) {
   tcase_add_test(tc, test_width_zero_string);
   tcase_add_test(tc, test_suppression_string);
   tcase_add_test(tc, test_width_string);
+  tcase_add_test(tc, test_empty_format);
 }
 
 void register_sscanf_char_tests(TCase *tc) {
@@ -1138,6 +1302,22 @@ void register_sscanf_exceptions_tests(TCase *tc) {
   tcase_add_test(tc, test_whitespace_handling);
 }
 
+void register_sscanf_empty_tests(TCase *tc) {
+  tcase_add_test(tc, test_empty_input_string);
+  tcase_add_test(tc, test_empty_input_int);
+  tcase_add_test(tc, test_empty_input_float);
+  tcase_add_test(tc, test_empty_input_char);
+  tcase_add_test(tc, test_empty_input_multiple);
+  tcase_add_test(tc, test_empty_input_with_n);
+
+  tcase_add_test(tc, test_empty_format_string);
+  tcase_add_test(tc, test_empty_format_no_input);
+
+  tcase_add_test(tc, test_whitespace_only_string);
+  tcase_add_test(tc, test_whitespace_only_int);
+  tcase_add_test(tc, test_whitespace_only_n);
+}
+
 Suite *sscanf_suite_create(void) {
   Suite *s = suite_create("s21_sscanf");
   TCase *tc_core = tcase_create("Core");
@@ -1155,6 +1335,7 @@ Suite *sscanf_suite_create(void) {
   register_sscanf_n_tests(tc_core);
   register_sscanf_debug_tests(tc_core);
   register_sscanf_exceptions_tests(tc_core);
+  register_sscanf_empty_tests(tc_core);
 
   suite_add_tcase(s, tc_core);
   return s;
