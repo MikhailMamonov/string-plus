@@ -19,6 +19,7 @@ Suite *memcmp_suite_create(void);
 Suite *sprintf_suite_create(void);
 Suite *sscanf_suite_create(void);
 Suite *strncpy_suite_create(void);
+Suite *to_upper_suite_create(void);
 Suite *insert_suite_create(void);
 
 void assemble_srunner(SRunner *sr) {
@@ -37,6 +38,7 @@ void assemble_srunner(SRunner *sr) {
   srunner_add_suite(sr, memcmp_suite_create());
   srunner_add_suite(sr, strncpy_suite_create());
   srunner_add_suite(sr, sprintf_suite_create());
+  srunner_add_suite(sr, to_upper_suite_create());
   srunner_add_suite(sr, sscanf_suite_create());
   srunner_add_suite(sr, insert_suite_create());
 }
