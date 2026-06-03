@@ -29,5 +29,6 @@ int s21_sscanf(const char *str, const char *format, ...);
 // Специальные функции обработки строк (C#)
 void *s21_insert(const char *src, const char *str, s21_size_t start_index);
 void *s21_to_upper(const char *str);
+void *s21_to_lower(const char *str);
 
 #endif
