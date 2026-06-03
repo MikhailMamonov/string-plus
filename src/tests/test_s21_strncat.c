@@ -12,8 +12,8 @@ static void run_strncat_test(const strncatParams *p) {
 
   /* Заполним буферы маркером, чтобы потом сравнить «хвост» —
    *      убедимся, что ни одна реализация не вышла за пределы. */
-  memset(buf_std, '#', BUF_SIZE);
-  memset(buf_s21, '#', BUF_SIZE);
+  s21_memset(buf_std, '#', BUF_SIZE);
+  s21_memset(buf_s21, '#', BUF_SIZE);
 
   /* Начальное содержимое dest (с завершающим нулём) */
   strcpy(buf_std, p->dest_init);
@@ -34,9 +34,9 @@ static void run_strncat_test(const strncatParams *p) {
                 buf_s21);
 
   /* Длины тоже должны совпадать */
-  ck_assert_msg(strlen(buf_std) == strlen(buf_s21),
+  ck_assert_msg(s21_strlen(buf_std) == s21_strlen(buf_s21),
                 "FAIL [%s]: len std=%zu, len s21=%zu", p->test_name,
-                (size_t)strlen(buf_std), (size_t)strlen(buf_s21));
+                (size_t)s21_strlen(buf_std), (size_t)s21_strlen(buf_s21));
 }
 
 /* === Наборы тестов === */
