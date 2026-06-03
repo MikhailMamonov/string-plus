@@ -9,8 +9,8 @@ char *s21_strncat(char *dest, const char *src, s21_size_t n);
 char *s21_strncpy(char *dest, const char *src, s21_size_t n);
 int s21_strncmp(const char *str1, const char *str2, s21_size_t n);
 char *s21_strstr(const char *haystack, const char *needle);
-char *s21_strchr(const char *str, int c);           
-char *s21_strrchr(const char *str, int c);  
+char *s21_strchr(const char *str, int c);
+char *s21_strrchr(const char *str, int c);
 s21_size_t s21_strcspn(const char *str1, const char *str2);
 char *s21_strpbrk(const char *str1, const char *str2);
 char *s21_strtok(char *str, const char *delim);
@@ -29,5 +29,6 @@ int s21_sscanf(const char *str, const char *format, ...);
 // Специальные функции обработки строк (C#)
 void *s21_insert(const char *src, const char *str, s21_size_t start_index);
 void *s21_trim(const char *src, const char *trim_chars);
+void *s21_to_upper(const char *str);
 
 #endif
