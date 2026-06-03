@@ -46,12 +46,12 @@ TRIM_TEST_CASES(
     trim_edges,
     {"",        "abc", "",      "empty src"},
     {"hello",   "",    "hello", "empty trim_chars (nothing to trim)"},
-                {"",        "",    "",      "both empty"},
-                {"aaaa",    "a",   "",      "all chars are trim chars"},
-                {"ababab",  "ab",  "",      "all chars in mixed set"},
-                {"xxxAxxx", "x",   "A",     "single char remains in middle"},
-                {"A",       "x",   "A",     "single char src kept"},
-                {"x",       "x",   "",      "single char src removed"})
+    {"",        "",    "",      "both empty"},
+    {"aaaa",    "a",   "",      "all chars are trim chars"},
+    {"ababab",  "ab",  "",      "all chars in mixed set"},
+    {"xxxAxxx", "x",   "A",     "single char remains in middle"},
+    {"A",       "x",   "A",     "single char src kept"},
+    {"x",       "x",   "",      "single char src removed"})
 
 TRIM_TEST_CASES(
     trim_special_chars,
@@ -60,6 +60,11 @@ TRIM_TEST_CASES(
     {"...!!!hello!!!...",  ".!",          "hello", "trim punctuation"},
     {"-=-=value=-=-",      "-=",          "value", "trim dashes and equals"})
 
+TRIM_TEST_CASES(
+    trim_empty,
+    {"Hello, World!",   "",     "Hello, World!",    "trim without symbols"},
+    {"",                "a",    "",                 "empty src"},
+    {"",                "",     "",                 "empty src and trim"})
 
 TRIM_TEST_CASES(
     trim_long,
@@ -97,6 +102,7 @@ Suite *trim_suite_create(void) {
     tcase_add_test(tc, test_trim_edges);
     tcase_add_test(tc, test_trim_special_chars);
     tcase_add_test(tc, test_trim_long);
+    tcase_add_test(tc, test_trim_empty);
     tcase_add_test(tc, test_trim_errors);
     tcase_add_test(tc, test_trim_src_unchanged);
 

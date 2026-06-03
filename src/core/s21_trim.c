@@ -1,4 +1,4 @@
-#include "s21_string.h"
+#include "../s21_string.h"
 #include <stdlib.h>
 
 void *s21_trim(const char *src, const char *trim_chars) {
@@ -7,12 +7,12 @@ void *s21_trim(const char *src, const char *trim_chars) {
   }
 
   const char *left = src;
-  while (*left != '\0' && s21_strrchr(trim_chars, *left)) {
+  while (*left != '\0' && s21_strchr(trim_chars, *left)) {
     left++;
   }
 
   if (*left == '\0') {
-    char *empty = malloc(1);
+    char *empty = malloc(sizeof(char));
     if (empty == s21_NULL) {
       return s21_NULL;
     }
@@ -26,7 +26,7 @@ void *s21_trim(const char *src, const char *trim_chars) {
   }
   right--;
 
-  while (right > left && s21_strrchr(trim_chars, *right)) {
+  while (right > left && s21_strchr(trim_chars, *right)) {
     right--;
   }
 
