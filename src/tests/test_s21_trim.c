@@ -67,6 +67,12 @@ TRIM_TEST_CASES(
     {"",                "",     "",                 "empty src and trim"})
 
 TRIM_TEST_CASES(
+    trim_null,
+    {"hello",           "\0",  "hello", "trim with NULL"},
+    {"\0",              "abc", "\0",    "src is null"},
+    {"\0",              "\0",  "\0",    "trim and src are null"})
+
+TRIM_TEST_CASES(
     trim_long,
     {"          The quick brown fox jumps over the lazy dog          ",
         " ",
@@ -101,6 +107,7 @@ Suite *trim_suite_create(void) {
     tcase_add_test(tc, test_trim_asymmetric);
     tcase_add_test(tc, test_trim_edges);
     tcase_add_test(tc, test_trim_special_chars);
+    tcase_add_test(tc, test_trim_null);
     tcase_add_test(tc, test_trim_long);
     tcase_add_test(tc, test_trim_empty);
     tcase_add_test(tc, test_trim_errors);

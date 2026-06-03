@@ -1,5 +1,5 @@
-#include "../s21_string.h"
 #include <stdlib.h>
+#include "../s21_string.h"
 
 void *s21_trim(const char *src, const char *trim_chars) {
   if (src == s21_NULL || trim_chars == s21_NULL) {
@@ -31,7 +31,6 @@ void *s21_trim(const char *src, const char *trim_chars) {
   }
 
   s21_size_t new_len = (s21_size_t)(right - left + 1);
-
   char *result = malloc(new_len + 1);
   if (result == s21_NULL) {
     return s21_NULL;
