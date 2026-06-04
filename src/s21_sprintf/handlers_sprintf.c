@@ -89,14 +89,6 @@ char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from,
   return buf;
 }
 
-// char *handle_precision(char *buf, int length, char spec) {
-// //   if (spec == 's') {
-
-// //   }
-
-//   return buf;
-// }
-
 char *handle_special_floats(char *buf, long double val, formatSpec spec,
                             int *len) {
   int is_nan = isnan(val);
