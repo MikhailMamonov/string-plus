@@ -60,23 +60,28 @@ char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from,
     hex_zero = 1;
   }
   for (int i = 0; i < length; i++) {
-    if ((minus_zero || plus_zero || space_zero) && i == length - 1)
+    if ((minus_zero || plus_zero || space_zero) && i == length - 1) {
       *to-- = '0';
-    else if (hex_zero && *from == spec.specifier)
+    } else if (hex_zero && *from == spec.specifier) {
       *to-- = '0';
-    else
+    } else {
       *to-- = *from--;
+    }
   }
 
   for (int i = 0; i < spaces_to_add; i++) {
-    if (minus_zero && i == spaces_to_add - 1)
+    if (minus_zero && i == spaces_to_add - 1) {
       *to-- = '-';
-    else if (plus_zero && i == spaces_to_add - 1)
+    }
+    else if (plus_zero && i == spaces_to_add - 1) {
       *to-- = '+';
-    else if (space_zero && i == spaces_to_add - 1)
+    }
+    else if (space_zero && i == spaces_to_add - 1) {
       *to-- = ' ';
-    else if (hex_zero && i == spaces_to_add - 2)
+    }
+    else if (hex_zero && i == spaces_to_add - 2) {
       *to-- = spec.specifier;
+    }
     else {
       *to-- = '0';
     }

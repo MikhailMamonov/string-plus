@@ -11,8 +11,9 @@ char *u_spec(char *buf, unsigned long long val, formatSpec spec, int *len) {
     return buf;
   }
   char *start = buf;
-  if (spec.precision < 0)
+  if (spec.precision < 0) {
     spec.precision = 1;
+  }
   int digits[32] = {0};
   int dec_len = 0;
   while (val > 0) {

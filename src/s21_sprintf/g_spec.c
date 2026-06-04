@@ -15,10 +15,12 @@ char *g_spec(char *buf, long double val, formatSpec spec, int *len,
 
   // 1. Определяем реальную рабочую точность (значащие цифры)
   int prec = spec.precision;
-  if (prec < 0)
+  if (prec < 0) {
     prec = 6;
-  if (prec == 0)
+  }
+  if (prec == 0) {
     prec = 1;
+  }
 
   // 2. Делаем предварительный расчет экспоненты, чтобы понять, до какого знака
   // округлять
@@ -43,8 +45,9 @@ char *g_spec(char *buf, long double val, formatSpec spec, int *len,
   long double rounded_val = val;
   if (round_prec >= 0 && round_prec < 30) {
     rounded_val = round_banking(abs_val, round_prec);
-    if (is_negative)
+    if (is_negative) {
       rounded_val = -rounded_val;
+    }
   }
 
   // 4. Считаем ФИНАЛЬНУЮ экспоненту по уже округленному числу
@@ -57,24 +60,28 @@ char *g_spec(char *buf, long double val, formatSpec spec, int *len,
   // 5. Переключаемся на %e или %f на основе финальной экспоненты
   if (exponent < -4 || exponent >= spec.precision) {
     spec.precision--;
-    if (spec.precision < 0)
+    if (spec.precision < 0) {
       spec.precision = 0;
-    if (spec.specifier == 'g')
+    }
+    if (spec.specifier == 'g') {
       spec.specifier = 'e';
-    else
+    } else {
       spec.specifier = 'E';
+    }
     buf = double_to_exp_str(buf, val, spec, len);
     if (!spec.alt_format) {
       char *buf_p = buf;
-      while (*buf_p != 'e' && *buf_p != 'E')
+      while (*buf_p != 'e' && *buf_p != 'E') {
         buf_p--;
+      }
       buf_p--;
       buf = remove_tail_zeroes(buf, buf_p, start);
     }
   } else {
     spec.precision -= (exponent + 1);
-    if (spec.precision < 0)
+    if (spec.precision < 0) {
       spec.precision = 0;
+    }
     buf = float_to_str(buf, val, spec, len);
     if (!spec.alt_format) {
       char *buf_p = buf - 1;
