@@ -116,6 +116,13 @@ typedef struct {
 } insertParams;
 
 typedef struct {
+  const char *src;
+  const char *trim_chars;
+  const char *expected;
+  const char *test_name;
+} trimParams;
+
+typedef struct {
   const char *str;
   const char *expected;
   const char *test_name;
@@ -198,6 +205,9 @@ typedef struct {
 
 #define INSERT_TEST_CASES(name, ...)                                           \
   TEST_CASES(name, insertParams, run_insert_test, __VA_ARGS__)
+
+#define TRIM_TEST_CASES(name, ...)                                             \
+  TEST_CASES(name, trimParams, run_trim_test, __VA_ARGS__)
 
 #define TO_LOWER_TEST_CASES(name, ...)                                         \
   TEST_CASES(name, toLowerParams, run_to_lower_test, __VA_ARGS__)
