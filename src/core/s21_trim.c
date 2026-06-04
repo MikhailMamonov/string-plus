@@ -24,14 +24,17 @@ void *s21_trim(const char *src, const char *trim_chars) {
   while (*right != '\0') {
     right++;
   }
-  right--;
+
+  if (right > src) {
+    right--;
+  }
 
   while (right > left && s21_strchr(trim_chars, *right)) {
     right--;
   }
 
-  s21_size_t new_len = (s21_size_t)(right - left + 1);
-  char *result = malloc(new_len + 1);
+  s21_size_t new_len = (s21_size_t)(right - left + sizeof(char));
+  char *result = malloc(new_len + sizeof(char));
   if (result == s21_NULL) {
     return s21_NULL;
   }
