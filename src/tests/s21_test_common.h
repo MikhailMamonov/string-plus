@@ -122,6 +122,12 @@ typedef struct {
   const char *test_name;
 } trimParams;
 
+typedef struct {
+  const char *str;
+  const char *expected;
+  const char *test_name;
+} toLowerParams;
+
 #define TEST_CASES(name, param_type, run_func, ...)                            \
   static param_type name[] = {__VA_ARGS__};                                    \
   START_TEST(test_##name) {                                                    \
@@ -202,5 +208,8 @@ typedef struct {
 
 #define TRIM_TEST_CASES(name, ...)                                             \
   TEST_CASES(name, trimParams, run_trim_test, __VA_ARGS__)
+
+#define TO_LOWER_TEST_CASES(name, ...)                                         \
+  TEST_CASES(name, toLowerParams, run_to_lower_test, __VA_ARGS__)
 
 #endif
