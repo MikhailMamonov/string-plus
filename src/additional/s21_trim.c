@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include "../s21_string.h"
+#include <stdlib.h>
 
 void *s21_trim(const char *src, const char *trim_chars) {
   if (src == s21_NULL || trim_chars == s21_NULL) {

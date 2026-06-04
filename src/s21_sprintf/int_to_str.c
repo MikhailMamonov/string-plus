@@ -117,7 +117,7 @@ static char *write_fractional_part(char *buf, unsigned long long final_frac,
     int leading_zeroes = calc_prec - frac_len;
     while (leading_zeroes-- > 0) {
       *buf++ = '0';
-    }  
+    }
 
     for (int i = frac_len - 1; i >= 0; i--) {
       *buf++ = frac_tmp[i];

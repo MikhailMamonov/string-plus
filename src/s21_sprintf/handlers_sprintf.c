@@ -72,17 +72,13 @@ char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from,
   for (int i = 0; i < spaces_to_add; i++) {
     if (minus_zero && i == spaces_to_add - 1) {
       *to-- = '-';
-    }
-    else if (plus_zero && i == spaces_to_add - 1) {
+    } else if (plus_zero && i == spaces_to_add - 1) {
       *to-- = '+';
-    }
-    else if (space_zero && i == spaces_to_add - 1) {
+    } else if (space_zero && i == spaces_to_add - 1) {
       *to-- = ' ';
-    }
-    else if (hex_zero && i == spaces_to_add - 2) {
+    } else if (hex_zero && i == spaces_to_add - 2) {
       *to-- = spec.specifier;
-    }
-    else {
+    } else {
       *to-- = '0';
     }
   }

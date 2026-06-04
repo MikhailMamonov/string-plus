@@ -6,11 +6,11 @@ char *s21_strrchr(const char *str, int c) {
   while (*str != '\0') {
     if ((unsigned char)*str == target) {
       ret = (char *)str;
-	}  
+    }
     str++;
   }
   if (target == '\0') {
     ret = (char *)str;
-  } 	
+  }
   return ret;
 }

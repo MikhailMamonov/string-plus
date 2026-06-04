@@ -2,6 +2,7 @@ CC = gcc
 UNAME_S := $(shell uname -s)
 CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
+BROWSER ?= xdg-open  # или firefox, google-chrome, etc.
 
 # Исходники библиотеки
 SRCS = $(wildcard *.c) $(wildcard core/*.c)  $(wildcard s21_sprintf/*.c) $(wildcard s21_sscanf/*.c) $(wildcard additional/*.c)
@@ -29,7 +30,7 @@ test:
 	# Переменная окружения отключает ложные срабатывания внутри самой библиотеки Check
 	ASAN_OPTIONS=detect_leaks=1 ./test_exec
 
-	rm -f test_exec *.gcno *.gcda
+	rm -f *.gcno *.gcda
 
 all: $(NAME)
 
@@ -53,8 +54,10 @@ gcov_report: clean_gcov
 	lcov --remove s21_string.info '*/$(TEST_LIB)/*' -o s21_string.info
 	# 4. Формируем красивую HTML папку
 	genhtml -o report s21_string.info
+	#5. Открыть индекс.html
+	$(BROWSER) report/index.html &
 	# 5. Очищаем исполняемый файл и промежуточные файлы покрытия
-	rm -f test_exec *.gcno *.gcda
+	rm -f *.gcno *.gcda
 
 clean:
 	rm -f $(OBJS) *.gcno *.gcda *.info
