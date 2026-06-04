@@ -16,8 +16,9 @@ char *o_spec(char *buf, unsigned long long val, formatSpec spec, int *len) {
     return buf;
   }
   char *start = buf;
-  if (spec.precision < 0)
+  if (spec.precision < 0) {
     spec.precision = 1;
+  }  
   int digits[MAX_TMP_SIZE] = {0};
   int oct_len = 0;
   while (val > 0) {

@@ -9,8 +9,9 @@ static char *uint_to_str_internal(char *buf, unsigned long long num,
 
   if (num == 0) {
     if (precision == 0) {
-      if (add_sign)
+      if (add_sign) {
         *buf++ = sign_char;
+      }
       return buf;
     }
     tmp[digit_count++] = '0';
@@ -114,16 +115,18 @@ static char *write_fractional_part(char *buf, unsigned long long final_frac,
     }
 
     int leading_zeroes = calc_prec - frac_len;
-    while (leading_zeroes-- > 0)
+    while (leading_zeroes-- > 0) {
       *buf++ = '0';
+    }  
 
     for (int i = frac_len - 1; i >= 0; i--) {
       *buf++ = frac_tmp[i];
     }
 
     int remaining_zeroes = prec - calc_prec;
-    while (remaining_zeroes-- > 0)
+    while (remaining_zeroes-- > 0) {
       *buf++ = '0';
+    }
   }
   return buf;
 }
@@ -131,12 +134,14 @@ static char *write_fractional_part(char *buf, unsigned long long final_frac,
 // float_to_str остается практически без изменений
 char *float_to_str(char *buf, long double num, formatSpec spec, int *len) {
   char *next_buf = handle_special_floats(buf, num, spec, len);
-  if (next_buf != s21_NULL)
+  if (next_buf != s21_NULL) {
     return next_buf;
+  }
 
   int is_negative = signbit(num);
-  if (is_negative)
+  if (is_negative) {
     num = -num;
+  }
 
   int prec = (spec.precision < 0) ? 6 : spec.precision;
   int calc_prec = (prec > 17) ? 17 : prec;
@@ -159,13 +164,13 @@ char *float_to_str(char *buf, long double num, formatSpec spec, int *len) {
   unsigned long long final_fractional = u_scaled % u_pow_10;
 
   char *start_buf = buf;
-  if (is_negative)
+  if (is_negative) {
     *buf++ = '-';
-  else if (spec.show_sign)
+  } else if (spec.show_sign) {
     *buf++ = '+';
-  else if (spec.space_sign)
+  } else if (spec.space_sign) {
     *buf++ = ' ';
-
+  }
   buf = simple_int_to_str(buf, (long long)final_integral);
 
   if (prec > 0 || spec.alt_format) {

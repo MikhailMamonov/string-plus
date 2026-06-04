@@ -22,8 +22,9 @@ char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len) {
     val /= pow(10, exponent);
   }
 
-  if (spec.precision < 0)
+  if (spec.precision < 0) {
     spec.precision = 6;
+  }
 
   if (val >= 10.0) {
     val /= 10.0;
