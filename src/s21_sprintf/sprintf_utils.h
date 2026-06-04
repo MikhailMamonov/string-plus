@@ -29,7 +29,6 @@ const char *parseSpecifier(const char *format, formatSpec *spec);
 const char *parseFormat(const char *format, formatSpec *spec, va_list *args);
 void formatBySpecifier(formatSpec *spec, va_list *args, char **out,
                        char *start);
-// char *handle_precision(char *buf, int length, char spec);
 char *handle_width(char *buf, int length, formatSpec spec);
 char *handle_special_floats(char *buf, long double val, formatSpec spec,
                             int *len);
