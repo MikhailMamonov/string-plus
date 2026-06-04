@@ -60,7 +60,7 @@ START_TEST(test_to_upper_original_unchanged) {
   char *result = (char *)s21_to_upper(original);
 
   ck_assert_ptr_nonnull(result);
-  ck_assert_pstr_eq(original, "hello"); // оригинал не тронут
+  ck_assert_pstr_eq(original, "hello");  // оригинал не тронут
   ck_assert_pstr_eq(result, "HELLO");
 
   free(result);

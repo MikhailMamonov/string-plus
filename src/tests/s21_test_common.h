@@ -128,88 +128,88 @@ typedef struct {
   const char *test_name;
 } toLowerParams;
 
-#define TEST_CASES(name, param_type, run_func, ...)                            \
-  static param_type name[] = {__VA_ARGS__};                                    \
-  START_TEST(test_##name) {                                                    \
-    for (s21_size_t i = 0; i < sizeof(name) / sizeof(param_type); i++) {       \
-      run_func(&name[i]);                                                      \
-    }                                                                          \
-  }                                                                            \
+#define TEST_CASES(name, param_type, run_func, ...)                      \
+  static param_type name[] = {__VA_ARGS__};                              \
+  START_TEST(test_##name) {                                              \
+    for (s21_size_t i = 0; i < sizeof(name) / sizeof(param_type); i++) { \
+      run_func(&name[i]);                                                \
+    }                                                                    \
+  }                                                                      \
   END_TEST
 
 // Новый макрос для тестов sprintf с переменным количеством аргументов
-#define RUN_SPRINTF_TEST(test_name, format, ...)                               \
-  START_TEST(test_##test_name) {                                               \
-    char std_buf[8000] = {0};                                                  \
-    char test_buf[8000] = {0};                                                 \
-    int std_len;                                                               \
-    int test_len;                                                              \
-    std_len = sprintf(std_buf, format, ##__VA_ARGS__);                         \
-    test_len = s21_sprintf(test_buf, format, ##__VA_ARGS__);                   \
-    ck_assert_str_eq(std_buf, test_buf);                                       \
-    ck_assert_int_eq(std_len, test_len);                                       \
-    printf("[PASS] %s: \"%s\" -> \"%s\"\n", #test_name, format, std_buf);      \
-  }                                                                            \
+#define RUN_SPRINTF_TEST(test_name, format, ...)                          \
+  START_TEST(test_##test_name) {                                          \
+    char std_buf[8000] = {0};                                             \
+    char test_buf[8000] = {0};                                            \
+    int std_len;                                                          \
+    int test_len;                                                         \
+    std_len = sprintf(std_buf, format, ##__VA_ARGS__);                    \
+    test_len = s21_sprintf(test_buf, format, ##__VA_ARGS__);              \
+    ck_assert_str_eq(std_buf, test_buf);                                  \
+    ck_assert_int_eq(std_len, test_len);                                  \
+    printf("[PASS] %s: \"%s\" -> \"%s\"\n", #test_name, format, std_buf); \
+  }                                                                       \
   END_TEST
 
-#define MEMCPY_TEST_CASES(name, ...)                                           \
+#define MEMCPY_TEST_CASES(name, ...) \
   TEST_CASES(name, MemCpyTestParams, run_memcpy_test, __VA_ARGS__)
 
-#define STRCHR_TEST_CASES(name, ...)                                           \
+#define STRCHR_TEST_CASES(name, ...) \
   TEST_CASES(name, StrChrTestParams, run_strchr_test, __VA_ARGS__)
 
-#define MEMSET_TEST_CASES(name, ...)                                           \
+#define MEMSET_TEST_CASES(name, ...) \
   TEST_CASES(name, memsetParams, run_memset_test, __VA_ARGS__)
 
-#define MEMCHR_TEST_CASES(name, ...)                                           \
+#define MEMCHR_TEST_CASES(name, ...) \
   TEST_CASES(name, memchrParams, run_memchr_test, __VA_ARGS__)
 
-#define STRERROR_TEST_CASES(name, ...)                                         \
+#define STRERROR_TEST_CASES(name, ...) \
   TEST_CASES(name, strerrorParams, run_strerror_test, __VA_ARGS__)
 
-#define STRRCHR_TEST_CASES(name, ...)                                          \
+#define STRRCHR_TEST_CASES(name, ...) \
   TEST_CASES(name, strrchrParams, run_strrchr_test, __VA_ARGS__)
 
-#define STRCSPN_TEST_CASES(name, ...)                                          \
+#define STRCSPN_TEST_CASES(name, ...) \
   TEST_CASES(name, StrCSpnTestParams, run_strcspn_test, __VA_ARGS__)
 
-#define STRTOK_TEST_CASES(name, ...)                                           \
+#define STRTOK_TEST_CASES(name, ...) \
   TEST_CASES(name, strtokParams, run_strtok_test, __VA_ARGS__)
 
-#define STRNCMP_TEST_CASES(name, ...)                                          \
+#define STRNCMP_TEST_CASES(name, ...) \
   TEST_CASES(name, strncmpParams, run_strncmp_test, __VA_ARGS__)
 
-#define SPRINTF_TEST_CASES(name, ...)                                          \
+#define SPRINTF_TEST_CASES(name, ...) \
   TEST_CASES(name, sprintfParams, run_sprintf_test, __VA_ARGS__)
 
-#define STRPBRK_TEST_CASES(name, ...)                                          \
+#define STRPBRK_TEST_CASES(name, ...) \
   TEST_CASES(name, strpbrkParams, run_strpbrk_test, __VA_ARGS__)
 
-#define STRSTR_TEST_CASES(name, ...)                                           \
+#define STRSTR_TEST_CASES(name, ...) \
   TEST_CASES(name, strstrParams, run_strstr_test, __VA_ARGS__)
 
-#define STRNCAT_TEST_CASES(name, ...)                                          \
+#define STRNCAT_TEST_CASES(name, ...) \
   TEST_CASES(name, strncatParams, run_strncat_test, __VA_ARGS__)
 
-#define STRLEN_TEST_CASES(name, ...)                                           \
+#define STRLEN_TEST_CASES(name, ...) \
   TEST_CASES(name, strlenParams, run_strlen_test, __VA_ARGS__)
 
-#define MEMCMP_TEST_CASES(name, ...)                                           \
+#define MEMCMP_TEST_CASES(name, ...) \
   TEST_CASES(name, memcmpParams, run_memcmp_test, __VA_ARGS__)
 
-#define STRNCPY_TEST_CASES(name, ...)                                          \
+#define STRNCPY_TEST_CASES(name, ...) \
   TEST_CASES(name, strncpyParams, run_strncpy_test, __VA_ARGS__)
 
-#define TO_UPPER_TEST_CASES(name, ...)                                         \
+#define TO_UPPER_TEST_CASES(name, ...) \
   TEST_CASES(name, toUpperParams, run_to_upper_test, __VA_ARGS__)
 
-#define INSERT_TEST_CASES(name, ...)                                           \
+#define INSERT_TEST_CASES(name, ...) \
   TEST_CASES(name, insertParams, run_insert_test, __VA_ARGS__)
 
-#define TRIM_TEST_CASES(name, ...)                                             \
+#define TRIM_TEST_CASES(name, ...) \
   TEST_CASES(name, trimParams, run_trim_test, __VA_ARGS__)
 
-#define TO_LOWER_TEST_CASES(name, ...)                                         \
+#define TO_LOWER_TEST_CASES(name, ...) \
   TEST_CASES(name, toLowerParams, run_to_lower_test, __VA_ARGS__)
 
 #endif

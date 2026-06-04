@@ -1,5 +1,6 @@
-#include "s21_sprintf.h"
 #include <math.h>
+
+#include "s21_sprintf.h"
 
 char *zero_paddle(char *buf, int length, formatSpec spec, char *to, char *from,
                   int spaces_to_add);
@@ -114,13 +115,14 @@ char *handle_special_floats(char *buf, long double val, formatSpec spec,
     *buf++ = is_upper ? 'N' : 'n';
     *buf++ = is_upper ? 'A' : 'a';
     *buf++ = is_upper ? 'N' : 'n';
-  } else { // is_inf
+  } else {  // is_inf
     *buf++ = is_upper ? 'I' : 'i';
     *buf++ = is_upper ? 'N' : 'n';
     *buf++ = is_upper ? 'F' : 'f';
   }
 
-  *len = buf -
-         start; // Записываем точную длину напечатанного (нужно для ширины поля)
-  return buf; // Возвращаем позицию для дальнейшей работы sprintf
+  *len =
+      buf -
+      start;  // Записываем точную длину напечатанного (нужно для ширины поля)
+  return buf;  // Возвращаем позицию для дальнейшей работы sprintf
 }

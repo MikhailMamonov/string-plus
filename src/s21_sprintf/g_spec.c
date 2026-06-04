@@ -1,5 +1,6 @@
-#include "s21_sprintf.h"
 #include <math.h>
+
+#include "s21_sprintf.h"
 
 char *remove_tail_zeroes(char *buf, char *buf_p, char *start);
 long double round_banking(long double val, int precision);

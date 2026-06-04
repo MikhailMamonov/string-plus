@@ -6,14 +6,14 @@
 #define SPRINTF_UTILS_H
 
 #define MAX_TMP_SIZE 64
-#define MAX_EXP_DIGITS 512 // Максимальная разумная точность
+#define MAX_EXP_DIGITS 512  // Максимальная разумная точность
 #define MAX_PATTERN_LEN 256
 
 typedef struct {
-  unsigned int use_suppress : 1; // используется подавление
-  int width;                     // ширина '-'
-  char length;                   // длина
-  char specifier;                // спецификатор
+  unsigned int use_suppress : 1;  // используется подавление
+  int width;                      // ширина '-'
+  char length;                    // длина
+  char specifier;                 // спецификатор
 } formatSpec;
 
 int process_int(const char **source, long long *res, formatSpec spec);

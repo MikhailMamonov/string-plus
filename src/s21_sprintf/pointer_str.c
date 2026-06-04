@@ -1,7 +1,6 @@
 #include "s21_sprintf.h"
 
 char *pointer_to_str(char *buf, void *pointer, formatSpec spec, int *len) {
-
   if (pointer == s21_NULL) {
     *buf++ = '(';
     *buf++ = 'n';

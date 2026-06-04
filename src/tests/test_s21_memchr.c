@@ -1,8 +1,9 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 // Универсальная функция запуска одиночного теста
 void run_memchr_test(memchrParams *params) {

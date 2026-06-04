@@ -1,9 +1,10 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 // Вспомогательная функция проверки (сравниваем строки через стандартную strcmp)
 void run_strerror_test(strerrorParams *params) {
@@ -15,27 +16,28 @@ void run_strerror_test(strerrorParams *params) {
 }
 
 // 1. Стандартные распространенные ошибки
-STRERROR_TEST_CASES(standard_errors, {0}, // No error
-                    {EPERM},              // Operation not permitted (1)
-                    {ENOENT},             // No such file or directory (2)
-                    {ESRCH},              // No such process (3)
-                    {EINTR},              // Interrupted system call (4)
-                    {EACCES},             // Permission denied (13)
-                    {ENOMEM},             // Cannot allocate memory (12)
-                    {EINVAL}              // Invalid argument (22)
+STRERROR_TEST_CASES(standard_errors, {0},  // No error
+                    {EPERM},               // Operation not permitted (1)
+                    {ENOENT},              // No such file or directory (2)
+                    {ESRCH},               // No such process (3)
+                    {EINTR},               // Interrupted system call (4)
+                    {EACCES},              // Permission denied (13)
+                    {ENOMEM},              // Cannot allocate memory (12)
+                    {EINVAL}               // Invalid argument (22)
 )
 
 // 2. Граничные значения кодов операционной системы
-STRERROR_TEST_CASES(edge_errors, {1}, // Минимальная стандартная ошибка
-                    {106}, // Системная ошибка из конца списка glibc/macOS
-                    {133} // Последняя доступная ошибка на некоторых ОС
+STRERROR_TEST_CASES(edge_errors, {1},  // Минимальная стандартная ошибка
+                    {106},  // Системная ошибка из конца списка glibc/macOS
+                    {133}  // Последняя доступная ошибка на некоторых ОС
 )
 
 // 3. Невалидные и критические пограничные случаи (проверка "Unknown error")
-STRERROR_TEST_CASES(invalid_errors, {-1}, // Отрицательный код ошибки
-                    {150}, // Несуществующая ошибка (в glibc/macOS их около 133)
-                    {1000}, // Большое невалидное число
-                    {2147483647} // Максимальное значение int (INT_MAX)
+STRERROR_TEST_CASES(
+    invalid_errors, {-1},  // Отрицательный код ошибки
+    {150},  // Несуществующая ошибка (в glibc/macOS их около 133)
+    {1000},       // Большое невалидное число
+    {2147483647}  // Максимальное значение int (INT_MAX)
 )
 
 // Функция сборки Suite для Runner

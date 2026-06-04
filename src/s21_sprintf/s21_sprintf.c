@@ -3,7 +3,7 @@
 int s21_sprintf(char *str, const char *format, ...) {
   va_list args;
   va_start(args, format);
-  char *start_str = str; // Запоминаем начало для подсчета длины
+  char *start_str = str;  // Запоминаем начало для подсчета длины
   while (*format != '\0') {
     if (*format == '%') {
       format++;

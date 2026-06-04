@@ -3,7 +3,6 @@
 static char *saved_ptr = s21_NULL;
 
 char *s21_strtok(char *str, const char *delim) {
-
   char *result = s21_NULL;
 
   if (delim != s21_NULL) {

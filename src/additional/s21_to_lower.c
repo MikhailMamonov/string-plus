@@ -1,15 +1,14 @@
-#include "../s21_string.h"
 #include <stdlib.h>
 
+#include "../s21_string.h"
+
 void *s21_to_lower(const char *str) {
-  if (str == s21_NULL)
-    return s21_NULL;
+  if (str == s21_NULL) return s21_NULL;
 
   s21_size_t len = s21_strlen(str);
   char *result = malloc(len + 1);
   char *p_res = result;
-  if (result == s21_NULL)
-    return s21_NULL;
+  if (result == s21_NULL) return s21_NULL;
   s21_size_t CASE = 'a' - 'A';
   for (s21_size_t i = 0; i < len; i++) {
     if (*str >= 'A' && *str <= 'Z')

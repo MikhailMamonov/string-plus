@@ -83,7 +83,7 @@ START_TEST(test_insert_src_unchanged) {
   char *result = (char *)s21_insert(src, "XXX", 5);
 
   ck_assert_ptr_nonnull(result);
-  ck_assert_pstr_eq(src, "Hello world"); // оригинал не тронут
+  ck_assert_pstr_eq(src, "Hello world");  // оригинал не тронут
   ck_assert_pstr_eq(result, "HelloXXX world");
 
   free(result);

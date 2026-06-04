@@ -1,5 +1,6 @@
-#include "../s21_string.h"
 #include <stdio.h>
+
+#include "../s21_string.h"
 
 #if defined(__APPLE__)
 #define MAX_ERRLIST 107

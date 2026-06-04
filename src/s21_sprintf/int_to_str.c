@@ -1,5 +1,6 @@
-#include "s21_sprintf.h"
 #include <math.h>
+
+#include "s21_sprintf.h"
 
 // Общая функция для преобразования беззнакового целого в строку
 static char *uint_to_str_internal(char *buf, unsigned long long num,

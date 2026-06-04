@@ -1,10 +1,11 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 static const char *fmt_d_prec = "%09.5d";
 static const char *fmt_u_zero_prec = "%.0u";

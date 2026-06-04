@@ -1,11 +1,11 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
 
-void run_strpbrk_test(strpbrkParams *params) {
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
+void run_strpbrk_test(strpbrkParams *params) {
   char *expected = strpbrk(params->str1, params->str2);
   char *result = s21_strpbrk(params->str1, params->str2);
 

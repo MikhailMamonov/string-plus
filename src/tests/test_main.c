@@ -1,6 +1,7 @@
-#include "../s21_string.h"
 #include <check.h>
 #include <stdlib.h>
+
+#include "../s21_string.h"
 // standart library functions
 Suite *memchr_suite_create(void);
 Suite *memcpy_suite_create(void);

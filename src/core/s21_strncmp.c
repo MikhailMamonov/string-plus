@@ -15,9 +15,7 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
       break;
     }
   }
-  if (ret < 0)
-    ret = NEGATIVE_VALUE;
-  if (ret > 0)
-    ret = POSITIVE_VALUE;
+  if (ret < 0) ret = NEGATIVE_VALUE;
+  if (ret > 0) ret = POSITIVE_VALUE;
   return ret;
 }

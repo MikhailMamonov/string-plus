@@ -1,14 +1,15 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "../s21_string.h"
+#include "s21_test_common.h"
+
 // Макрос для вывода информации о тесте (только при успешном прохождении)
-#define TEST_PRINT(test_name, format, input)                                   \
-  printf("[PASS] %s: \"%s\" -> \"%s\"\n", test_name, format,                   \
+#define TEST_PRINT(test_name, format, input)                 \
+  printf("[PASS] %s: \"%s\" -> \"%s\"\n", test_name, format, \
          (const char *)(input))
 
 // ==================== STRING TESTS ====================
@@ -1323,7 +1324,7 @@ START_TEST(test_no_match) {
   int std_len = sscanf(input, format, &std_val);
   int test_len = s21_sscanf(input, format, &test_val);
 
-  ck_assert_int_eq(std_val, test_val); // значения не должны измениться
+  ck_assert_int_eq(std_val, test_val);  // значения не должны измениться
   ck_assert_int_eq(std_len, test_len);
   TEST_PRINT("test_no_match", format, input);
 }
@@ -1528,7 +1529,7 @@ END_TEST
 START_TEST(test_invalid_specifier_single) {
   char std_buf[100] = {0}, test_buf[100] = {0};
   const char *input = "test";
-  const char *format = "%q"; // Невалидный спецификатор
+  const char *format = "%q";  // Невалидный спецификатор
 
   int std_len = sscanf(input, format, std_buf);
   int test_len = s21_sscanf(input, format, test_buf);
@@ -1698,7 +1699,7 @@ END_TEST
 
 START_TEST(test_failed_specifier_unsigned_no_match) {
   unsigned int std_val = 0, test_val = 0;
-  const char *input = "-123"; // Отрицательное число для unsigned
+  const char *input = "-123";  // Отрицательное число для unsigned
   const char *format = "%u";
 
   int std_len = sscanf(input, format, &std_val);
@@ -1726,7 +1727,7 @@ END_TEST
 
 START_TEST(test_failed_specifier_octal_no_match) {
   unsigned int std_val = 0, test_val = 0;
-  const char *input = "89"; // 8 и 9 недопустимы в восьмеричной системе
+  const char *input = "89";  // 8 и 9 недопустимы в восьмеричной системе
   const char *format = "%o";
 
   int std_len = sscanf(input, format, &std_val);

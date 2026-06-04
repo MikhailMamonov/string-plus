@@ -1,12 +1,13 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "../s21_string.h"
+#include "s21_test_common.h"
+
 // Публичная функция запуска теста
 void run_memcpy_test(MemCpyTestParams *params) {
-  s21_size_t buf_size = params->size + 64; // Запас для проверки границ
+  s21_size_t buf_size = params->size + 64;  // Запас для проверки границ
 
   char *dest_std = malloc(buf_size);
   char *dest_test = malloc(buf_size);
@@ -14,7 +15,7 @@ void run_memcpy_test(MemCpyTestParams *params) {
   ck_assert_ptr_nonnull(dest_std);
   ck_assert_ptr_nonnull(dest_test);
 
-  s21_memset(dest_std, 0xAA, buf_size); // Паттерн для отладки
+  s21_memset(dest_std, 0xAA, buf_size);  // Паттерн для отладки
   s21_memset(dest_test, 0xAA, buf_size);
 
   // Тестируем только валидное поведение, как требует стандарт

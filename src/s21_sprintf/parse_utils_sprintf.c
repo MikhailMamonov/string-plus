@@ -1,5 +1,6 @@
-#include "s21_sprintf.h"
 #include <ctype.h>
+
+#include "s21_sprintf.h"
 
 int parseFlag(char input) {
   static const char *flags = "+- #0";
@@ -9,21 +10,21 @@ int parseFlag(char input) {
 const char *parseFlags(const char *format, formatSpec *spec) {
   while (*format && parseFlag(*format)) {
     switch (*format) {
-    case '-':
-      spec->left_align = 1;
-      break;
-    case '+':
-      spec->show_sign = 1;
-      break;
-    case ' ':
-      spec->space_sign = 1;
-      break;
-    case '#':
-      spec->alt_format = 1;
-      break;
-    case '0':
-      spec->zero_padding = 1;
-      break;
+      case '-':
+        spec->left_align = 1;
+        break;
+      case '+':
+        spec->show_sign = 1;
+        break;
+      case ' ':
+        spec->space_sign = 1;
+        break;
+      case '#':
+        spec->alt_format = 1;
+        break;
+      case '0':
+        spec->zero_padding = 1;
+        break;
     }
     format++;
   }
@@ -76,7 +77,7 @@ const char *parseLength(const char *input, formatSpec *spec) {
     spec->length = *input;
     input++;
     if (spec->length == 'l' && *input == 'l') {
-      spec->length = 'L'; // или введите отдельный флаг
+      spec->length = 'L';  // или введите отдельный флаг
       input++;
     }
   }

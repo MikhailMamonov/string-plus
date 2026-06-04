@@ -1,7 +1,8 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <string.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 static const char ext_ascii_str1[] = {'a', 'b', 'c', 0x80, 0x81,
                                       'd', 'e', 'f', '\0'};
@@ -19,7 +20,6 @@ static const char long_str_middle[] =
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaa";
 // Публичная функция запуска теста
 void run_strchr_test(StrChrTestParams *params) {
-
   char *result_test = s21_strchr(params->str, params->c);
   char *result_std = strchr(params->str, params->c);
 

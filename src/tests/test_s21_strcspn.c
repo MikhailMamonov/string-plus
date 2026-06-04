@@ -1,12 +1,12 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "../s21_string.h"
+#include "s21_test_common.h"
+
 // Публичная функция запуска теста
 void run_strcspn_test(StrCSpnTestParams *params) {
-
   s21_size_t expected = strcspn(params->str1, params->str2);
   s21_size_t result = s21_strcspn(params->str1, params->str2);
 

@@ -1,8 +1,9 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 int sign(int x) { return (x > 0) - (x < 0); }
 

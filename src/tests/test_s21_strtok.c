@@ -1,14 +1,14 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 #define MAX_TEST_STR_LEN 1024
 
 // Публичная функция запуска теста
 void run_strtok_test(strtokParams *params) {
-
   char str_orig[MAX_TEST_STR_LEN];
   char str_test[MAX_TEST_STR_LEN];
   strcpy(str_orig, params->str);

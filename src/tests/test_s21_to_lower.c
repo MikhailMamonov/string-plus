@@ -1,8 +1,9 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 static void run_to_lower_test(toLowerParams *params) {
   char *result = (char *)s21_to_lower(params->str);

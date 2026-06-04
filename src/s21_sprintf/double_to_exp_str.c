@@ -1,5 +1,6 @@
-#include "s21_sprintf.h"
 #include <math.h>
+
+#include "s21_sprintf.h"
 
 static char exp_digits[MAX_EXP_DIGITS];
 
@@ -30,7 +31,7 @@ char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len) {
     val /= 10.0;
     exponent++;
   } else if (val < 1.0 && val > 0.0 &&
-             exponent != 0) { // Для редких пограничных случаев
+             exponent != 0) {  // Для редких пограничных случаев
     val *= 10.0;
     exponent--;
   }
@@ -42,8 +43,8 @@ char *double_to_exp_str(char *buf, long double val, formatSpec spec, int *len) {
   long long limit = llroundl(pow(10, spec.precision + 1));
 
   if (mantissa_int >= limit) {
-    mantissa_int /= 10; // Убираем лишний разряд
-    exponent++;         // Сдвигаем экспоненту вверх
+    mantissa_int /= 10;  // Убираем лишний разряд
+    exponent++;          // Сдвигаем экспоненту вверх
   }
 
   return write_exp(buf, spec, mantissa_int, exponent, is_negative, len);
@@ -53,8 +54,7 @@ char *write_exp(char *buf, formatSpec spec, long long mantissa_int,
                 int exponent, int is_negative, int *len) {
   char *start = buf;
 
-  if (is_negative)
-    *buf++ = '-';
+  if (is_negative) *buf++ = '-';
 
   s21_memset(exp_digits, '0', sizeof(exp_digits));
 

@@ -13,8 +13,7 @@ char *s21_strstr(const char *haystack, const char *needle) {
           h++;
           n++;
         }
-        if (*n == '\0')
-          result = (char *)haystack;
+        if (*n == '\0') result = (char *)haystack;
       }
     }
   }

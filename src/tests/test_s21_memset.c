@@ -1,8 +1,9 @@
-#include "../s21_string.h"
-#include "s21_test_common.h"
 #include <check.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../s21_string.h"
+#include "s21_test_common.h"
 
 // Функция выделения буфера памяти
 char *create_buffer(s21_size_t len, const void *str) {
