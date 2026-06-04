@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = --coverage
 
 # Исходники библиотеки
-SRCS = $(wildcard *.c) $(wildcard core/*.c)  $(wildcard s21_sprintf/*.c) $(wildcard s21_sscanf/*.c)
+SRCS = $(wildcard *.c) $(wildcard core/*.c)  $(wildcard s21_sprintf/*.c) $(wildcard s21_sscanf/*.c) $(wildcard additional/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = s21_string.a
 
@@ -77,10 +77,10 @@ re: fclean all
 
 # Проверка стиля (опционально)
 check-style:
-	clang-format -n $(SRCS) $(TEST_SRCS) *.h $(TEST_LIB)/*.h s21_sprintf/*.h s21_sscanf/*.h core/*.c
+	clang-format -n $(SRCS) $(TEST_SRCS) *.h $(TEST_LIB)/*.h s21_sprintf/*.h s21_sscanf/*.h core/*.c additional/*.c
 
 fix-style:
-	clang-format -i $(SRCS) $(TEST_SRCS) *.h $(TEST_LIB)/*.h s21_sprintf/*.h s21_sscanf/*.h core/*.c
+	clang-format -i $(SRCS) $(TEST_SRCS) *.h $(TEST_LIB)/*.h s21_sprintf/*.h s21_sscanf/*.h core/*.c additional/*.c
 
 .PHONY: all clean fclean re gcov_report
 
