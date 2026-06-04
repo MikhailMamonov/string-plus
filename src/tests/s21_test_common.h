@@ -121,7 +121,6 @@ typedef struct {
   const char *test_name;
 } toLowerParams;
 
-
 #define TEST_CASES(name, param_type, run_func, ...)                            \
   static param_type name[] = {__VA_ARGS__};                                    \
   START_TEST(test_##name) {                                                    \
